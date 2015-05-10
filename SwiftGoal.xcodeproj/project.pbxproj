@@ -11,6 +11,7 @@
 		0F74F6F71B0002C400F963E0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0F74F6F61B0002C400F963E0 /* Images.xcassets */; };
 		0F74F6FA1B0002C400F963E0 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0F74F6F81B0002C400F963E0 /* LaunchScreen.xib */; };
 		0F74F7061B0002C400F963E0 /* SwiftGoalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F74F7051B0002C400F963E0 /* SwiftGoalTests.swift */; };
+		0F74F7121B00053D00F963E0 /* MatchesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F74F7111B00053D00F963E0 /* MatchesViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +33,7 @@
 		0F74F6FF1B0002C400F963E0 /* SwiftGoalTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftGoalTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0F74F7041B0002C400F963E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0F74F7051B0002C400F963E0 /* SwiftGoalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftGoalTests.swift; sourceTree = "<group>"; };
+		0F74F7111B00053D00F963E0 /* MatchesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchesViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 		0F74F6EC1B0002C400F963E0 /* SwiftGoal */ = {
 			isa = PBXGroup;
 			children = (
+				0F74F70F1B0004EE00F963E0 /* Views */,
 				0F74F6EF1B0002C400F963E0 /* AppDelegate.swift */,
 				0F74F6F61B0002C400F963E0 /* Images.xcassets */,
 				0F74F6F81B0002C400F963E0 /* LaunchScreen.xib */,
@@ -104,6 +107,14 @@
 				0F74F7041B0002C400F963E0 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0F74F70F1B0004EE00F963E0 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0F74F7111B00053D00F963E0 /* MatchesViewController.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -205,6 +216,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0F74F7121B00053D00F963E0 /* MatchesViewController.swift in Sources */,
 				0F74F6F01B0002C400F963E0 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
