@@ -10,4 +10,10 @@ import Foundation
 
 class MatchesViewModel: NSObject {
 
+    let store: Store
+
+    init(store: Store) {
+        self.store = store
+        super.init()
+    }
 }
