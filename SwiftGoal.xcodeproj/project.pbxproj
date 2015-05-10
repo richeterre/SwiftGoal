@@ -12,6 +12,7 @@
 		0F74F6FA1B0002C400F963E0 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0F74F6F81B0002C400F963E0 /* LaunchScreen.xib */; };
 		0F74F7061B0002C400F963E0 /* SwiftGoalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F74F7051B0002C400F963E0 /* SwiftGoalTests.swift */; };
 		0F74F7121B00053D00F963E0 /* MatchesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F74F7111B00053D00F963E0 /* MatchesViewController.swift */; };
+		0F74F7141B00058D00F963E0 /* MatchesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F74F7131B00058D00F963E0 /* MatchesViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +35,7 @@
 		0F74F7041B0002C400F963E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0F74F7051B0002C400F963E0 /* SwiftGoalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftGoalTests.swift; sourceTree = "<group>"; };
 		0F74F7111B00053D00F963E0 /* MatchesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchesViewController.swift; sourceTree = "<group>"; };
+		0F74F7131B00058D00F963E0 /* MatchesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchesViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				0F74F70F1B0004EE00F963E0 /* Views */,
+				0F74F7101B0004FD00F963E0 /* ViewModels */,
 				0F74F6EF1B0002C400F963E0 /* AppDelegate.swift */,
 				0F74F6F61B0002C400F963E0 /* Images.xcassets */,
 				0F74F6F81B0002C400F963E0 /* LaunchScreen.xib */,
@@ -115,6 +118,14 @@
 				0F74F7111B00053D00F963E0 /* MatchesViewController.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		0F74F7101B0004FD00F963E0 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				0F74F7131B00058D00F963E0 /* MatchesViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -216,6 +227,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0F74F7141B00058D00F963E0 /* MatchesViewModel.swift in Sources */,
 				0F74F7121B00053D00F963E0 /* MatchesViewController.swift in Sources */,
 				0F74F6F01B0002C400F963E0 /* AppDelegate.swift in Sources */,
 			);
