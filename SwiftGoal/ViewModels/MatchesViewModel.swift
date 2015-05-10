@@ -12,8 +12,24 @@ class MatchesViewModel: NSObject {
 
     let store: Store
 
+    // MARK: - Lifecycle
+
     init(store: Store) {
         self.store = store
         super.init()
+    }
+
+    // MARK: - Data Source
+
+    func numberOfSections() -> Int {
+        return 1
+    }
+
+    func numberOfMatchesInSection(section: Int) -> Int {
+        return 1
+    }
+
+    func matchAtRow(row: Int, inSection: Int) -> String {
+        return "Match"
     }
 }
