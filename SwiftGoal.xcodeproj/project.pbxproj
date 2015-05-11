@@ -79,12 +79,12 @@
 		0F74F6EC1B0002C400F963E0 /* SwiftGoal */ = {
 			isa = PBXGroup;
 			children = (
-				0F74F70F1B0004EE00F963E0 /* Views */,
-				0F74F7101B0004FD00F963E0 /* ViewModels */,
-				0F74F7151B00096000F963E0 /* Stores */,
 				0F74F6EF1B0002C400F963E0 /* AppDelegate.swift */,
 				0F74F6F61B0002C400F963E0 /* Images.xcassets */,
 				0F74F6F81B0002C400F963E0 /* LaunchScreen.xib */,
+				0F74F70F1B0004EE00F963E0 /* Views */,
+				0F74F7101B0004FD00F963E0 /* ViewModels */,
+				0F74F7151B00096000F963E0 /* Stores */,
 				0F74F6ED1B0002C400F963E0 /* Supporting Files */,
 			);
 			path = SwiftGoal;
@@ -431,6 +431,7 @@
 				0F74F70B1B0002C400F963E0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0F74F70C1B0002C400F963E0 /* Build configuration list for PBXNativeTarget "SwiftGoalTests" */ = {
 			isa = XCConfigurationList;
@@ -439,6 +440,7 @@
 				0F74F70E1B0002C400F963E0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
