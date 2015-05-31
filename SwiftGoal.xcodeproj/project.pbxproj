@@ -14,6 +14,10 @@
 		0F74F7121B00053D00F963E0 /* MatchesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F74F7111B00053D00F963E0 /* MatchesViewController.swift */; };
 		0F74F7141B00058D00F963E0 /* MatchesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F74F7131B00058D00F963E0 /* MatchesViewModel.swift */; };
 		0F74F7171B0009B300F963E0 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F74F7161B0009B300F963E0 /* Store.swift */; };
+		0FA80BDD1B013F33000531E3 /* Box.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FA80BDA1B013F33000531E3 /* Box.framework */; };
+		0FA80BDE1B013F33000531E3 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FA80BDB1B013F33000531E3 /* ReactiveCocoa.framework */; };
+		0FA80BDF1B013F33000531E3 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FA80BDC1B013F33000531E3 /* Result.framework */; };
+		0FA80BE41B014001000531E3 /* Match.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA80BE31B014001000531E3 /* Match.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +42,10 @@
 		0F74F7111B00053D00F963E0 /* MatchesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchesViewController.swift; sourceTree = "<group>"; };
 		0F74F7131B00058D00F963E0 /* MatchesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchesViewModel.swift; sourceTree = "<group>"; };
 		0F74F7161B0009B300F963E0 /* Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		0FA80BDA1B013F33000531E3 /* Box.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Box.framework; path = Carthage/Build/iOS/Box.framework; sourceTree = "<group>"; };
+		0FA80BDB1B013F33000531E3 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = Carthage/Build/iOS/ReactiveCocoa.framework; sourceTree = "<group>"; };
+		0FA80BDC1B013F33000531E3 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
+		0FA80BE31B014001000531E3 /* Match.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Match.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +53,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0FA80BDD1B013F33000531E3 /* Box.framework in Frameworks */,
+				0FA80BDE1B013F33000531E3 /* ReactiveCocoa.framework in Frameworks */,
+				0FA80BDF1B013F33000531E3 /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,6 +72,7 @@
 		0F74F6E11B0002C400F963E0 = {
 			isa = PBXGroup;
 			children = (
+				0FA80BE01B013F3A000531E3 /* Frameworks */,
 				0F74F6EC1B0002C400F963E0 /* SwiftGoal */,
 				0F74F7021B0002C400F963E0 /* SwiftGoalTests */,
 				0F74F6EB1B0002C400F963E0 /* Products */,
@@ -82,6 +94,7 @@
 				0F74F6EF1B0002C400F963E0 /* AppDelegate.swift */,
 				0F74F6F61B0002C400F963E0 /* Images.xcassets */,
 				0F74F6F81B0002C400F963E0 /* LaunchScreen.xib */,
+				0FA80BE21B013FE4000531E3 /* Models */,
 				0F74F70F1B0004EE00F963E0 /* Views */,
 				0F74F7101B0004FD00F963E0 /* ViewModels */,
 				0F74F7151B00096000F963E0 /* Stores */,
@@ -139,6 +152,24 @@
 			path = Stores;
 			sourceTree = "<group>";
 		};
+		0FA80BE01B013F3A000531E3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0FA80BDA1B013F33000531E3 /* Box.framework */,
+				0FA80BDB1B013F33000531E3 /* ReactiveCocoa.framework */,
+				0FA80BDC1B013F33000531E3 /* Result.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0FA80BE21B013FE4000531E3 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0FA80BE31B014001000531E3 /* Match.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -149,6 +180,7 @@
 				0F74F6E61B0002C400F963E0 /* Sources */,
 				0F74F6E71B0002C400F963E0 /* Frameworks */,
 				0F74F6E81B0002C400F963E0 /* Resources */,
+				0FA80BE11B013F70000531E3 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -233,6 +265,25 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		0FA80BE11B013F70000531E3 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Box.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/ReactiveCocoa.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Result.framework",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks ";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		0F74F6E61B0002C400F963E0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -241,6 +292,7 @@
 				0F74F7141B00058D00F963E0 /* MatchesViewModel.swift in Sources */,
 				0F74F7171B0009B300F963E0 /* Store.swift in Sources */,
 				0F74F7121B00053D00F963E0 /* MatchesViewController.swift in Sources */,
+				0FA80BE41B014001000531E3 /* Match.swift in Sources */,
 				0F74F6F01B0002C400F963E0 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -362,6 +414,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = SwiftGoal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -372,6 +428,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = SwiftGoal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -7,16 +7,42 @@
 //
 
 import Foundation
+import ReactiveCocoa
 
 class MatchesViewModel: NSObject {
 
-    let store: Store
+    // Inputs
+    let active = MutableProperty(false)
+
+    // Outputs
+    let title: String
+    let (updatedContentSignal, updatedContentSink) = Signal<Bool, NoError>.pipe()
+
+    private let store: Store
+    private var matches: [Match]
 
     // MARK: - Lifecycle
 
     init(store: Store) {
+        self.title = "Matches"
         self.store = store
+        self.matches = []
+
         super.init()
+
+        // Define this separately to make Swift compiler happy
+        let activeToMatchesSignal: SignalProducer<Bool, NoError> -> SignalProducer<[Match], NoError> = flatMap(.Latest) {
+            active in store.fetchMatches()
+        }
+
+        active.producer
+            |> activeToMatchesSignal
+            |> start(next: { [weak self] matches in
+                self?.matches = matches
+                if let sink = self?.updatedContentSink {
+                    sendNext(sink, true)
+                }
+        })
     }
 
     // MARK: - Data Source
@@ -26,10 +52,10 @@ class MatchesViewModel: NSObject {
     }
 
     func numberOfMatchesInSection(section: Int) -> Int {
-        return 1
+        return count(matches)
     }
 
     func matchAtRow(row: Int, inSection: Int) -> String {
-        return "Match"
+        return matches[row].title
     }
 }

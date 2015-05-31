@@ -7,8 +7,11 @@
 //
 
 import UIKit
+import ReactiveCocoa
 
 class MatchesViewController: UITableViewController {
+
+    let (isActiveSignal, isActiveSink) = Signal<Bool, NoError>.pipe()
 
     let matchCellIdentifier = "MatchCell"
     let viewModel: MatchesViewModel
@@ -30,6 +33,34 @@ class MatchesViewController: UITableViewController {
         super.viewDidLoad()
 
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: matchCellIdentifier)
+
+        bindViewModel()
+    }
+
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
+        sendNext(isActiveSink, true)
+    }
+
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        sendNext(isActiveSink, false)
+    }
+
+    // MARK: - Bindings
+
+    func bindViewModel() {
+        viewModel.active <~ isActiveSignal
+
+        self.title = viewModel.title
+
+        viewModel.updatedContentSignal
+            |> observeOn(QueueScheduler.mainQueueScheduler)
+            |> observe(next: { [weak self] _ in
+                self?.tableView.reloadData()
+            })
     }
 
     // MARK: - UITableViewDataSource
