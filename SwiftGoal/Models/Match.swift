@@ -7,11 +7,13 @@
 //
 
 struct Match {
-    let title: String
+    let identifier: String
+    let homeGoals: Int
+    let awayGoals: Int
 }
 
 extension Match: Equatable {}
 
 func ==(lhs: Match, rhs: Match) -> Bool {
-    return lhs.title == rhs.title
+    return lhs.identifier == rhs.identifier
 }

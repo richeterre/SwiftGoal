@@ -58,6 +58,7 @@ class MatchesViewModel: NSObject {
     }
 
     func matchAtRow(row: Int, inSection: Int) -> String {
-        return matches[row].title
+        let match = matches[row]
+        return "\(match.homeGoals) : \(match.awayGoals)"
     }
 }

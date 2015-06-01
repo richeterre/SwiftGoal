@@ -14,8 +14,8 @@ class Store: NSObject {
     private let fakeDelay: NSTimeInterval = 1
 
     private let matches = [
-        Match(title: "First"),
-        Match(title: "Second")
+        Match(identifier: NSUUID().UUIDString, homeGoals: 1, awayGoals: 2),
+        Match(identifier: NSUUID().UUIDString, homeGoals: 1, awayGoals: 1),
     ]
 
     // MARK: - Matches
