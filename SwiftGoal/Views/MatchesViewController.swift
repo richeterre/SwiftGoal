@@ -32,6 +32,7 @@ class MatchesViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        tableView.allowsSelection = false
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: matchCellIdentifier)
 
         bindViewModel()
