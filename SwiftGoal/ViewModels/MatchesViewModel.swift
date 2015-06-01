@@ -16,7 +16,7 @@ class MatchesViewModel: NSObject {
 
     // Outputs
     let title: String
-    let (updatedContentSignal, updatedContentSink) = Signal<Bool, NoError>.pipe()
+    let (contentChangesSignal, contentChangesSink) = Signal<Changeset, NoError>.pipe()
 
     private let store: Store
     private var matches: [Match]
@@ -37,10 +37,12 @@ class MatchesViewModel: NSObject {
 
         active.producer
             |> activeToMatchesSignal
-            |> start(next: { [weak self] matches in
-                self?.matches = matches
-                if let sink = self?.updatedContentSink {
-                    sendNext(sink, true)
+            |> combinePrevious([]) // Preserve history of previous match array to calculate changeset
+            |> start(next: { [weak self] (oldMatches, newMatches) in
+                self?.matches = newMatches
+                if let sink = self?.contentChangesSink {
+                    let changeset = Changeset(oldItems: oldMatches, newItems: newMatches)
+                    sendNext(sink, changeset)
                 }
         })
     }

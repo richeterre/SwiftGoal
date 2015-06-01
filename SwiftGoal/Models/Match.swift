@@ -9,3 +9,9 @@
 struct Match {
     let title: String
 }
+
+extension Match: Equatable {}
+
+func ==(lhs: Match, rhs: Match) -> Bool {
+    return lhs.title == rhs.title
+}
