@@ -11,6 +11,8 @@ import Runes
 
 struct Match {
     let identifier: String
+    let homePlayers: [Player]
+    let awayPlayers: [Player]
     let homeGoals: Int
     let awayGoals: Int
 }
@@ -26,18 +28,22 @@ func ==(lhs: Match, rhs: Match) -> Bool {
 // MARK: Decodable
 
 extension Match: Decodable {
-    static func create(identifier: String)(homeGoals: Int)(awayGoals: Int) -> Match {
+    static func create(identifier: String)(homePlayers: [Player])(awayPlayers: [Player])(homeGoals: Int)(awayGoals: Int) -> Match {
         return Match(
             identifier: identifier,
+            homePlayers: homePlayers,
+            awayPlayers: awayPlayers,
             homeGoals: homeGoals,
             awayGoals: awayGoals
         )
     }
 
-    static func decode(j: JSON) -> Decoded<Match> {
+    static func decode(json: JSON) -> Decoded<Match> {
         return Match.create
-            <^> j <| "id"
-            <*> j <| "home_goals"
-            <*> j <| "away_goals"
+            <^> json <| "id"
+            <*> json <|| "home_players"
+            <*> json <|| "away_players"
+            <*> json <| "home_goals"
+            <*> json <| "away_goals"
     }
 }

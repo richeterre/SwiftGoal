@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0F3289EE1B1CF8340068DF12 /* Changeset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F3289ED1B1CF8340068DF12 /* Changeset.swift */; };
+		0F691B3E1B1D19DC00FD5AC1 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F691B3D1B1D19DC00FD5AC1 /* Player.swift */; };
 		0F74F6F01B0002C400F963E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F74F6EF1B0002C400F963E0 /* AppDelegate.swift */; };
 		0F74F6F71B0002C400F963E0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0F74F6F61B0002C400F963E0 /* Images.xcassets */; };
 		0F74F6FA1B0002C400F963E0 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0F74F6F81B0002C400F963E0 /* LaunchScreen.xib */; };
@@ -35,6 +36,7 @@
 
 /* Begin PBXFileReference section */
 		0F3289ED1B1CF8340068DF12 /* Changeset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Changeset.swift; sourceTree = "<group>"; };
+		0F691B3D1B1D19DC00FD5AC1 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		0F74F6EA1B0002C400F963E0 /* SwiftGoal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftGoal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0F74F6EE1B0002C400F963E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0F74F6EF1B0002C400F963E0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 			children = (
 				0F3289ED1B1CF8340068DF12 /* Changeset.swift */,
 				0FA80BE31B014001000531E3 /* Match.swift */,
+				0F691B3D1B1D19DC00FD5AC1 /* Player.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -306,6 +309,7 @@
 				0F74F7171B0009B300F963E0 /* Store.swift in Sources */,
 				0F3289EE1B1CF8340068DF12 /* Changeset.swift in Sources */,
 				0F74F7121B00053D00F963E0 /* MatchesViewController.swift in Sources */,
+				0F691B3E1B1D19DC00FD5AC1 /* Player.swift in Sources */,
 				0FA80BE41B014001000531E3 /* Match.swift in Sources */,
 				0F74F6F01B0002C400F963E0 /* AppDelegate.swift in Sources */,
 			);
