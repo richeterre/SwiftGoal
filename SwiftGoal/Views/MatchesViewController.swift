@@ -33,6 +33,8 @@ class MatchesViewController: UITableViewController {
         super.viewDidLoad()
 
         tableView.allowsSelection = false
+        tableView.rowHeight = 60
+
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: matchCellIdentifier)
 
         bindViewModel()
