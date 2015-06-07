@@ -30,13 +30,9 @@ class MatchesViewModel: NSObject {
 
         super.init()
 
-        // Define this separately to make Swift compiler happy
-        let activeToMatchesSignal: SignalProducer<Bool, NoError> -> SignalProducer<[Match], NoError> = flatMap(.Latest) {
-            active in return store.fetchMatches()
-        }
-
         active.producer
-            |> activeToMatchesSignal
+            |> filter { $0 }
+            |> flatMap(.Latest) { active in return store.fetchMatches() }
             |> combinePrevious([]) // Preserve history of previous match array to calculate changeset
             |> start(next: { [weak self] (oldMatches, newMatches) in
                 self?.matches = newMatches
