@@ -24,6 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().barTintColor = tintColor
         UINavigationBar.appearance().tintColor = UIColor.whiteColor()
         UINavigationBar.appearance().titleTextAttributes = [
+            NSFontAttributeName: UIFont(name: "OpenSans-Semibold", size: 20)!,
             NSForegroundColorAttributeName: UIColor.whiteColor()
         ]
         UINavigationBar.appearance().translucent = false
