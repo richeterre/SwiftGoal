@@ -8,20 +8,25 @@
 
 import Foundation
 import ReactiveCocoa
+import Argo
 
 class Store: NSObject {
 
-    private let fakeDelay: NSTimeInterval = 1
-
-    private let matches = [
-        Match(identifier: NSUUID().UUIDString, homeGoals: 1, awayGoals: 2),
-        Match(identifier: NSUUID().UUIDString, homeGoals: 1, awayGoals: 1),
-    ]
+    private let baseURL = NSURL(string: "http://localhost:3000/api/v1/matches")!
 
     // MARK: - Matches
 
     func fetchMatches() -> SignalProducer<[Match], NoError> {
-        return SignalProducer(value: matches)
-            |> delay(fakeDelay, onScheduler: QueueScheduler.mainQueueScheduler)
+        let request = NSURLRequest(URL: baseURL)
+        return NSURLSession.sharedSession().rac_dataWithRequest(request)
+            |> map { data, response in
+                let json: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(0), error: nil)
+                if let j: AnyObject = json, matches: [Match] = decode(j) {
+                    return matches
+                } else {
+                    return []
+                }
+            }
+            |> catch { _ in SignalProducer<[Match], NoError>.empty }
     }
 }

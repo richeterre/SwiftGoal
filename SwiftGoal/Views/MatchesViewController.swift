@@ -79,7 +79,7 @@ class MatchesViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(matchCellIdentifier, forIndexPath: indexPath) as! UITableViewCell
-        cell.textLabel?.text = viewModel.matchAtRow(indexPath.row, inSection: indexPath.section)
+        cell.textLabel?.text = viewModel.resultAtRow(indexPath.row, inSection: indexPath.section)
 
         return cell
     }

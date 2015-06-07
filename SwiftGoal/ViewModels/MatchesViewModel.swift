@@ -32,7 +32,7 @@ class MatchesViewModel: NSObject {
 
         // Define this separately to make Swift compiler happy
         let activeToMatchesSignal: SignalProducer<Bool, NoError> -> SignalProducer<[Match], NoError> = flatMap(.Latest) {
-            active in store.fetchMatches()
+            active in return store.fetchMatches()
         }
 
         active.producer
@@ -57,7 +57,7 @@ class MatchesViewModel: NSObject {
         return count(matches)
     }
 
-    func matchAtRow(row: Int, inSection: Int) -> String {
+    func resultAtRow(row: Int, inSection: Int) -> String {
         let match = matches[row]
         return "\(match.homeGoals) : \(match.awayGoals)"
     }
