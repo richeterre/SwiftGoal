@@ -1,1 +1,2 @@
 github "ReactiveCocoa/ReactiveCocoa" "v3.0-beta.7"
+github "thoughtbot/Argo"

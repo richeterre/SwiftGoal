@@ -19,6 +19,8 @@
 		0FA80BDE1B013F33000531E3 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FA80BDB1B013F33000531E3 /* ReactiveCocoa.framework */; };
 		0FA80BDF1B013F33000531E3 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FA80BDC1B013F33000531E3 /* Result.framework */; };
 		0FA80BE41B014001000531E3 /* Match.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA80BE31B014001000531E3 /* Match.swift */; };
+		0FE96BEA1B24D77700506E60 /* Argo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FE96BE81B24D77700506E60 /* Argo.framework */; };
+		0FE96BEB1B24D77700506E60 /* Runes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FE96BE91B24D77700506E60 /* Runes.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +50,8 @@
 		0FA80BDB1B013F33000531E3 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = Carthage/Build/iOS/ReactiveCocoa.framework; sourceTree = "<group>"; };
 		0FA80BDC1B013F33000531E3 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
 		0FA80BE31B014001000531E3 /* Match.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Match.swift; sourceTree = "<group>"; };
+		0FE96BE81B24D77700506E60 /* Argo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Argo.framework; path = Carthage/Build/iOS/Argo.framework; sourceTree = "<group>"; };
+		0FE96BE91B24D77700506E60 /* Runes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Runes.framework; path = Carthage/Build/iOS/Runes.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,9 +59,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0FE96BEA1B24D77700506E60 /* Argo.framework in Frameworks */,
 				0FA80BDD1B013F33000531E3 /* Box.framework in Frameworks */,
 				0FA80BDE1B013F33000531E3 /* ReactiveCocoa.framework in Frameworks */,
 				0FA80BDF1B013F33000531E3 /* Result.framework in Frameworks */,
+				0FE96BEB1B24D77700506E60 /* Runes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,9 +163,11 @@
 		0FA80BE01B013F3A000531E3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0FE96BE81B24D77700506E60 /* Argo.framework */,
 				0FA80BDA1B013F33000531E3 /* Box.framework */,
 				0FA80BDB1B013F33000531E3 /* ReactiveCocoa.framework */,
 				0FA80BDC1B013F33000531E3 /* Result.framework */,
+				0FE96BE91B24D77700506E60 /* Runes.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -278,6 +286,8 @@
 				"$(SRCROOT)/Carthage/Build/iOS/Box.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/ReactiveCocoa.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Result.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Argo.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Runes.framework",
 			);
 			outputPaths = (
 			);
