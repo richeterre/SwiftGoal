@@ -57,8 +57,29 @@ class MatchesViewModel: NSObject {
         return count(matches)
     }
 
-    func resultAtRow(row: Int, inSection: Int) -> String {
-        let match = matches[row]
+    func homePlayersAtRow(row: Int, inSection section: Int) -> String {
+        let match = matchAtRow(row, inSection: section)
+        return separatedNamesForPlayers(match.homePlayers)
+    }
+
+    func awayPlayersAtRow(row: Int, inSection section: Int) -> String {
+        let match = matchAtRow(row, inSection: section)
+        return separatedNamesForPlayers(match.awayPlayers)
+    }
+
+    func resultAtRow(row: Int, inSection section: Int) -> String {
+        let match = matchAtRow(row, inSection: section)
         return "\(match.homeGoals) : \(match.awayGoals)"
+    }
+
+    // MARK: Internal Helpers
+
+    private func matchAtRow(row: Int, inSection section: Int) -> Match {
+        return matches[row]
+    }
+
+    private func separatedNamesForPlayers(players: [Player]) -> String {
+        let playerNames = players.map { player in player.name }
+        return ", ".join(playerNames)
     }
 }

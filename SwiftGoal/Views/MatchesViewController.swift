@@ -79,7 +79,11 @@ class MatchesViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(matchCellIdentifier, forIndexPath: indexPath) as! UITableViewCell
-        cell.textLabel?.text = viewModel.resultAtRow(indexPath.row, inSection: indexPath.section)
+
+        let homePlayers = viewModel.homePlayersAtRow(indexPath.row, inSection: indexPath.section)
+        let result = viewModel.resultAtRow(indexPath.row, inSection: indexPath.section)
+        let awayPlayers = viewModel.awayPlayersAtRow(indexPath.row, inSection: indexPath.section)
+        cell.textLabel?.text = "\(homePlayers) \(result) \(awayPlayers)"
 
         return cell
     }
