@@ -35,7 +35,7 @@ class MatchesViewController: UITableViewController {
         tableView.allowsSelection = false
         tableView.rowHeight = 60
 
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: matchCellIdentifier)
+        tableView.registerClass(MatchCell.self, forCellReuseIdentifier: matchCellIdentifier)
 
         bindViewModel()
     }
@@ -80,12 +80,11 @@ class MatchesViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(matchCellIdentifier, forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(matchCellIdentifier, forIndexPath: indexPath) as! MatchCell
 
-        let homePlayers = viewModel.homePlayersAtRow(indexPath.row, inSection: indexPath.section)
-        let result = viewModel.resultAtRow(indexPath.row, inSection: indexPath.section)
-        let awayPlayers = viewModel.awayPlayersAtRow(indexPath.row, inSection: indexPath.section)
-        cell.textLabel?.text = "\(homePlayers) \(result) \(awayPlayers)"
+        cell.homePlayersLabel.text = viewModel.homePlayersAtRow(indexPath.row, inSection: indexPath.section)
+        cell.resultLabel.text = viewModel.resultAtRow(indexPath.row, inSection: indexPath.section)
+        cell.awayPlayersLabel.text = viewModel.awayPlayersAtRow(indexPath.row, inSection: indexPath.section)
 
         return cell
     }

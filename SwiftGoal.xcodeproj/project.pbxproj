@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0F2EF8281B24FBF800BABC20 /* MatchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F2EF8271B24FBF800BABC20 /* MatchCell.swift */; };
+		0F2EF82A1B24FE9400BABC20 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F2EF8291B24FE9400BABC20 /* SnapKit.framework */; };
+		0F2EF82C1B25000600BABC20 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0F2EF82B1B25000600BABC20 /* OpenSans-Regular.ttf */; };
 		0F3289EE1B1CF8340068DF12 /* Changeset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F3289ED1B1CF8340068DF12 /* Changeset.swift */; };
 		0F691B3E1B1D19DC00FD5AC1 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F691B3D1B1D19DC00FD5AC1 /* Player.swift */; };
 		0F74F6F01B0002C400F963E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F74F6EF1B0002C400F963E0 /* AppDelegate.swift */; };
@@ -36,6 +39,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0F2EF8271B24FBF800BABC20 /* MatchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchCell.swift; sourceTree = "<group>"; };
+		0F2EF8291B24FE9400BABC20 /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = Carthage/Build/iOS/SnapKit.framework; sourceTree = "<group>"; };
+		0F2EF82B1B25000600BABC20 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 		0F3289ED1B1CF8340068DF12 /* Changeset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Changeset.swift; sourceTree = "<group>"; };
 		0F691B3D1B1D19DC00FD5AC1 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		0F74F6EA1B0002C400F963E0 /* SwiftGoal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftGoal.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -68,6 +74,7 @@
 				0FA80BDE1B013F33000531E3 /* ReactiveCocoa.framework in Frameworks */,
 				0FA80BDF1B013F33000531E3 /* Result.framework in Frameworks */,
 				0FE96BEB1B24D77700506E60 /* Runes.framework in Frameworks */,
+				0F2EF82A1B24FE9400BABC20 /* SnapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,6 +151,7 @@
 		0F74F70F1B0004EE00F963E0 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				0F2EF8271B24FBF800BABC20 /* MatchCell.swift */,
 				0F74F7111B00053D00F963E0 /* MatchesViewController.swift */,
 			);
 			path = Views;
@@ -173,6 +181,7 @@
 				0FA80BDB1B013F33000531E3 /* ReactiveCocoa.framework */,
 				0FA80BDC1B013F33000531E3 /* Result.framework */,
 				0FE96BE91B24D77700506E60 /* Runes.framework */,
+				0F2EF8291B24FE9400BABC20 /* SnapKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -190,6 +199,7 @@
 		0FE96BEC1B24F09100506E60 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				0F2EF82B1B25000600BABC20 /* OpenSans-Regular.ttf */,
 				0FE96BED1B24F0B700506E60 /* OpenSans-Semibold.ttf */,
 			);
 			path = Fonts;
@@ -278,6 +288,7 @@
 			files = (
 				0FE96BEE1B24F0EB00506E60 /* OpenSans-Semibold.ttf in Resources */,
 				0F74F6FA1B0002C400F963E0 /* LaunchScreen.xib in Resources */,
+				0F2EF82C1B25000600BABC20 /* OpenSans-Regular.ttf in Resources */,
 				0F74F6F71B0002C400F963E0 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -303,6 +314,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/Result.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Argo.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Runes.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SnapKit.framework",
 			);
 			outputPaths = (
 			);
@@ -324,6 +336,7 @@
 				0F691B3E1B1D19DC00FD5AC1 /* Player.swift in Sources */,
 				0FA80BE41B014001000531E3 /* Match.swift in Sources */,
 				0F74F6F01B0002C400F963E0 /* AppDelegate.swift in Sources */,
+				0F2EF8281B24FBF800BABC20 /* MatchCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
