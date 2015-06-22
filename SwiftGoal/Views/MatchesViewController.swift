@@ -34,6 +34,7 @@ class MatchesViewController: UITableViewController {
 
         tableView.allowsSelection = false
         tableView.rowHeight = 60
+        tableView.tableFooterView = UIView() // Prevent empty rows at bottom
 
         tableView.registerClass(MatchCell.self, forCellReuseIdentifier: matchCellIdentifier)
 
