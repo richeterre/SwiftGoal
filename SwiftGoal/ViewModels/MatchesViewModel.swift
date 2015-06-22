@@ -68,6 +68,12 @@ class MatchesViewModel: NSObject {
         return "\(match.homeGoals) : \(match.awayGoals)"
     }
 
+    // MARK: View Models
+
+    func editViewModelForNewMatch() -> EditMatchViewModel {
+        return EditMatchViewModel(store: store)
+    }
+
     // MARK: Internal Helpers
 
     private func matchAtRow(row: Int, inSection section: Int) -> Match {

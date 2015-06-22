@@ -38,6 +38,12 @@ class MatchesViewController: UITableViewController {
 
         tableView.registerClass(MatchCell.self, forCellReuseIdentifier: matchCellIdentifier)
 
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .Add,
+            target: self,
+            action: Selector("addMatchButtonTapped")
+        )
+
         bindViewModel()
     }
 
@@ -68,6 +74,14 @@ class MatchesViewController: UITableViewController {
                 self?.tableView.insertRowsAtIndexPaths(changeset.insertions, withRowAnimation: .Automatic)
                 self?.tableView.endUpdates()
             })
+    }
+
+    // MARK: User Interaction
+
+    func addMatchButtonTapped() {
+        let newMatchViewModel = viewModel.editViewModelForNewMatch()
+        let newMatchViewController = EditMatchViewController(viewModel: newMatchViewModel)
+        self.navigationController?.pushViewController(newMatchViewController, animated: true)
     }
 
     // MARK: - UITableViewDataSource
