@@ -9,7 +9,7 @@
 import Foundation
 import ReactiveCocoa
 
-class MatchesViewModel: NSObject {
+class MatchesViewModel {
 
     // Inputs
     let active = MutableProperty(false)
@@ -27,8 +27,6 @@ class MatchesViewModel: NSObject {
         self.title = "Matches"
         self.store = store
         self.matches = []
-
-        super.init()
 
         active.producer
             |> filter { $0 }
