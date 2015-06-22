@@ -42,11 +42,11 @@ Signals send three different types of events to their subscribers:
    completely valid for a signal to include `nil`.
  * The **error** event indicates that an error occurred before the signal could
    finish. The event may include an `NSError` object that indicates what went
-   wrong. Errors must be handled specially – they are not included in the
+   wrong. Errors must be handled specially – they are not included in the
    stream's values.
  * The **completed** event indicates that the signal finished successfully, and
    that no more values will be added to the stream. Completion must be handled
-   specially – it is not included in the stream of values.
+   specially – it is not included in the stream of values.
 
 The lifetime of a signal consists of any number of `next` events, followed by
 one `error` or `completed` event (but not both).
@@ -179,11 +179,11 @@ a [stream](#streams):
 [Design Guidelines]: DesignGuidelines.md
 [Haskell]: http://www.haskell.org
 [lazy-seq]: http://clojure.github.com/clojure/clojure.core-api.html#clojure.core/lazy-seq
-[List]: https://downloads.haskell.org/~ghc/latest/docs/html/libraries/base-4.7.0.2/Data-List.html
+[List]: https://downloads.haskell.org/~ghc/latest/docs/html/libraries/Data-List.html
 [Memory Management]: MemoryManagement.md
 [monads]: http://en.wikipedia.org/wiki/Monad_(functional_programming)
-[Monoid]: http://downloads.haskell.org/~ghc/latest/docs/html/libraries/base-4.7.0.2/Data-Monoid.html
-[MonadZip]: http://downloads.haskell.org/~ghc/latest/docs/html/libraries/base-4.7.0.2/Control-Monad-Zip.html
+[Monoid]: http://downloads.haskell.org/~ghc/latest/docs/html/libraries/Data-Monoid.html
+[MonadZip]: http://downloads.haskell.org/~ghc/latest/docs/html/libraries/Control-Monad-Zip.html
 [NSButton+RACCommandSupport]: ../../ReactiveCocoa/Objective-C/NSButton+RACCommandSupport.h
 [RACCommand]: ../../ReactiveCocoa/Objective-C/RACCommand.h
 [RACDisposable]: ../../ReactiveCocoa/Objective-C/RACDisposable.h
@@ -199,5 +199,5 @@ a [stream](#streams):
 [RACSubscriber]: ../../ReactiveCocoa/Objective-C/RACSubscriber.h
 [RACTuple]: ../../ReactiveCocoa/Objective-C/RACTuple.h
 [RACUnit]: ../../ReactiveCocoa/Objective-C/RACUnit.h
-[README]: ../../README.md
+[README]: README.md
 [seq]: http://clojure.org/sequences
