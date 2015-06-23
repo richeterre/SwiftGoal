@@ -28,6 +28,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             NSForegroundColorAttributeName: UIColor.whiteColor()
         ]
         UINavigationBar.appearance().translucent = false
+        UIBarButtonItem.appearance().setTitleTextAttributes([
+            NSFontAttributeName: UIFont(name: "OpenSans", size: 17)!
+        ], forState: .Normal)
 
         // Set up initial hierarchy
         let matchesViewModel = MatchesViewModel(store: Store())
