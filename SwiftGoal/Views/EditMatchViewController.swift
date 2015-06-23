@@ -7,10 +7,17 @@
 //
 
 import UIKit
+import SnapKit
 
 class EditMatchViewController: UIViewController {
 
     let viewModel: EditMatchViewModel
+
+    private weak var homeGoalsLabel: UILabel!
+    private weak var goalSeparatorLabel: UILabel!
+    private weak var awayGoalsLabel: UILabel!
+    private weak var homeGoalsStepper: UIStepper!
+    private weak var awayGoalsStepper: UIStepper!
 
     // MARK: Lifecycle
 
@@ -26,9 +33,75 @@ class EditMatchViewController: UIViewController {
 
     // MARK: View Lifecycle
 
+    override func loadView() {
+        let view = UIView()
+
+        view.backgroundColor = UIColor.whiteColor()
+
+        let labelFont = UIFont(name: "OpenSans-Semibold", size: 70)
+
+        let homeGoalsLabel = UILabel()
+        homeGoalsLabel.font = labelFont
+        homeGoalsLabel.text = "1"
+        view.addSubview(homeGoalsLabel)
+        self.homeGoalsLabel = homeGoalsLabel
+
+        let goalSeparatorLabel = UILabel()
+        goalSeparatorLabel.font = labelFont
+        goalSeparatorLabel.text = ":"
+        view.addSubview(goalSeparatorLabel)
+        self.goalSeparatorLabel = goalSeparatorLabel
+
+        let awayGoalsLabel = UILabel()
+        awayGoalsLabel.font = labelFont
+        awayGoalsLabel.text = "7"
+        view.addSubview(awayGoalsLabel)
+        self.awayGoalsLabel = awayGoalsLabel
+
+        let homeGoalsStepper = UIStepper()
+        view.addSubview(homeGoalsStepper)
+        self.homeGoalsStepper = homeGoalsStepper
+
+        let awayGoalsStepper = UIStepper()
+        view.addSubview(awayGoalsStepper)
+        self.awayGoalsStepper = awayGoalsStepper
+
+        self.view = view
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = UIColor.whiteColor()
+        makeConstraints()
+    }
+
+    // MARK: Layout
+
+    func makeConstraints() {
+        let superview = self.view
+
+        homeGoalsLabel.snp_makeConstraints { make in
+            make.trailing.equalTo(goalSeparatorLabel.snp_leading).offset(-20)
+            make.baseline.equalTo(goalSeparatorLabel.snp_baseline)
+        }
+
+        goalSeparatorLabel.snp_makeConstraints { make in
+            make.center.equalTo(superview.snp_center)
+        }
+
+        awayGoalsLabel.snp_makeConstraints { make in
+            make.leading.equalTo(goalSeparatorLabel.snp_trailing).offset(20)
+            make.baseline.equalTo(goalSeparatorLabel.snp_baseline)
+        }
+
+        homeGoalsStepper.snp_makeConstraints { make in
+            make.top.equalTo(goalSeparatorLabel.snp_baseline).offset(20)
+            make.trailing.equalTo(homeGoalsLabel.snp_trailing)
+        }
+
+        awayGoalsStepper.snp_makeConstraints { make in
+            make.top.equalTo(goalSeparatorLabel.snp_baseline).offset(20)
+            make.leading.equalTo(awayGoalsLabel.snp_leading)
+        }
     }
 }
