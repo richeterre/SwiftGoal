@@ -24,8 +24,13 @@ class EditMatchViewController: UIViewController {
 
     init(viewModel: EditMatchViewModel) {
         self.viewModel = viewModel
-
         super.init(nibName: nil, bundle: nil)
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .Cancel,
+            target: self,
+            action: Selector("cancelButtonTapped")
+        )
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -122,5 +127,11 @@ class EditMatchViewController: UIViewController {
             make.top.equalTo(goalSeparatorLabel.snp_baseline).offset(20)
             make.leading.equalTo(awayGoalsLabel.snp_leading)
         }
+    }
+
+    // MARK: User Interaction
+
+    func cancelButtonTapped() {
+        dismissViewControllerAnimated(true, completion: nil)
     }
 }

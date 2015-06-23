@@ -81,7 +81,8 @@ class MatchesViewController: UITableViewController {
     func addMatchButtonTapped() {
         let newMatchViewModel = viewModel.editViewModelForNewMatch()
         let newMatchViewController = EditMatchViewController(viewModel: newMatchViewModel)
-        self.navigationController?.pushViewController(newMatchViewController, animated: true)
+        let newMatchNavigationController = UINavigationController(rootViewController: newMatchViewController)
+        self.presentViewController(newMatchNavigationController, animated: true, completion: nil)
     }
 
     // MARK: - UITableViewDataSource
