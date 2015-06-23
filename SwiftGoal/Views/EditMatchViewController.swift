@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ReactiveCocoa
 import SnapKit
 
 class EditMatchViewController: UIViewController {
@@ -42,7 +43,6 @@ class EditMatchViewController: UIViewController {
 
         let homeGoalsLabel = UILabel()
         homeGoalsLabel.font = labelFont
-        homeGoalsLabel.text = "1"
         view.addSubview(homeGoalsLabel)
         self.homeGoalsLabel = homeGoalsLabel
 
@@ -54,7 +54,6 @@ class EditMatchViewController: UIViewController {
 
         let awayGoalsLabel = UILabel()
         awayGoalsLabel.font = labelFont
-        awayGoalsLabel.text = "7"
         view.addSubview(awayGoalsLabel)
         self.awayGoalsLabel = awayGoalsLabel
 
@@ -72,7 +71,27 @@ class EditMatchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        bindViewModel()
         makeConstraints()
+    }
+
+    // MARK: Bindings
+
+    func bindViewModel() {
+        viewModel.homeGoals <~ homeGoalsStepper.signalProducer()
+        viewModel.awayGoals <~ awayGoalsStepper.signalProducer()
+
+        viewModel.formattedHomeGoals.producer
+            |> startOn(UIScheduler())
+            |> start(next: { [weak self] formattedHomeGoals in
+                self?.homeGoalsLabel.text = formattedHomeGoals
+            })
+
+        viewModel.formattedAwayGoals.producer
+            |> startOn(UIScheduler())
+            |> start(next: { [weak self] formattedAwayGoals in
+                self?.awayGoalsLabel.text = formattedAwayGoals
+            })
     }
 
     // MARK: Layout
