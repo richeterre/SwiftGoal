@@ -19,6 +19,8 @@ class EditMatchViewController: UIViewController {
     private weak var awayGoalsLabel: UILabel!
     private weak var homeGoalsStepper: UIStepper!
     private weak var awayGoalsStepper: UIStepper!
+    private weak var homePlayersButton: UIButton!
+    private weak var awayPlayersButton: UIButton!
 
     private var saveAction: CocoaAction
 
@@ -79,6 +81,14 @@ class EditMatchViewController: UIViewController {
         view.addSubview(awayGoalsStepper)
         self.awayGoalsStepper = awayGoalsStepper
 
+        let homePlayersButton = UIButton.buttonWithType(.System) as! UIButton
+        view.addSubview(homePlayersButton)
+        self.homePlayersButton = homePlayersButton
+
+        let awayPlayersButton = UIButton.buttonWithType(.System) as! UIButton
+        view.addSubview(awayPlayersButton)
+        self.awayPlayersButton = awayPlayersButton
+
         self.view = view
     }
 
@@ -106,6 +116,18 @@ class EditMatchViewController: UIViewController {
             |> start(next: { [weak self] formattedAwayGoals in
                 self?.awayGoalsLabel.text = formattedAwayGoals
             })
+
+        viewModel.homePlayersString.producer
+            |> startOn(UIScheduler())
+            |> start(next: { [weak self] homePlayersString in
+                self?.homePlayersButton.setTitle(homePlayersString, forState: .Normal)
+            })
+
+        viewModel.awayPlayersString.producer
+            |> startOn(UIScheduler())
+            |> start(next: { [weak self] awayPlayersString in
+                self?.awayPlayersButton.setTitle(awayPlayersString, forState: .Normal)
+                })
 
         viewModel.saveAction.values.observe(next: { [weak self] success in
             if success {
@@ -150,6 +172,18 @@ class EditMatchViewController: UIViewController {
         awayGoalsStepper.snp_makeConstraints { make in
             make.top.equalTo(goalSeparatorLabel.snp_baseline).offset(20)
             make.leading.equalTo(awayGoalsLabel.snp_leading)
+        }
+
+        homePlayersButton.snp_makeConstraints { make in
+            make.top.equalTo(homeGoalsStepper.snp_bottom).offset(40)
+            make.leading.greaterThanOrEqualTo(superview.snp_leadingMargin)
+            make.trailing.equalTo(homeGoalsLabel.snp_trailing)
+        }
+
+        awayPlayersButton.snp_makeConstraints { make in
+            make.top.equalTo(awayGoalsStepper.snp_bottom).offset(40)
+            make.leading.equalTo(awayGoalsLabel.snp_leading)
+            make.trailing.lessThanOrEqualTo(superview.snp_trailingMargin)
         }
     }
 

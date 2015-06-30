@@ -18,6 +18,8 @@ class EditMatchViewModel {
     // Outputs
     let formattedHomeGoals = MutableProperty<String>("")
     let formattedAwayGoals = MutableProperty<String>("")
+    let homePlayersString = MutableProperty<String>("Set Players")
+    let awayPlayersString = MutableProperty<String>("Set Players")
 
     // Actions
     lazy var saveAction: Action<Void, Bool, NoError> = { [unowned self] in
