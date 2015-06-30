@@ -12,12 +12,14 @@ import Argo
 
 class Store: NSObject {
 
-    private let baseURL = NSURL(string: "http://localhost:3000/api/v1/matches")!
+    private static let baseURL = NSURL(string: "http://localhost:3000/api/v1/")!
+    private static let matchesURL = NSURL(string: "matches", relativeToURL: baseURL)!
+    private static let playersURL = NSURL(string: "players", relativeToURL: baseURL)!
 
     // MARK: - Matches
 
     func fetchMatches() -> SignalProducer<[Match], NoError> {
-        let request = NSURLRequest(URL: baseURL)
+        let request = NSURLRequest(URL: Store.matchesURL)
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
             |> map { data, response in
                 let json: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(0), error: nil)
@@ -32,7 +34,7 @@ class Store: NSObject {
 
     func createMatch(#homePlayers: Set<Player>, awayPlayers: Set<Player>, homeGoals: Int, awayGoals: Int) -> SignalProducer<Bool, NoError> {
 
-        let request = NSMutableURLRequest(URL: baseURL)
+        let request = NSMutableURLRequest(URL: Store.matchesURL)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.HTTPMethod = "POST"
         request.HTTPBody = httpBodyForParameters([
@@ -53,6 +55,22 @@ class Store: NSObject {
             |> catch { _ in
                 return SignalProducer<Bool, NoError>(value: false)
             }
+    }
+
+    // MARK: Players
+
+    func fetchPlayers() -> SignalProducer<[Player], NoError> {
+        let request = NSURLRequest(URL: Store.playersURL)
+        return NSURLSession.sharedSession().rac_dataWithRequest(request)
+            |> map { data, response in
+                let json: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(0), error: nil)
+                if let j: AnyObject = json, players: [Player] = decode(j) {
+                    return players
+                } else {
+                    return []
+                }
+            }
+            |> catch { _ in SignalProducer<[Player], NoError>.empty }
     }
 
     // MARK: Internal Helpers
