@@ -12,7 +12,7 @@ import SnapKit
 
 class EditMatchViewController: UIViewController {
 
-    let viewModel: EditMatchViewModel
+    private let viewModel: EditMatchViewModel
 
     private weak var homeGoalsLabel: UILabel!
     private weak var goalSeparatorLabel: UILabel!
@@ -111,7 +111,7 @@ class EditMatchViewController: UIViewController {
 
     // MARK: Bindings
 
-    func bindViewModel() {
+    private func bindViewModel() {
         viewModel.homeGoals <~ homeGoalsStepper.signalProducer()
         viewModel.awayGoals <~ awayGoalsStepper.signalProducer()
 
@@ -157,7 +157,7 @@ class EditMatchViewController: UIViewController {
 
     // MARK: Layout
 
-    func makeConstraints() {
+    private func makeConstraints() {
         let superview = self.view
 
         homeGoalsLabel.snp_makeConstraints { make in

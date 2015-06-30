@@ -11,10 +11,9 @@ import ReactiveCocoa
 
 class MatchesViewController: UITableViewController {
 
-    let (isActiveSignal, isActiveSink) = Signal<Bool, NoError>.pipe()
-
-    let matchCellIdentifier = "MatchCell"
-    let viewModel: MatchesViewModel
+    private let matchCellIdentifier = "MatchCell"
+    private let (isActiveSignal, isActiveSink) = Signal<Bool, NoError>.pipe()
+    private let viewModel: MatchesViewModel
 
     // MARK: - Lifecycle
 
@@ -61,7 +60,7 @@ class MatchesViewController: UITableViewController {
 
     // MARK: - Bindings
 
-    func bindViewModel() {
+    private func bindViewModel() {
         viewModel.active <~ isActiveSignal
 
         self.title = viewModel.title
