@@ -31,6 +31,8 @@ class ManagePlayersViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        tableView.tableFooterView = UIView() // Prevent empty rows at bottom
+
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: playerCellIdentifier)
 
         bindViewModel()
