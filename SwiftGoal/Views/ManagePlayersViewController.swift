@@ -22,4 +22,18 @@ class ManagePlayersViewController: UITableViewController {
     required init!(coder aDecoder: NSCoder!) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    // MARK: View Lifecycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        bindViewModel()
+    }
+
+    // MARK: Bindings
+
+    private func bindViewModel() {
+        self.title = viewModel.title
+    }
 }

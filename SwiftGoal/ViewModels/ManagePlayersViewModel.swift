@@ -10,11 +10,15 @@ import Foundation
 
 class ManagePlayersViewModel {
 
+    // Outputs
+    let title: String
+
     private let store: Store
 
     // MARK: Lifecycle
 
     init(store: Store) {
+        self.title = "Players"
         self.store = store
     }
 }
