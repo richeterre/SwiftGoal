@@ -17,40 +17,66 @@ class EditMatchViewModel {
     // Outputs
     let formattedHomeGoals = MutableProperty<String>("")
     let formattedAwayGoals = MutableProperty<String>("")
-    let homePlayersString = MutableProperty<String>("Set Players")
-    let awayPlayersString = MutableProperty<String>("Set Players")
+    let homePlayersString = MutableProperty<String>("")
+    let awayPlayersString = MutableProperty<String>("")
 
     // Actions
     lazy var saveAction: Action<Void, Bool, NoError> = { [unowned self] in
         return Action({ _ in
-            let homePlayers = Set([
-                Player(identifier: "ff26714d-f4a8-4306-a0f8-ca6023a05c20", name: "Martin")
-            ])
-            let awayPlayers = Set(
-                [Player(identifier: "fe858866-2a95-4710-87dc-46e92eacd098", name: "Olli")]
+            return self.store.createMatch(
+                homePlayers: self.homePlayers.value,
+                awayPlayers: self.awayPlayers.value,
+                homeGoals: self.homeGoals.value,
+                awayGoals: self.awayGoals.value
             )
-            return self.store.createMatch(homePlayers: homePlayers, awayPlayers: awayPlayers, homeGoals: self.homeGoals.value, awayGoals: self.awayGoals.value)
         })
     }()
 
     private let store: Store
+    private let homePlayers: MutableProperty<Set<Player>>
+    private let awayPlayers: MutableProperty<Set<Player>>
 
     // MARK: Lifecycle
 
     init(store: Store) {
         self.store = store
+        self.homePlayers = MutableProperty<Set<Player>>(Set<Player>())
+        self.awayPlayers = MutableProperty<Set<Player>>(Set<Player>())
 
         self.formattedHomeGoals <~ homeGoals.producer |> map { goals in return "\(goals)" }
         self.formattedAwayGoals <~ awayGoals.producer |> map { goals in return "\(goals)" }
+
+        self.homePlayersString <~ homePlayers.producer
+            |> map { players in
+                return players.isEmpty ? "Set Home Players" : ", ".join(map(players, { $0.name }))
+            }
+        self.awayPlayersString <~ awayPlayers.producer
+            |> map { players in
+                return players.isEmpty ? "Set Away Players" : ", ".join(map(players, { $0.name }))
+            }
     }
 
     // MARK: View Models
 
     func manageHomePlayersViewModel() -> ManagePlayersViewModel {
-        return ManagePlayersViewModel(store: store)
+        let homePlayersViewModel = ManagePlayersViewModel(
+            store: store,
+            initialPlayers: homePlayers.value,
+            disabledPlayers: awayPlayers.value
+        )
+        self.homePlayers <~ homePlayersViewModel.selectedPlayers
+
+        return homePlayersViewModel
     }
 
     func manageAwayPlayersViewModel() -> ManagePlayersViewModel {
-        return ManagePlayersViewModel(store: store)
+        let awayPlayersViewModel = ManagePlayersViewModel(
+            store: store,
+            initialPlayers: awayPlayers.value,
+            disabledPlayers: homePlayers.value
+        )
+        self.awayPlayers <~ awayPlayersViewModel.selectedPlayers
+
+        return awayPlayersViewModel
     }
 }

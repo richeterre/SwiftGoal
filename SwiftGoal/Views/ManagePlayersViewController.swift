@@ -79,8 +79,33 @@ class ManagePlayersViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(playerCellIdentifier, forIndexPath: indexPath) as! UITableViewCell
 
-        cell.textLabel?.text = viewModel.playerAtRow(indexPath.row, inSection: indexPath.section)
+        let (row, section) = (indexPath.row, indexPath.section)
+
+        cell.textLabel?.enabled = viewModel.canSelectPlayerAtRow(row, inSection: section)
+        cell.textLabel?.text = viewModel.playerNameAtRow(row, inSection: section)
+        cell.accessoryType = viewModel.isPlayerSelectedAtRow(row, inSection: section) ? .Checkmark : .None
 
         return cell
+    }
+
+    // MARK: UITableViewDelegate
+
+    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        return viewModel.canSelectPlayerAtRow(indexPath.row, inSection: indexPath.section) ? indexPath : nil
+    }
+
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+
+        let (row, section) = (indexPath.row, indexPath.section)
+        let cell = tableView.cellForRowAtIndexPath(indexPath)
+
+        if viewModel.isPlayerSelectedAtRow(row, inSection: section) {
+            viewModel.deselectPlayerAtRow(row, inSection: section)
+            cell?.accessoryType = .None
+        } else {
+            viewModel.selectPlayerAtRow(row, inSection: section)
+            cell?.accessoryType = .Checkmark
+        }
     }
 }
