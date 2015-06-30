@@ -34,3 +34,11 @@ extension Player: Decodable {
             <*> json <| "name"
     }
 }
+
+// MARK: Hashable
+
+extension Player: Hashable {
+    var hashValue: Int {
+        return identifier.hashValue
+    }
+}
