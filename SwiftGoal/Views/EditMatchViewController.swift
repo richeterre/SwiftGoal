@@ -20,16 +20,25 @@ class EditMatchViewController: UIViewController {
     private weak var homeGoalsStepper: UIStepper!
     private weak var awayGoalsStepper: UIStepper!
 
+    private var saveAction: CocoaAction
+
     // MARK: Lifecycle
 
     init(viewModel: EditMatchViewModel) {
         self.viewModel = viewModel
+        self.saveAction = CocoaAction(viewModel.saveAction, { _ in return () })
         super.init(nibName: nil, bundle: nil)
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .Cancel,
             target: self,
             action: Selector("cancelButtonTapped")
+        )
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .Save,
+            target: self.saveAction,
+            action: CocoaAction.selector
         )
     }
 
