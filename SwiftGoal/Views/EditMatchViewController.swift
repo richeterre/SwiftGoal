@@ -82,10 +82,18 @@ class EditMatchViewController: UIViewController {
         self.awayGoalsStepper = awayGoalsStepper
 
         let homePlayersButton = UIButton.buttonWithType(.System) as! UIButton
+        homePlayersButton.addTarget(self,
+            action: Selector("homePlayersButtonTapped"),
+            forControlEvents: .TouchUpInside
+        )
         view.addSubview(homePlayersButton)
         self.homePlayersButton = homePlayersButton
 
         let awayPlayersButton = UIButton.buttonWithType(.System) as! UIButton
+        awayPlayersButton.addTarget(self,
+            action: Selector("awayPlayersButtonTapped"),
+            forControlEvents: .TouchUpInside
+        )
         view.addSubview(awayPlayersButton)
         self.awayPlayersButton = awayPlayersButton
 
@@ -191,5 +199,17 @@ class EditMatchViewController: UIViewController {
 
     func cancelButtonTapped() {
         dismissViewControllerAnimated(true, completion: nil)
+    }
+
+    func homePlayersButtonTapped() {
+        let homePlayersViewModel = viewModel.manageHomePlayersViewModel()
+        let homePlayersViewController = ManagePlayersViewController(viewModel: homePlayersViewModel)
+        self.navigationController?.pushViewController(homePlayersViewController, animated: true)
+    }
+
+    func awayPlayersButtonTapped() {
+        let awayPlayersViewModel = viewModel.manageAwayPlayersViewModel()
+        let awayPlayersViewController = ManagePlayersViewController(viewModel: awayPlayersViewModel)
+        self.navigationController?.pushViewController(awayPlayersViewController, animated: true)
     }
 }

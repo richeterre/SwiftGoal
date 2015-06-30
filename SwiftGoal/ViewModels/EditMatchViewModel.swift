@@ -44,4 +44,14 @@ class EditMatchViewModel {
         self.formattedHomeGoals <~ homeGoals.producer |> map { goals in return "\(goals)" }
         self.formattedAwayGoals <~ awayGoals.producer |> map { goals in return "\(goals)" }
     }
+
+    // MARK: View Models
+
+    func manageHomePlayersViewModel() -> ManagePlayersViewModel {
+        return ManagePlayersViewModel(store: store)
+    }
+
+    func manageAwayPlayersViewModel() -> ManagePlayersViewModel {
+        return ManagePlayersViewModel(store: store)
+    }
 }

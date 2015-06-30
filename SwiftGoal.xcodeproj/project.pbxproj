@@ -28,6 +28,8 @@
 		0FE96BEA1B24D77700506E60 /* Argo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FE96BE81B24D77700506E60 /* Argo.framework */; };
 		0FE96BEB1B24D77700506E60 /* Runes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FE96BE91B24D77700506E60 /* Runes.framework */; };
 		0FE96BEE1B24F0EB00506E60 /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0FE96BED1B24F0B700506E60 /* OpenSans-Semibold.ttf */; };
+		0FF57F341B431E17001DD570 /* ManagePlayersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF57F331B431E17001DD570 /* ManagePlayersViewController.swift */; };
+		0FF57F361B431E41001DD570 /* ManagePlayersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF57F351B431E41001DD570 /* ManagePlayersViewModel.swift */; };
 		0FF7B8B81B3A0CB300808433 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF7B8B71B3A0CB300808433 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
@@ -67,6 +69,8 @@
 		0FE96BE81B24D77700506E60 /* Argo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Argo.framework; path = Carthage/Build/iOS/Argo.framework; sourceTree = "<group>"; };
 		0FE96BE91B24D77700506E60 /* Runes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Runes.framework; path = Carthage/Build/iOS/Runes.framework; sourceTree = "<group>"; };
 		0FE96BED1B24F0B700506E60 /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
+		0FF57F331B431E17001DD570 /* ManagePlayersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagePlayersViewController.swift; sourceTree = "<group>"; };
+		0FF57F351B431E41001DD570 /* ManagePlayersViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagePlayersViewModel.swift; sourceTree = "<group>"; };
 		0FF7B8B71B3A0CB300808433 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -161,6 +165,7 @@
 				0F2EF8271B24FBF800BABC20 /* MatchCell.swift */,
 				0F74F7111B00053D00F963E0 /* MatchesViewController.swift */,
 				0FE4EB741B3876C2007F9349 /* EditMatchViewController.swift */,
+				0FF57F331B431E17001DD570 /* ManagePlayersViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -170,6 +175,7 @@
 			children = (
 				0F74F7131B00058D00F963E0 /* MatchesViewModel.swift */,
 				0FE4EB721B38760B007F9349 /* EditMatchViewModel.swift */,
+				0FF57F351B431E41001DD570 /* ManagePlayersViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -346,6 +352,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0FF57F361B431E41001DD570 /* ManagePlayersViewModel.swift in Sources */,
+				0FF57F341B431E17001DD570 /* ManagePlayersViewController.swift in Sources */,
 				0FE4EB751B3876C2007F9349 /* EditMatchViewController.swift in Sources */,
 				0F74F7141B00058D00F963E0 /* MatchesViewModel.swift in Sources */,
 				0F74F7171B0009B300F963E0 /* Store.swift in Sources */,
