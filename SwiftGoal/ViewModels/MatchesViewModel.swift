@@ -30,7 +30,7 @@ class MatchesViewModel {
         active.producer
             |> filter { $0 }
             |> flatMap(.Latest) { active in return store.fetchMatches() }
-            |> combinePrevious([]) // Preserve history of previous match array to calculate changeset
+            |> combinePrevious([]) // Preserve history to calculate changeset
             |> start(next: { [weak self] (oldMatches, newMatches) in
                 self?.matches = newMatches
                 if let sink = self?.contentChangesSink {

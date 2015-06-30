@@ -61,12 +61,11 @@ class MatchesViewController: UITableViewController {
     // MARK: - Bindings
 
     private func bindViewModel() {
-        viewModel.active <~ isActiveSignal
-
         self.title = viewModel.title
 
+        viewModel.active <~ isActiveSignal
         viewModel.contentChangesSignal
-            |> observeOn(QueueScheduler.mainQueueScheduler)
+            |> observeOn(UIScheduler())
             |> observe(next: { [weak self] changeset in
                 self?.tableView.beginUpdates()
                 self?.tableView.deleteRowsAtIndexPaths(changeset.deletions, withRowAnimation: .Left)
