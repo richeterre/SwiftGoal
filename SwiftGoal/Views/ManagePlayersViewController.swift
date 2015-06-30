@@ -31,9 +31,10 @@ class ManagePlayersViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        tableView.rowHeight = 60
         tableView.tableFooterView = UIView() // Prevent empty rows at bottom
 
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: playerCellIdentifier)
+        tableView.registerClass(PlayerCell.self, forCellReuseIdentifier: playerCellIdentifier)
 
         bindViewModel()
     }
@@ -77,12 +78,12 @@ class ManagePlayersViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(playerCellIdentifier, forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(playerCellIdentifier, forIndexPath: indexPath) as! PlayerCell
 
         let (row, section) = (indexPath.row, indexPath.section)
 
-        cell.textLabel?.enabled = viewModel.canSelectPlayerAtRow(row, inSection: section)
-        cell.textLabel?.text = viewModel.playerNameAtRow(row, inSection: section)
+        cell.nameLabel.enabled = viewModel.canSelectPlayerAtRow(row, inSection: section)
+        cell.nameLabel.text = viewModel.playerNameAtRow(row, inSection: section)
         cell.accessoryType = viewModel.isPlayerSelectedAtRow(row, inSection: section) ? .Checkmark : .None
 
         return cell

@@ -45,7 +45,7 @@ class MatchCell: UITableViewCell {
 
     // MARK: Layout
 
-    func makeConstraints() {
+    private func makeConstraints() {
         let superview = self.contentView
 
         homePlayersLabel.snp_makeConstraints { make in
