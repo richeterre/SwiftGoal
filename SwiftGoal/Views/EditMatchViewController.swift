@@ -82,6 +82,7 @@ class EditMatchViewController: UIViewController {
         self.awayGoalsStepper = awayGoalsStepper
 
         let homePlayersButton = UIButton.buttonWithType(.System) as! UIButton
+        homePlayersButton.titleLabel?.font = UIFont(name: "OpenSans", size: 17)
         homePlayersButton.addTarget(self,
             action: Selector("homePlayersButtonTapped"),
             forControlEvents: .TouchUpInside
@@ -90,6 +91,7 @@ class EditMatchViewController: UIViewController {
         self.homePlayersButton = homePlayersButton
 
         let awayPlayersButton = UIButton.buttonWithType(.System) as! UIButton
+        awayPlayersButton.titleLabel?.font = UIFont(name: "OpenSans", size: 17)
         awayPlayersButton.addTarget(self,
             action: Selector("awayPlayersButtonTapped"),
             forControlEvents: .TouchUpInside
@@ -164,7 +166,8 @@ class EditMatchViewController: UIViewController {
         }
 
         goalSeparatorLabel.snp_makeConstraints { make in
-            make.center.equalTo(superview.snp_center)
+            make.centerX.equalTo(superview.snp_centerX)
+            make.centerY.equalTo(superview.snp_centerY).offset(-50)
         }
 
         awayGoalsLabel.snp_makeConstraints { make in
