@@ -106,6 +106,21 @@ class EditMatchViewController: UIViewController {
             |> start(next: { [weak self] formattedAwayGoals in
                 self?.awayGoalsLabel.text = formattedAwayGoals
             })
+
+        viewModel.saveAction.values.observe(next: { [weak self] success in
+            if success {
+                self?.dismissViewControllerAnimated(true, completion: nil)
+            } else {
+                let alertController = UIAlertController(
+                    title: "Uh oh",
+                    message: "The match could not be saved.",
+                    preferredStyle: .Alert
+                )
+                let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
+                alertController.addAction(cancelAction)
+                self?.presentViewController(alertController, animated: true, completion: nil)
+            }
+        })
     }
 
     // MARK: Layout
