@@ -29,4 +29,35 @@ class Store: NSObject {
             }
             |> catch { _ in SignalProducer<[Match], NoError>.empty }
     }
+
+    func createMatch(#homePlayers: Set<Player>, awayPlayers: Set<Player>, homeGoals: Int, awayGoals: Int) -> SignalProducer<Bool, NoError> {
+
+        let request = NSMutableURLRequest(URL: baseURL)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.HTTPMethod = "POST"
+        request.HTTPBody = httpBodyForParameters([
+            "home_player_ids": Array(homePlayers).map { $0.identifier },
+            "away_player_ids": Array(awayPlayers).map { $0.identifier },
+            "home_goals": homeGoals,
+            "away_goals": awayGoals
+        ])
+
+        return NSURLSession.sharedSession().rac_dataWithRequest(request)
+            |> map { data, response in
+                if let httpResponse = response as? NSHTTPURLResponse {
+                    return httpResponse.statusCode == 201
+                } else {
+                    return false
+                }
+            }
+            |> catch { _ in
+                return SignalProducer<Bool, NoError>(value: false)
+            }
+    }
+
+    // MARK: Internal Helpers
+
+    private func httpBodyForParameters(parameters: [String: AnyObject]) -> NSData? {
+        return NSJSONSerialization.dataWithJSONObject(parameters, options: nil, error: nil)
+    }
 }
