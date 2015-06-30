@@ -15,6 +15,7 @@ class EditMatchViewModel {
     let awayGoals = MutableProperty<Int>(0)
 
     // Outputs
+    let title: String
     let formattedHomeGoals = MutableProperty<String>("")
     let formattedAwayGoals = MutableProperty<String>("")
     let homePlayersString = MutableProperty<String>("")
@@ -40,6 +41,7 @@ class EditMatchViewModel {
     // MARK: Lifecycle
 
     init(store: Store) {
+        self.title = "New Match"
         self.store = store
         self.homePlayers = MutableProperty<Set<Player>>(Set<Player>())
         self.awayPlayers = MutableProperty<Set<Player>>(Set<Player>())

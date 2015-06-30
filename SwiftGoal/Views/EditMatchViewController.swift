@@ -115,6 +115,8 @@ class EditMatchViewController: UIViewController {
     // MARK: Bindings
 
     private func bindViewModel() {
+        self.title = viewModel.title
+
         viewModel.homeGoals <~ homeGoalsStepper.signalProducer()
         viewModel.awayGoals <~ awayGoalsStepper.signalProducer()
 
