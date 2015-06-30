@@ -23,25 +23,28 @@ class EditMatchViewController: UIViewController {
     private weak var awayPlayersButton: UIButton!
 
     private var saveAction: CocoaAction
+    private let saveButtonItem: UIBarButtonItem
 
     // MARK: Lifecycle
 
     init(viewModel: EditMatchViewModel) {
         self.viewModel = viewModel
         self.saveAction = CocoaAction(viewModel.saveAction, { _ in return () })
+        self.saveButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .Save,
+            target: self.saveAction,
+            action: CocoaAction.selector
+        )
+
         super.init(nibName: nil, bundle: nil)
 
+        // Set up navigation item
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .Cancel,
             target: self,
             action: Selector("cancelButtonTapped")
         )
-
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .Save,
-            target: self.saveAction,
-            action: CocoaAction.selector
-        )
+        navigationItem.rightBarButtonItem = self.saveButtonItem
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -137,7 +140,13 @@ class EditMatchViewController: UIViewController {
             |> startOn(UIScheduler())
             |> start(next: { [weak self] awayPlayersString in
                 self?.awayPlayersButton.setTitle(awayPlayersString, forState: .Normal)
-                })
+            })
+
+        viewModel.inputIsValid.producer
+            |> startOn(UIScheduler())
+            |> start(next: { [weak self] inputIsValid in
+                self?.saveButtonItem.enabled = inputIsValid
+            })
 
         viewModel.saveAction.values.observe(next: { [weak self] success in
             if success {

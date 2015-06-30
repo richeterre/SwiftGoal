@@ -19,10 +19,11 @@ class EditMatchViewModel {
     let formattedAwayGoals = MutableProperty<String>("")
     let homePlayersString = MutableProperty<String>("")
     let awayPlayersString = MutableProperty<String>("")
+    let inputIsValid = MutableProperty<Bool>(false)
 
     // Actions
     lazy var saveAction: Action<Void, Bool, NoError> = { [unowned self] in
-        return Action({ _ in
+        return Action(enabledIf: self.inputIsValid, { _ in
             return self.store.createMatch(
                 homePlayers: self.homePlayers.value,
                 awayPlayers: self.awayPlayers.value,
@@ -53,6 +54,10 @@ class EditMatchViewModel {
         self.awayPlayersString <~ awayPlayers.producer
             |> map { players in
                 return players.isEmpty ? "Set Away Players" : ", ".join(map(players, { $0.name }))
+            }
+        self.inputIsValid <~ combineLatest(homePlayers.producer, awayPlayers.producer)
+            |> map { (homePlayers, awayPlayers) in
+                return !homePlayers.isEmpty && !awayPlayers.isEmpty
             }
     }
 
