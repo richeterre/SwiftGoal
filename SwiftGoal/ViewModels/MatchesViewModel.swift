@@ -17,6 +17,14 @@ class MatchesViewModel {
     let title: String
     let (contentChangesSignal, contentChangesSink) = Signal<Changeset, NoError>.pipe()
 
+    // Actions
+    lazy var deleteAction: Action<NSIndexPath, Bool, NoError> = { [unowned self] in
+        return Action({ indexPath in
+            let match = self.matchAtRow(indexPath.row, inSection: indexPath.section)
+            return self.store.deleteMatch(match)
+        })
+    }()
+
     private let store: Store
     private var matches: [Match]
 
@@ -27,8 +35,19 @@ class MatchesViewModel {
         self.store = store
         self.matches = []
 
+        let (refreshSignal, refreshSink) = SignalProducer<Void, NoError>.buffer()
+
         active.producer
             |> filter { $0 }
+            |> map { _ in () }
+            |> start(refreshSink)
+
+        deleteAction.values
+            |> filter { $0 }
+            |> map { _ in () }
+            |> observe(refreshSink)
+
+        refreshSignal
             |> flatMap(.Latest) { active in return store.fetchMatches() }
             |> combinePrevious([]) // Preserve history to calculate changeset
             |> start(next: { [weak self] (oldMatches, newMatches) in

@@ -37,6 +37,8 @@ class MatchesViewController: UITableViewController {
 
         tableView.registerClass(MatchCell.self, forCellReuseIdentifier: matchCellIdentifier)
 
+        self.navigationItem.leftBarButtonItem = self.editButtonItem()
+
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .Add,
             target: self,
@@ -101,5 +103,11 @@ class MatchesViewController: UITableViewController {
         cell.awayPlayersLabel.text = viewModel.awayPlayersAtRow(indexPath.row, inSection: indexPath.section)
 
         return cell
+    }
+
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+            viewModel.deleteAction.apply(indexPath).start()
+        }
     }
 }
