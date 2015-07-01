@@ -57,6 +57,23 @@ class Store: NSObject {
             }
     }
 
+    func deleteMatch(match: Match) -> SignalProducer<Bool, NoError> {
+        let request = NSMutableURLRequest(URL: Store.matchesURL.URLByAppendingPathComponent(match.identifier))
+        request.HTTPMethod = "DELETE"
+
+        return NSURLSession.sharedSession().rac_dataWithRequest(request)
+            |> map { data, response in
+                if let httpResponse = response as? NSHTTPURLResponse {
+                    return httpResponse.statusCode == 200
+                } else {
+                    return false
+                }
+            }
+            |> catch { _ in
+                return SignalProducer<Bool, NoError>(value: false)
+            }
+    }
+
     // MARK: Players
 
     func fetchPlayers() -> SignalProducer<[Player], NoError> {
