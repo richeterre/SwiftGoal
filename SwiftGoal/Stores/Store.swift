@@ -10,6 +10,13 @@ import Foundation
 import ReactiveCocoa
 import Argo
 
+struct MatchParameters {
+    let homePlayers: Set<Player>
+    let awayPlayers: Set<Player>
+    let homeGoals: Int
+    let awayGoals: Int
+}
+
 class Store: NSObject {
 
     private static let baseURL = NSURL(string: "http://localhost:3000/api/v1/")!
@@ -32,17 +39,12 @@ class Store: NSObject {
             |> catch { _ in SignalProducer<[Match], NoError>.empty }
     }
 
-    func createMatch(#homePlayers: Set<Player>, awayPlayers: Set<Player>, homeGoals: Int, awayGoals: Int) -> SignalProducer<Bool, NoError> {
+    func createMatch(parameters: MatchParameters) -> SignalProducer<Bool, NoError> {
 
         let request = NSMutableURLRequest(URL: Store.matchesURL)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.HTTPMethod = "POST"
-        request.HTTPBody = httpBodyForParameters([
-            "home_player_ids": Array(homePlayers).map { $0.identifier },
-            "away_player_ids": Array(awayPlayers).map { $0.identifier },
-            "home_goals": homeGoals,
-            "away_goals": awayGoals
-        ])
+        request.HTTPBody = httpBodyForMatchParameters(parameters)
 
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
             |> map { data, response in
@@ -57,8 +59,27 @@ class Store: NSObject {
             }
     }
 
+    func updateMatch(match: Match, parameters: MatchParameters) -> SignalProducer<Bool, NoError> {
+
+        let request = NSMutableURLRequest(URL: urlForMatch(match))
+        request.HTTPMethod = "PUT"
+        request.HTTPBody = httpBodyForMatchParameters(parameters)
+
+        return NSURLSession.sharedSession().rac_dataWithRequest(request)
+            |> map { data, response in
+                if let httpResponse = response as? NSHTTPURLResponse {
+                    return httpResponse.statusCode == 200
+                } else {
+                    return false
+                }
+            }
+            |> catch { _ in
+                return SignalProducer<Bool, NoError>(value: false)
+            }
+    }
+
     func deleteMatch(match: Match) -> SignalProducer<Bool, NoError> {
-        let request = NSMutableURLRequest(URL: Store.matchesURL.URLByAppendingPathComponent(match.identifier))
+        let request = NSMutableURLRequest(URL: urlForMatch(match))
         request.HTTPMethod = "DELETE"
 
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
@@ -92,7 +113,18 @@ class Store: NSObject {
 
     // MARK: Internal Helpers
 
-    private func httpBodyForParameters(parameters: [String: AnyObject]) -> NSData? {
-        return NSJSONSerialization.dataWithJSONObject(parameters, options: nil, error: nil)
+    private func httpBodyForMatchParameters(parameters: MatchParameters) -> NSData? {
+        let jsonObject = [
+            "home_player_ids": Array(parameters.homePlayers).map { $0.identifier },
+            "away_player_ids": Array(parameters.awayPlayers).map { $0.identifier },
+            "home_goals": parameters.homeGoals,
+            "away_goals": parameters.awayGoals
+        ]
+
+        return NSJSONSerialization.dataWithJSONObject(jsonObject, options: nil, error: nil)
+    }
+
+    private func urlForMatch(match: Match) -> NSURL {
+        return Store.matchesURL.URLByAppendingPathComponent(match.identifier)
     }
 }

@@ -25,12 +25,12 @@ class EditMatchViewModel {
     // Actions
     lazy var saveAction: Action<Void, Bool, NoError> = { [unowned self] in
         return Action(enabledIf: self.inputIsValid, { _ in
-            return self.store.createMatch(
+            return self.store.createMatch(MatchParameters(
                 homePlayers: self.homePlayers.value,
                 awayPlayers: self.awayPlayers.value,
                 homeGoals: self.homeGoals.value,
                 awayGoals: self.awayGoals.value
-            )
+            ))
         })
     }()
 
