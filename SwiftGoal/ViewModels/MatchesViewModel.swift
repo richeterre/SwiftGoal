@@ -90,6 +90,11 @@ class MatchesViewModel {
         return EditMatchViewModel(store: store)
     }
 
+    func editViewModelForMatchAtRow(row: Int, inSection section: Int) -> EditMatchViewModel {
+        let match = matchAtRow(row, inSection: section)
+        return EditMatchViewModel(store: store, match: match)
+    }
+
     // MARK: Internal Helpers
 
     private func matchAtRow(row: Int, inSection section: Int) -> Match {

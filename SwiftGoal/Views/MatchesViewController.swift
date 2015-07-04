@@ -32,6 +32,7 @@ class MatchesViewController: UITableViewController {
         super.viewDidLoad()
 
         tableView.allowsSelection = false
+        tableView.allowsSelectionDuringEditing = true
         tableView.rowHeight = 60
         tableView.tableFooterView = UIView() // Prevent empty rows at bottom
 
@@ -109,5 +110,16 @@ class MatchesViewController: UITableViewController {
         if editingStyle == .Delete {
             viewModel.deleteAction.apply(indexPath).start()
         }
+    }
+
+    // MARK: UITableViewDelegate
+
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+
+        let editMatchViewModel = viewModel.editViewModelForMatchAtRow(indexPath.row, inSection: indexPath.section)
+        let editMatchViewController = EditMatchViewController(viewModel: editMatchViewModel)
+        let editMatchNavigationController = UINavigationController(rootViewController: editMatchViewController)
+        self.presentViewController(editMatchNavigationController, animated: true, completion: nil)
     }
 }

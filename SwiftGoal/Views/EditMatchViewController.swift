@@ -117,6 +117,10 @@ class EditMatchViewController: UIViewController {
     private func bindViewModel() {
         self.title = viewModel.title
 
+        // Initial values
+        homeGoalsStepper.value = Double(viewModel.homeGoals.value)
+        awayGoalsStepper.value = Double(viewModel.awayGoals.value)
+
         viewModel.homeGoals <~ homeGoalsStepper.signalProducer()
         viewModel.awayGoals <~ awayGoalsStepper.signalProducer()
 
