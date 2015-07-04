@@ -17,6 +17,13 @@ struct MatchParameters {
     let awayGoals: Int
 }
 
+enum RequestMethod {
+    case GET
+    case POST
+    case PUT
+    case DELETE
+}
+
 class Store: NSObject {
 
     private static let baseURL = NSURL(string: "http://localhost:3000/api/v1/")!
@@ -26,7 +33,7 @@ class Store: NSObject {
     // MARK: - Matches
 
     func fetchMatches() -> SignalProducer<[Match], NoError> {
-        let request = NSURLRequest(URL: Store.matchesURL)
+        let request = mutableRequestWithURL(Store.matchesURL, method: .GET)
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
             |> map { data, response in
                 let json: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(0), error: nil)
@@ -41,9 +48,7 @@ class Store: NSObject {
 
     func createMatch(parameters: MatchParameters) -> SignalProducer<Bool, NoError> {
 
-        let request = NSMutableURLRequest(URL: Store.matchesURL)
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.HTTPMethod = "POST"
+        let request = mutableRequestWithURL(Store.matchesURL, method: .POST)
         request.HTTPBody = httpBodyForMatchParameters(parameters)
 
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
@@ -61,8 +66,7 @@ class Store: NSObject {
 
     func updateMatch(match: Match, parameters: MatchParameters) -> SignalProducer<Bool, NoError> {
 
-        let request = NSMutableURLRequest(URL: urlForMatch(match))
-        request.HTTPMethod = "PUT"
+        let request = mutableRequestWithURL(urlForMatch(match), method: .PUT)
         request.HTTPBody = httpBodyForMatchParameters(parameters)
 
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
@@ -79,8 +83,7 @@ class Store: NSObject {
     }
 
     func deleteMatch(match: Match) -> SignalProducer<Bool, NoError> {
-        let request = NSMutableURLRequest(URL: urlForMatch(match))
-        request.HTTPMethod = "DELETE"
+        let request = mutableRequestWithURL(urlForMatch(match), method: .DELETE)
 
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
             |> map { data, response in
@@ -126,5 +129,24 @@ class Store: NSObject {
 
     private func urlForMatch(match: Match) -> NSURL {
         return Store.matchesURL.URLByAppendingPathComponent(match.identifier)
+    }
+
+    private func mutableRequestWithURL(url: NSURL, method: RequestMethod) -> NSMutableURLRequest {
+        let request = NSMutableURLRequest(URL: url)
+
+        switch method {
+            case .GET:
+                request.HTTPMethod = "GET"
+            case .POST:
+                request.HTTPMethod = "POST"
+                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            case .PUT:
+                request.HTTPMethod = "PUT"
+                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            case .DELETE:
+                request.HTTPMethod = "DELETE"
+        }
+
+        return request
     }
 }
