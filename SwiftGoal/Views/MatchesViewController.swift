@@ -36,6 +36,9 @@ class MatchesViewController: UITableViewController {
         tableView.rowHeight = 60
         tableView.tableFooterView = UIView() // Prevent empty rows at bottom
 
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl?.addTarget(self, action: Selector("refreshControlTriggered"), forControlEvents: .ValueChanged)
+
         tableView.registerClass(MatchCell.self, forCellReuseIdentifier: matchCellIdentifier)
 
         self.navigationItem.leftBarButtonItem = self.editButtonItem()
@@ -74,6 +77,8 @@ class MatchesViewController: UITableViewController {
                 self?.tableView.deleteRowsAtIndexPaths(changeset.deletions, withRowAnimation: .Left)
                 self?.tableView.insertRowsAtIndexPaths(changeset.insertions, withRowAnimation: .Automatic)
                 self?.tableView.endUpdates()
+
+                self?.refreshControl?.endRefreshing()
             })
     }
 
@@ -84,6 +89,10 @@ class MatchesViewController: UITableViewController {
         let newMatchViewController = EditMatchViewController(viewModel: newMatchViewModel)
         let newMatchNavigationController = UINavigationController(rootViewController: newMatchViewController)
         self.presentViewController(newMatchNavigationController, animated: true, completion: nil)
+    }
+
+    func refreshControlTriggered() {
+        sendNext(viewModel.refreshSink, ())
     }
 
     // MARK: - UITableViewDataSource

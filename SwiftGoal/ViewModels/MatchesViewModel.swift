@@ -12,6 +12,7 @@ class MatchesViewModel {
 
     // Inputs
     let active = MutableProperty(false)
+    let refreshSink: SinkOf<Event<Void, NoError>>
 
     // Outputs
     let title: String
@@ -36,6 +37,7 @@ class MatchesViewModel {
         self.matches = []
 
         let (refreshSignal, refreshSink) = SignalProducer<Void, NoError>.buffer()
+        self.refreshSink = refreshSink
 
         active.producer
             |> filter { $0 }
@@ -56,7 +58,7 @@ class MatchesViewModel {
                     let changeset = Changeset(oldItems: oldMatches, newItems: newMatches)
                     sendNext(sink, changeset)
                 }
-        })
+            })
     }
 
     // MARK: - Data Source
