@@ -12,11 +12,20 @@ class ManagePlayersViewModel {
 
     // Inputs
     let active = MutableProperty(false)
+    let playerName = MutableProperty("")
 
     // Outputs
     let title: String
     let (contentChangesSignal, contentChangesSink) = Signal<Changeset, NoError>.pipe()
     let selectedPlayers: MutableProperty<Set<Player>>
+    let inputIsValid = MutableProperty(false)
+
+    // Actions
+    lazy var saveAction: Action<Void, Bool, NoError> = { [unowned self] in
+        return Action(enabledIf: self.inputIsValid, { _ in
+            return self.store.createPlayer(name: self.playerName.value)
+        })
+    }()
 
     private let store: Store
     private let disabledPlayers: Set<Player>
@@ -32,8 +41,21 @@ class ManagePlayersViewModel {
         self.selectedPlayers = MutableProperty(initialPlayers)
         self.disabledPlayers = disabledPlayers
 
+        inputIsValid <~ playerName.producer |> map { count($0) > 0 }
+
+        let (refreshSignal, refreshSink) = SignalProducer<Void, NoError>.buffer()
+
         active.producer
             |> filter { $0 }
+            |> map { _ in () }
+            |> start(refreshSink)
+
+        saveAction.values
+            |> filter { $0 }
+            |> map { _ in () }
+            |> observe(refreshSink)
+
+        refreshSignal
             |> flatMap(.Latest, { _ in return store.fetchPlayers() })
             |> combinePrevious([]) // Preserve history to calculate changeset
             |> start(next: { [weak self] (oldPlayers, newPlayers) in

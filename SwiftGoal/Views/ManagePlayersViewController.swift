@@ -134,14 +134,26 @@ class ManagePlayersViewController: UITableViewController {
 
         // Add user actions
         newPlayerViewController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-        let saveAction = UIAlertAction(title: "Save", style: .Default, handler: { action in
-            println(action)
+        let saveAction = UIAlertAction(title: "Save", style: .Default, handler: { [weak self] _ in
+            self?.viewModel.saveAction.apply().start()
         })
         newPlayerViewController.addAction(saveAction)
 
-        // Add fields
+        // Allow saving only with valid input
+        viewModel.inputIsValid.producer.start(next: { isValid in
+            saveAction.enabled = isValid
+        })
+
+        // Add user input fields
         newPlayerViewController.addTextFieldWithConfigurationHandler { textField in
             textField.placeholder = "Player name"
+        }
+
+        // Forward text input to view model
+        if let nameField = newPlayerViewController.textFields?.first as? UITextField {
+            viewModel.playerName <~ nameField.rac_textSignal().toSignalProducer()
+                |> map { $0 as! String }
+                |> catch { _ in SignalProducer<String, NoError>.empty }
         }
 
         return newPlayerViewController
