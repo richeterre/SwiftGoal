@@ -36,6 +36,12 @@ class ManagePlayersViewController: UITableViewController {
 
         tableView.registerClass(PlayerCell.self, forCellReuseIdentifier: playerCellIdentifier)
 
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .Add,
+            target: self,
+            action: Selector("addPlayerButtonTapped")
+        )
+
         bindViewModel()
     }
 
@@ -65,6 +71,12 @@ class ManagePlayersViewController: UITableViewController {
                 self?.tableView.insertRowsAtIndexPaths(changeset.insertions, withRowAnimation: .Automatic)
                 self?.tableView.endUpdates()
             })
+    }
+
+    // MARK: User Interaction
+
+    func addPlayerButtonTapped() {
+        println("Player button tapped")
     }
 
     // MARK: UITableViewDataSource
