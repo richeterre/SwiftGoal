@@ -36,6 +36,12 @@ class ManagePlayersViewController: UITableViewController {
 
         tableView.registerClass(PlayerCell.self, forCellReuseIdentifier: playerCellIdentifier)
 
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl?.addTarget(self,
+            action: Selector("refreshControlTriggered"),
+            forControlEvents: .ValueChanged
+        )
+
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .Add,
             target: self,
@@ -70,6 +76,8 @@ class ManagePlayersViewController: UITableViewController {
                 self?.tableView.deleteRowsAtIndexPaths(changeset.deletions, withRowAnimation: .Left)
                 self?.tableView.insertRowsAtIndexPaths(changeset.insertions, withRowAnimation: .Automatic)
                 self?.tableView.endUpdates()
+
+                self?.refreshControl?.endRefreshing()
             })
     }
 
@@ -78,6 +86,10 @@ class ManagePlayersViewController: UITableViewController {
     func addPlayerButtonTapped() {
         let newPlayerViewController = self.newPlayerViewController()
         presentViewController(newPlayerViewController, animated: true, completion: nil)
+    }
+
+    func refreshControlTriggered() {
+        sendNext(viewModel.refreshSink, ())
     }
 
     // MARK: UITableViewDataSource

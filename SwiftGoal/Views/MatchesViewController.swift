@@ -37,7 +37,10 @@ class MatchesViewController: UITableViewController {
         tableView.tableFooterView = UIView() // Prevent empty rows at bottom
 
         self.refreshControl = UIRefreshControl()
-        self.refreshControl?.addTarget(self, action: Selector("refreshControlTriggered"), forControlEvents: .ValueChanged)
+        self.refreshControl?.addTarget(self,
+            action: Selector("refreshControlTriggered"),
+            forControlEvents: .ValueChanged
+        )
 
         tableView.registerClass(MatchCell.self, forCellReuseIdentifier: matchCellIdentifier)
 

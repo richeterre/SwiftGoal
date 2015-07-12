@@ -13,6 +13,7 @@ class ManagePlayersViewModel {
     // Inputs
     let active = MutableProperty(false)
     let playerName = MutableProperty("")
+    let refreshSink: SinkOf<Event<Void, NoError>>
 
     // Outputs
     let title: String
@@ -41,9 +42,8 @@ class ManagePlayersViewModel {
         self.selectedPlayers = MutableProperty(initialPlayers)
         self.disabledPlayers = disabledPlayers
 
-        inputIsValid <~ playerName.producer |> map { count($0) > 0 }
-
         let (refreshSignal, refreshSink) = SignalProducer<Void, NoError>.buffer()
+        self.refreshSink = refreshSink
 
         active.producer
             |> filter { $0 }
@@ -65,6 +65,8 @@ class ManagePlayersViewModel {
                     sendNext(sink, changeset)
                 }
             })
+
+        inputIsValid <~ playerName.producer |> map { count($0) > 0 }
     }
 
     // MARK: Data Source
