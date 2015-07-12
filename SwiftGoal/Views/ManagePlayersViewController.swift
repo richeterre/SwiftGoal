@@ -76,7 +76,8 @@ class ManagePlayersViewController: UITableViewController {
     // MARK: User Interaction
 
     func addPlayerButtonTapped() {
-        println("Player button tapped")
+        let newPlayerViewController = self.newPlayerViewController()
+        presentViewController(newPlayerViewController, animated: true, completion: nil)
     }
 
     // MARK: UITableViewDataSource
@@ -120,5 +121,29 @@ class ManagePlayersViewController: UITableViewController {
             viewModel.selectPlayerAtRow(row, inSection: section)
             cell?.accessoryType = .Checkmark
         }
+    }
+
+    // MARK: Private Helpers
+
+    private func newPlayerViewController() -> UIViewController {
+        let newPlayerViewController = UIAlertController(
+            title: "New Player",
+            message: nil,
+            preferredStyle: .Alert
+        )
+
+        // Add user actions
+        newPlayerViewController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        let saveAction = UIAlertAction(title: "Save", style: .Default, handler: { action in
+            println(action)
+        })
+        newPlayerViewController.addAction(saveAction)
+
+        // Add fields
+        newPlayerViewController.addTextFieldWithConfigurationHandler { textField in
+            textField.placeholder = "Player name"
+        }
+
+        return newPlayerViewController
     }
 }
