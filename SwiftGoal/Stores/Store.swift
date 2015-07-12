@@ -114,6 +114,23 @@ class Store: NSObject {
             |> catch { _ in SignalProducer<[Player], NoError>.empty }
     }
 
+    func createPlayer(#name: String) -> SignalProducer<Bool, NoError> {
+        let request = mutableRequestWithURL(Store.playersURL, method: .POST)
+        request.HTTPBody = httpBodyForPlayerName(name)
+
+        return NSURLSession.sharedSession().rac_dataWithRequest(request)
+            |> map { data, response in
+                if let httpResponse = response as? NSHTTPURLResponse {
+                    return httpResponse.statusCode == 201
+                } else {
+                    return false
+                }
+            }
+            |> catch { _ in
+                return SignalProducer<Bool, NoError>(value: false)
+            }
+    }
+
     // MARK: Internal Helpers
 
     private func httpBodyForMatchParameters(parameters: MatchParameters) -> NSData? {
@@ -122,6 +139,14 @@ class Store: NSObject {
             "away_player_ids": Array(parameters.awayPlayers).map { $0.identifier },
             "home_goals": parameters.homeGoals,
             "away_goals": parameters.awayGoals
+        ]
+
+        return NSJSONSerialization.dataWithJSONObject(jsonObject, options: nil, error: nil)
+    }
+
+    private func httpBodyForPlayerName(name: String) -> NSData? {
+        let jsonObject = [
+            "name": name
         ]
 
         return NSJSONSerialization.dataWithJSONObject(jsonObject, options: nil, error: nil)
