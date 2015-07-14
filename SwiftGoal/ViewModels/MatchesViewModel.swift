@@ -16,7 +16,8 @@ class MatchesViewModel {
 
     // Outputs
     let title: String
-    let (contentChangesSignal, contentChangesSink) = Signal<Changeset, NoError>.pipe()
+    let contentChangesSignal: Signal<Changeset, NoError>
+    let isLoadingSignal: Signal<Bool, NoError>
 
     // Actions
     lazy var deleteAction: Action<NSIndexPath, Bool, NoError> = { [unowned self] in
@@ -27,6 +28,8 @@ class MatchesViewModel {
     }()
 
     private let store: Store
+    private let contentChangesSink: SinkOf<Event<Changeset, NoError>>
+    private let isLoadingSink: SinkOf<Event<Bool, NoError>>
     private var matches: [Match]
 
     // MARK: - Lifecycle
@@ -39,6 +42,14 @@ class MatchesViewModel {
         let (refreshSignal, refreshSink) = SignalProducer<Void, NoError>.buffer()
         self.refreshSink = refreshSink
 
+        let (contentChangesSignal, contentChangesSink) = Signal<Changeset, NoError>.pipe()
+        self.contentChangesSignal = contentChangesSignal
+        self.contentChangesSink = contentChangesSink
+
+        let (isLoadingSignal, isLoadingSink) = Signal<Bool, NoError>.pipe()
+        self.isLoadingSignal = isLoadingSignal
+        self.isLoadingSink = isLoadingSink
+
         active.producer
             |> filter { $0 }
             |> map { _ in () }
@@ -50,7 +61,9 @@ class MatchesViewModel {
             |> observe(refreshSink)
 
         refreshSignal
+            |> on(next: { _ in sendNext(isLoadingSink, true) })
             |> flatMap(.Latest) { active in return store.fetchMatches() }
+            |> on(next: { _ in sendNext(isLoadingSink, false) })
             |> combinePrevious([]) // Preserve history to calculate changeset
             |> start(next: { [weak self] (oldMatches, newMatches) in
                 self?.matches = newMatches

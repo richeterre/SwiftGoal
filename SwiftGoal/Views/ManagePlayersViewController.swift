@@ -76,8 +76,13 @@ class ManagePlayersViewController: UITableViewController {
                 self?.tableView.deleteRowsAtIndexPaths(changeset.deletions, withRowAnimation: .Left)
                 self?.tableView.insertRowsAtIndexPaths(changeset.insertions, withRowAnimation: .Automatic)
                 self?.tableView.endUpdates()
-
-                self?.refreshControl?.endRefreshing()
+            })
+        viewModel.isLoadingSignal
+            |> observeOn(UIScheduler())
+            |> observe(next: { [weak self] isLoading in
+                if !isLoading {
+                    self?.refreshControl?.endRefreshing()
+                }
             })
     }
 
