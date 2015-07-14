@@ -19,6 +19,7 @@ If you want to provide your own backend, simply change the base URL path in `Sto
 ## Todo
 
 * Handle network errors
+* Allow deletion of players (and their dependent matches)
 * Cancel network requests when the view model that started them becomes inactive
 * Write tests for VMs, models and Store
 * Deduplicate `isActiveSignal` code on VCs, probably using Swift 2's protocol extensions?
