@@ -75,7 +75,7 @@ class Store: NSObject {
             }
     }
 
-    func deleteMatch(match: Match) -> SignalProducer<Bool, NoError> {
+    func deleteMatch(match: Match) -> SignalProducer<Bool, NSError> {
         let request = mutableRequestWithURL(urlForMatch(match), method: .DELETE)
 
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
@@ -85,9 +85,6 @@ class Store: NSObject {
                 } else {
                     return false
                 }
-            }
-            |> catch { _ in
-                return SignalProducer<Bool, NoError>(value: false)
             }
     }
 

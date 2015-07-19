@@ -21,7 +21,7 @@ class MatchesViewModel {
     let alertMessageSignal: Signal<String, NoError>
 
     // Actions
-    lazy var deleteAction: Action<NSIndexPath, Bool, NoError> = { [unowned self] in
+    lazy var deleteAction: Action<NSIndexPath, Bool, NSError> = { [unowned self] in
         return Action({ indexPath in
             let match = self.matchAtIndexPath(indexPath)
             return self.store.deleteMatch(match)
@@ -86,6 +86,11 @@ class MatchesViewModel {
                     sendNext(sink, changeset)
                 }
             })
+
+        // Feed deletion errors into alert message signal
+        deleteAction.errors
+            |> map { $0.localizedDescription }
+            |> observe(alertMessageSink)
     }
 
     // MARK: - Data Source
