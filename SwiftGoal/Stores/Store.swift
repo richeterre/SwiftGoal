@@ -90,7 +90,7 @@ class Store: NSObject {
 
     // MARK: Players
 
-    func fetchPlayers() -> SignalProducer<[Player], NoError> {
+    func fetchPlayers() -> SignalProducer<[Player], NSError> {
         let request = NSURLRequest(URL: Store.playersURL)
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
             |> map { data, response in
@@ -101,7 +101,6 @@ class Store: NSObject {
                     return []
                 }
             }
-            |> catch { _ in SignalProducer<[Player], NoError>.empty }
     }
 
     func createPlayer(#name: String) -> SignalProducer<Bool, NoError> {

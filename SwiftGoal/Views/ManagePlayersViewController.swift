@@ -84,6 +84,17 @@ class ManagePlayersViewController: UITableViewController {
                     self?.refreshControl?.endRefreshing()
                 }
             })
+        viewModel.alertMessageSignal
+            |> observeOn(UIScheduler())
+            |> observe(next: { [weak self] alertMessage in
+                let alertController = UIAlertController(
+                    title: "Oops!",
+                    message: alertMessage,
+                    preferredStyle: .Alert
+                )
+                alertController.addAction(UIAlertAction(title: "OK", style: .Cancel, handler: nil))
+                self?.presentViewController(alertController, animated: true, completion: nil)
+            })
     }
 
     // MARK: User Interaction

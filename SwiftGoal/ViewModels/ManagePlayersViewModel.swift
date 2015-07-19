@@ -19,6 +19,7 @@ class ManagePlayersViewModel {
     let title: String
     let contentChangesSignal: Signal<Changeset, NoError>
     let isLoadingSignal: Signal<Bool, NoError>
+    let alertMessageSignal: Signal<String, NoError>
     let selectedPlayers: MutableProperty<Set<Player>>
     let inputIsValid = MutableProperty(false)
 
@@ -32,6 +33,7 @@ class ManagePlayersViewModel {
     private let store: Store
     private let contentChangesSink: SinkOf<Event<Changeset, NoError>>
     private let isLoadingSink: SinkOf<Event<Bool, NoError>>
+    private let alertMessageSink: SinkOf<Event<String, NoError>>
     private let disabledPlayers: Set<Player>
 
     private var players: [Player]
@@ -56,6 +58,10 @@ class ManagePlayersViewModel {
         self.isLoadingSignal = isLoadingSignal
         self.isLoadingSink = isLoadingSink
 
+        let (alertMessageSignal, alertMessageSink) = Signal<String, NoError>.pipe()
+        self.alertMessageSignal = alertMessageSignal
+        self.alertMessageSink = alertMessageSink
+
         active.producer
             |> filter { $0 }
             |> map { _ in () }
@@ -68,7 +74,13 @@ class ManagePlayersViewModel {
 
         refreshSignal
             |> on(next: { _ in sendNext(isLoadingSink, true) })
-            |> flatMap(.Latest, { _ in return store.fetchPlayers() })
+            |> flatMap(.Latest, { _ in
+                return store.fetchPlayers()
+                    |> catch { error in
+                        sendNext(alertMessageSink, error.localizedDescription)
+                        return SignalProducer(value: [])
+                    }
+            })
             |> on(next: { _ in sendNext(isLoadingSink, false) })
             |> combinePrevious([]) // Preserve history to calculate changeset
             |> start(next: { [weak self] (oldPlayers, newPlayers) in
