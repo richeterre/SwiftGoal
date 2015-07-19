@@ -23,7 +23,7 @@ class EditMatchViewModel {
     let inputIsValid = MutableProperty<Bool>(false)
 
     // Actions
-    lazy var saveAction: Action<Void, Bool, NoError> = { [unowned self] in
+    lazy var saveAction: Action<Void, Bool, NSError> = { [unowned self] in
         return Action(enabledIf: self.inputIsValid, { _ in
             let parameters = MatchParameters(
                 homePlayers: self.homePlayers.value,

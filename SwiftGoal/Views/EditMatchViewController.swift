@@ -154,18 +154,20 @@ class EditMatchViewController: UIViewController {
                 self?.saveButtonItem.enabled = inputIsValid
             })
 
-        viewModel.saveAction.values.observe(next: { [weak self] success in
-            if success {
-                self?.dismissViewControllerAnimated(true, completion: nil)
-            } else {
-                let alertController = UIAlertController(
-                    title: "Uh oh",
-                    message: "The match could not be saved.",
-                    preferredStyle: .Alert
-                )
-                let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
-                alertController.addAction(cancelAction)
-                self?.presentViewController(alertController, animated: true, completion: nil)
+        viewModel.saveAction.events.observe(next: { [weak self] event in
+            switch event {
+            case let .Next(data):
+                let success = data.value
+                if success {
+                    self?.dismissViewControllerAnimated(true, completion: nil)
+                } else {
+                    self?.presentErrorMessage("The match could not be saved.")
+                }
+            case let .Error(data):
+                let error = data.value
+                self?.presentErrorMessage(error.localizedDescription)
+            default:
+                return
             }
         })
     }
@@ -229,5 +231,19 @@ class EditMatchViewController: UIViewController {
         let awayPlayersViewModel = viewModel.manageAwayPlayersViewModel()
         let awayPlayersViewController = ManagePlayersViewController(viewModel: awayPlayersViewModel)
         self.navigationController?.pushViewController(awayPlayersViewController, animated: true)
+    }
+
+    // MARK: Private Helpers
+
+    func presentErrorMessage(message: String) {
+        let alertController = UIAlertController(
+            title: "Oops!",
+            message: message,
+            preferredStyle: .Alert
+        )
+        let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
+        alertController.addAction(cancelAction)
+
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
 }

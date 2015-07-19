@@ -45,7 +45,7 @@ class Store: NSObject {
             }
     }
 
-    func createMatch(parameters: MatchParameters) -> SignalProducer<Bool, NoError> {
+    func createMatch(parameters: MatchParameters) -> SignalProducer<Bool, NSError> {
 
         let request = mutableRequestWithURL(Store.matchesURL, method: .POST)
         request.HTTPBody = httpBodyForMatchParameters(parameters)
@@ -58,12 +58,9 @@ class Store: NSObject {
                     return false
                 }
             }
-            |> catch { _ in
-                return SignalProducer<Bool, NoError>(value: false)
-            }
     }
 
-    func updateMatch(match: Match, parameters: MatchParameters) -> SignalProducer<Bool, NoError> {
+    func updateMatch(match: Match, parameters: MatchParameters) -> SignalProducer<Bool, NSError> {
 
         let request = mutableRequestWithURL(urlForMatch(match), method: .PUT)
         request.HTTPBody = httpBodyForMatchParameters(parameters)
@@ -75,9 +72,6 @@ class Store: NSObject {
                 } else {
                     return false
                 }
-            }
-            |> catch { _ in
-                return SignalProducer<Bool, NoError>(value: false)
             }
     }
 
