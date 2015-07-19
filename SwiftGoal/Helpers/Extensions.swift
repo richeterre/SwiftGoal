@@ -16,3 +16,11 @@ extension UIStepper {
             |> catch { _ in return SignalProducer<Int, NoError>.empty }
     }
 }
+
+extension UITextField {
+    func signalProducer() -> SignalProducer<String, NoError> {
+        return self.rac_textSignal().toSignalProducer()
+            |> map { $0 as! String }
+            |> catch { _ in return SignalProducer<String, NoError>.empty }
+    }
+}

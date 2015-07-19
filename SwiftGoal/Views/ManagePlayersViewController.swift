@@ -168,9 +168,7 @@ class ManagePlayersViewController: UITableViewController {
 
         // Forward text input to view model
         if let nameField = newPlayerViewController.textFields?.first as? UITextField {
-            viewModel.playerName <~ nameField.rac_textSignal().toSignalProducer()
-                |> map { $0 as! String }
-                |> catch { _ in SignalProducer<String, NoError>.empty }
+            viewModel.playerName <~ nameField.signalProducer()
         }
 
         return newPlayerViewController
