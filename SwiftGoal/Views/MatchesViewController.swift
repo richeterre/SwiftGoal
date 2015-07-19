@@ -116,9 +116,9 @@ class MatchesViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(matchCellIdentifier, forIndexPath: indexPath) as! MatchCell
 
-        cell.homePlayersLabel.text = viewModel.homePlayersAtRow(indexPath.row, inSection: indexPath.section)
-        cell.resultLabel.text = viewModel.resultAtRow(indexPath.row, inSection: indexPath.section)
-        cell.awayPlayersLabel.text = viewModel.awayPlayersAtRow(indexPath.row, inSection: indexPath.section)
+        cell.homePlayersLabel.text = viewModel.homePlayersAtIndexPath(indexPath)
+        cell.resultLabel.text = viewModel.resultAtIndexPath(indexPath)
+        cell.awayPlayersLabel.text = viewModel.awayPlayersAtIndexPath(indexPath)
 
         return cell
     }
@@ -134,7 +134,7 @@ class MatchesViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
 
-        let editMatchViewModel = viewModel.editViewModelForMatchAtRow(indexPath.row, inSection: indexPath.section)
+        let editMatchViewModel = viewModel.editViewModelForMatchAtIndexPath(indexPath)
         let editMatchViewController = EditMatchViewController(viewModel: editMatchViewModel)
         let editMatchNavigationController = UINavigationController(rootViewController: editMatchViewController)
         self.presentViewController(editMatchNavigationController, animated: true, completion: nil)

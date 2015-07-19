@@ -92,35 +92,35 @@ class ManagePlayersViewModel {
         return count(players)
     }
 
-    func playerNameAtRow(row: Int, inSection section: Int) -> String {
-        return playerAtRow(row, inSection: section).name
+    func playerNameAtIndexPath(indexPath: NSIndexPath) -> String {
+        return playerAtIndexPath(indexPath).name
     }
 
-    func isPlayerSelectedAtRow(row: Int, inSection section: Int) -> Bool {
-        let player = playerAtRow(row, inSection: section)
+    func isPlayerSelectedAtIndexPath(indexPath: NSIndexPath) -> Bool {
+        let player = playerAtIndexPath(indexPath)
         return selectedPlayers.value.contains(player)
     }
 
-    func canSelectPlayerAtRow(row: Int, inSection section: Int) -> Bool {
-        let player = playerAtRow(row, inSection: section)
+    func canSelectPlayerAtIndexPath(indexPath: NSIndexPath) -> Bool {
+        let player = playerAtIndexPath(indexPath)
         return !disabledPlayers.contains(player)
     }
 
     // MARK: Player Selection
 
-    func selectPlayerAtRow(row: Int, inSection section: Int) {
-        let player = playerAtRow(row, inSection: section)
+    func selectPlayerAtIndexPath(indexPath: NSIndexPath) {
+        let player = playerAtIndexPath(indexPath)
         selectedPlayers.value.insert(player)
     }
 
-    func deselectPlayerAtRow(row: Int, inSection section: Int) {
-        let player = playerAtRow(row, inSection: section)
+    func deselectPlayerAtIndexPath(indexPath: NSIndexPath) {
+        let player = playerAtIndexPath(indexPath)
         selectedPlayers.value.remove(player)
     }
 
     // MARK: Internal Helpers
 
-    private func playerAtRow(row: Int, inSection section: Int) -> Player {
-        return players[row]
+    private func playerAtIndexPath(indexPath: NSIndexPath) -> Player {
+        return players[indexPath.row]
     }
 }

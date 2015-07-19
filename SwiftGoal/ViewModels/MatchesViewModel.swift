@@ -22,7 +22,7 @@ class MatchesViewModel {
     // Actions
     lazy var deleteAction: Action<NSIndexPath, Bool, NoError> = { [unowned self] in
         return Action({ indexPath in
-            let match = self.matchAtRow(indexPath.row, inSection: indexPath.section)
+            let match = self.matchAtIndexPath(indexPath)
             return self.store.deleteMatch(match)
         })
     }()
@@ -84,18 +84,18 @@ class MatchesViewModel {
         return count(matches)
     }
 
-    func homePlayersAtRow(row: Int, inSection section: Int) -> String {
-        let match = matchAtRow(row, inSection: section)
+    func homePlayersAtIndexPath(indexPath: NSIndexPath) -> String {
+        let match = matchAtIndexPath(indexPath)
         return separatedNamesForPlayers(match.homePlayers)
     }
 
-    func awayPlayersAtRow(row: Int, inSection section: Int) -> String {
-        let match = matchAtRow(row, inSection: section)
+    func awayPlayersAtIndexPath(indexPath: NSIndexPath) -> String {
+        let match = matchAtIndexPath(indexPath)
         return separatedNamesForPlayers(match.awayPlayers)
     }
 
-    func resultAtRow(row: Int, inSection section: Int) -> String {
-        let match = matchAtRow(row, inSection: section)
+    func resultAtIndexPath(indexPath: NSIndexPath) -> String {
+        let match = matchAtIndexPath(indexPath)
         return "\(match.homeGoals) : \(match.awayGoals)"
     }
 
@@ -105,15 +105,15 @@ class MatchesViewModel {
         return EditMatchViewModel(store: store)
     }
 
-    func editViewModelForMatchAtRow(row: Int, inSection section: Int) -> EditMatchViewModel {
-        let match = matchAtRow(row, inSection: section)
+    func editViewModelForMatchAtIndexPath(indexPath: NSIndexPath) -> EditMatchViewModel {
+        let match = matchAtIndexPath(indexPath)
         return EditMatchViewModel(store: store, match: match)
     }
 
     // MARK: Internal Helpers
 
-    private func matchAtRow(row: Int, inSection section: Int) -> Match {
-        return matches[row]
+    private func matchAtIndexPath(indexPath: NSIndexPath) -> Match {
+        return matches[indexPath.row]
     }
 
     private func separatedNamesForPlayers(players: [Player]) -> String {

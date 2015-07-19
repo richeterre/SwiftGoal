@@ -112,9 +112,9 @@ class ManagePlayersViewController: UITableViewController {
 
         let (row, section) = (indexPath.row, indexPath.section)
 
-        cell.nameLabel.enabled = viewModel.canSelectPlayerAtRow(row, inSection: section)
-        cell.nameLabel.text = viewModel.playerNameAtRow(row, inSection: section)
-        cell.accessoryType = viewModel.isPlayerSelectedAtRow(row, inSection: section) ? .Checkmark : .None
+        cell.nameLabel.enabled = viewModel.canSelectPlayerAtIndexPath(indexPath)
+        cell.nameLabel.text = viewModel.playerNameAtIndexPath(indexPath)
+        cell.accessoryType = viewModel.isPlayerSelectedAtIndexPath(indexPath) ? .Checkmark : .None
 
         return cell
     }
@@ -122,7 +122,7 @@ class ManagePlayersViewController: UITableViewController {
     // MARK: UITableViewDelegate
 
     override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        return viewModel.canSelectPlayerAtRow(indexPath.row, inSection: indexPath.section) ? indexPath : nil
+        return viewModel.canSelectPlayerAtIndexPath(indexPath) ? indexPath : nil
     }
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -131,11 +131,11 @@ class ManagePlayersViewController: UITableViewController {
         let (row, section) = (indexPath.row, indexPath.section)
         let cell = tableView.cellForRowAtIndexPath(indexPath)
 
-        if viewModel.isPlayerSelectedAtRow(row, inSection: section) {
-            viewModel.deselectPlayerAtRow(row, inSection: section)
+        if viewModel.isPlayerSelectedAtIndexPath(indexPath) {
+            viewModel.deselectPlayerAtIndexPath(indexPath)
             cell?.accessoryType = .None
         } else {
-            viewModel.selectPlayerAtRow(row, inSection: section)
+            viewModel.selectPlayerAtIndexPath(indexPath)
             cell?.accessoryType = .Checkmark
         }
     }
