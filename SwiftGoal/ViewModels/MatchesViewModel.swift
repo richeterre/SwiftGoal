@@ -56,11 +56,13 @@ class MatchesViewModel {
         self.alertMessageSignal = alertMessageSignal
         self.alertMessageSink = alertMessageSink
 
+        // Trigger refresh when view becomes active
         active.producer
             |> filter { $0 }
             |> map { _ in () }
             |> start(refreshSink)
 
+        // Trigger refresh after deleting a match
         deleteAction.values
             |> filter { $0 }
             |> map { _ in () }
@@ -72,6 +74,7 @@ class MatchesViewModel {
                 return store.fetchMatches()
                     |> catch({ [weak self] error in
                         if let sink = self?.alertMessageSink {
+                            // Expose error messages to user
                             sendNext(alertMessageSink, error.localizedDescription)
                         }
                         return SignalProducer<[Match], NoError>(value: [])
