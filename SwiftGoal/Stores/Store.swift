@@ -32,7 +32,7 @@ class Store: NSObject {
 
     // MARK: - Matches
 
-    func fetchMatches() -> SignalProducer<[Match], NoError> {
+    func fetchMatches() -> SignalProducer<[Match], NSError> {
         let request = mutableRequestWithURL(Store.matchesURL, method: .GET)
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
             |> map { data, response in
@@ -43,7 +43,6 @@ class Store: NSObject {
                     return []
                 }
             }
-            |> catch { _ in SignalProducer<[Match], NoError>.empty }
     }
 
     func createMatch(parameters: MatchParameters) -> SignalProducer<Bool, NoError> {
