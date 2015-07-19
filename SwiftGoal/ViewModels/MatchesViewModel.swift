@@ -72,13 +72,10 @@ class MatchesViewModel {
             |> on(next: { _ in sendNext(isLoadingSink, true) })
             |> flatMap(.Latest) { _ in
                 return store.fetchMatches()
-                    |> catch({ [weak self] error in
-                        if let sink = self?.alertMessageSink {
-                            // Expose error messages to user
-                            sendNext(alertMessageSink, error.localizedDescription)
-                        }
-                        return SignalProducer<[Match], NoError>(value: [])
-                    })
+                    |> catch { error in
+                        sendNext(alertMessageSink, error.localizedDescription)
+                        return SignalProducer(value: [])
+                    }
             }
             |> on(next: { _ in sendNext(isLoadingSink, false) })
             |> combinePrevious([]) // Preserve history to calculate changeset
