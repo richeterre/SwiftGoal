@@ -24,7 +24,7 @@ class ManagePlayersViewModel {
     let inputIsValid = MutableProperty(false)
 
     // Actions
-    lazy var saveAction: Action<Void, Bool, NoError> = { [unowned self] in
+    lazy var saveAction: Action<Void, Bool, NSError> = { [unowned self] in
         return Action(enabledIf: self.inputIsValid, { _ in
             return self.store.createPlayer(name: self.playerName.value)
         })
@@ -90,6 +90,9 @@ class ManagePlayersViewModel {
                     sendNext(sink, changeset)
                 }
             })
+
+        // Feed saving errors into alert message signal
+        saveAction.errors |> map { $0.localizedDescription } |> observe(alertMessageSink)
 
         inputIsValid <~ playerName.producer |> map { count($0) > 0 }
     }

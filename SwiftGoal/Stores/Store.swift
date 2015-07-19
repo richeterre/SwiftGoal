@@ -103,7 +103,7 @@ class Store: NSObject {
             }
     }
 
-    func createPlayer(#name: String) -> SignalProducer<Bool, NoError> {
+    func createPlayer(#name: String) -> SignalProducer<Bool, NSError> {
         let request = mutableRequestWithURL(Store.playersURL, method: .POST)
         request.HTTPBody = httpBodyForPlayerName(name)
 
@@ -114,9 +114,6 @@ class Store: NSObject {
                 } else {
                     return false
                 }
-            }
-            |> catch { _ in
-                return SignalProducer<Bool, NoError>(value: false)
             }
     }
 
