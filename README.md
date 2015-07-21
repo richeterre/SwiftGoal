@@ -4,8 +4,9 @@ This project was inspired on a theoretical level by Justin Spahr-Summers' talk E
 
 [fifa-wikipedia]: https://en.wikipedia.org/wiki/FIFA_(video_game_series)
 
-As the Swift language and the ecosystem around it matured, porting the original [ObjectiveGoal][objective-goal] project became a natural next step, as Swift's type safety makes it a perfect fit for functional reactive programming.
+As the Swift language and the ecosystem around it [matured][reactive-cocoa-releases], porting the original [ObjectiveGoal][objective-goal] project became a natural next step, as Swift's type safety makes it a perfect fit for functional reactive programming.
 
+[reactive-cocoa-releases]: https://github.com/ReactiveCocoa/ReactiveCocoa/releases
 [objective-goal]: https://github.com/richeterre/ObjectiveGoal
 
 ## Setup
