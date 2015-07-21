@@ -17,13 +17,44 @@ The application uses Goalbase as a backend to store, process and retrieve inform
 
 If you want to provide your own backend, simply change the base URL path in `Store.swift`.
 
-## Todo
+## User Features
 
-* [ ] Allow deletion of players (and their dependent matches)
-* [ ] Cancel network requests when the view model that started them becomes inactive
+* [x] Create players
+* [x] Create matches with home/away players and score
+* [x] View list of matches
+* [x] Edit existing match information
+* [x] Delete matches
+* [x] Pull-to-refresh any list in the app
+* [x] See animated list changes
+* [x] Enjoy custom fonts and colors
+* [x] Get alerts about network and server errors
+* [ ] View player rankings
+* [ ] See date and time of each match
+* [ ] See matches grouped by date range (e.g. last week, last month, earlier)
+* [ ] View more player statistics (e.g. won/drawn/lost count, nemesis player, …)
+* [ ] Delete players alongside their dependent matches
+
+## Code Checklist
+
+* [x] Validate player name before creating
+* [x] Validate match player counts before creating
+* [ ] Cancel network requests when the associated view becomes inactive
+* [ ] Retry network requests 1 or 2 times before giving up
+* [ ] Improve algorithm that determines list changes
+    * [ ] Detect match data changes
+    * [ ] Add support for sections
 * [ ] Write tests for view models, models, helpers and store
-* [ ] Deduplicate `isActiveSignal` code on VCs, probably using Swift 2's protocol extensions?
-* [ ] Create Watch app for quick match entry
+* [ ] Deduplicate `isActiveSignal` code on view controllers (via a protocol extension?)
+* [ ] Create watchOS 2 app for quick match entry
+* [ ] Drop Auto Layout [library][snapkit] in favor of `UIStackView` and `NSLayoutAnchor`
+
+[snapkit]: https://github.com/SnapKit/SnapKit
+
+## Open Issues
+
+* What does match identity mean? Is `first.identifier == second.identifier` enough?
+    * Pro: Allows detection of match data changes via separate function, e.g. to animate list
+    * Con: Breaks the concept of value-type identity, if two match structs differ only in data
 
 ## Acknowledgements
 
