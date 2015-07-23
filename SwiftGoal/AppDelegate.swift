@@ -40,10 +40,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let matchesViewModel = MatchesViewModel(store: store)
         let matchesViewController = MatchesViewController(viewModel: matchesViewModel)
         let matchesNavigationController = UINavigationController(rootViewController: matchesViewController)
+        matchesNavigationController.tabBarItem = UITabBarItem(
+            title: matchesViewModel.title,
+            image: nil,
+            tag: NSNotFound
+        )
 
         let rankingsViewModel = RankingsViewModel(store: store)
         let rankingsViewController = RankingsViewController(viewModel: rankingsViewModel)
         let rankingsNavigationController = UINavigationController(rootViewController: rankingsViewController)
+        rankingsNavigationController.tabBarItem = UITabBarItem(
+            title: rankingsViewModel.title,
+            image: nil,
+            tag: NSNotFound
+        )
 
         let tabBarController = UITabBarController()
         tabBarController.viewControllers = [matchesNavigationController, rankingsNavigationController]
