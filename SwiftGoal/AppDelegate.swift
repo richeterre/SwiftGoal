@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
 
         // Customize appearance
+
         application.statusBarStyle = .LightContent
         let tintColor = UIColor(red:0.99, green:0.54, blue:0.19, alpha:1)
         window?.tintColor = tintColor
@@ -33,9 +34,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ], forState: .Normal)
 
         // Set up initial hierarchy
-        let matchesViewModel = MatchesViewModel(store: Store())
+
+        let store = Store()
+
+        let matchesViewModel = MatchesViewModel(store: store)
         let matchesViewController = MatchesViewController(viewModel: matchesViewModel)
-        window?.rootViewController = UINavigationController(rootViewController: matchesViewController)
+        let matchesNavigationController = UINavigationController(rootViewController: matchesViewController)
+
+        let rankingsViewModel = RankingsViewModel(store: store)
+        let rankingsViewController = RankingsViewController(viewModel: rankingsViewModel)
+        let rankingsNavigationController = UINavigationController(rootViewController: rankingsViewController)
+
+        let tabBarController = UITabBarController()
+        tabBarController.viewControllers = [matchesNavigationController, rankingsNavigationController]
+
+        window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()
 
         return true
