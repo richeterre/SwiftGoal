@@ -8,11 +8,15 @@
 
 class RankingsViewModel {
 
+    // Outputs
+    let title: String
+
     private let store: Store
 
     // MARK: Lifecycle
 
     init(store: Store) {
         self.store = store
+        title = "Rankings"
     }
 }
