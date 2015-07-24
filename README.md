@@ -1,8 +1,11 @@
 # SwiftGoal
 
-This project was inspired on a theoretical level by Justin Spahr-Summers' talk Enemy of the State, and on a more practical one by Ash Furrow's C-41 app. It showcases the Model-View-ViewModel (MVVM) architecture while serving as a digital logbook of [FIFA matches][fifa-wikipedia].
+This project showcases the Model-View-ViewModel (MVVM) architecture with [ReactiveCocoa 3][reactive-cocoa], while serving as a digital logbook of [FIFA matches][fifa-wikipedia]. It was inspired on a theoretical level by Justin Spahr-Summers' talk [Enemy of the State][enemy-of-the-state], and on a more practical one by Ash Furrow's [C-41][c-41] app.
 
+[reactive-cocoa]: https://github.com/ReactiveCocoa/ReactiveCocoa
 [fifa-wikipedia]: https://en.wikipedia.org/wiki/FIFA_(video_game_series)
+[enemy-of-the-state]: https://github.com/jspahrsummers/enemy-of-the-state
+[c-41]: https://github.com/ashfurrow/C-41
 
 As the Swift language and the ecosystem around it [matured][reactive-cocoa-releases], porting the original [ObjectiveGoal][objective-goal] project became a natural next step, as Swift's type safety makes it a perfect fit for functional reactive programming.
 
@@ -11,8 +14,9 @@ As the Swift language and the ecosystem around it [matured][reactive-cocoa-relea
 
 ## Setup
 
-The application uses Goalbase as a backend to store, process and retrieve information. It assumes you have a Goalbase instance running at `http://localhost:3000`, which is the default URL of the WEBrick server that ships with Rails. Please check out the [Goalbase documentation][goalbase-docs] for more detailed instructions.
+The application uses [Goalbase][goalbase] as a backend to store, process and retrieve information. It assumes you have a Goalbase instance running at `http://localhost:3000`, which is the default URL of the WEBrick server that ships with Rails. Please check out the [Goalbase documentation][goalbase-docs] for more detailed instructions.
 
+[goalbase]: https://github.com/richeterre/goalbase
 [goalbase-docs]: https://github.com/richeterre/goalbase/blob/master/README.md
 
 If you want to provide your own backend, simply change the base URL path in `Store.swift`.
