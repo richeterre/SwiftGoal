@@ -39,6 +39,7 @@ If you want to provide your own backend, simply change the base URL path in `Sto
 
 * [x] Validate player name before creating
 * [x] Validate match player counts before creating
+* [ ] Move base URL to Settings for easy customization
 * [ ] Cancel network requests when the associated view becomes inactive
 * [ ] Retry network requests 1 or 2 times before giving up
 * [ ] Improve algorithm that determines list changes
