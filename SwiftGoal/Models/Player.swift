@@ -13,7 +13,6 @@ import Runes
 struct Player {
     let identifier: String
     let name: String
-    let rating: Float
 }
 
 // MARK: Equatable
@@ -25,15 +24,14 @@ func ==(lhs: Player, rhs: Player) -> Bool {
 // MARK: Decodable
 
 extension Player: Decodable {
-    static func create(identifier: String)(name: String)(rating: Float) -> Player {
-        return Player(identifier: identifier, name: name, rating: rating)
+    static func create(identifier: String)(name: String) -> Player {
+        return Player(identifier: identifier, name: name)
     }
 
     static func decode(json: JSON) -> Decoded<Player> {
         return Player.create
             <^> json <| "id"
             <*> json <| "name"
-            <*> json <| "rating"
     }
 }
 

@@ -29,6 +29,7 @@ class Store: NSObject {
     private static let baseURL = NSURL(string: "http://localhost:3000/api/v1/")!
     private static let matchesURL = NSURL(string: "matches", relativeToURL: baseURL)!
     private static let playersURL = NSURL(string: "players", relativeToURL: baseURL)!
+    private static let rankingsURL = NSURL(string: "rankings", relativeToURL: baseURL)!
 
     // MARK: - Matches
 
@@ -115,6 +116,21 @@ class Store: NSObject {
                     return false
                 }
             }
+    }
+
+    // MARK: Rankings
+
+    func fetchRankings() -> SignalProducer<[Ranking], NSError> {
+        let request = NSURLRequest(URL: Store.rankingsURL)
+        return NSURLSession.sharedSession().rac_dataWithRequest(request)
+            |> map { data, response in
+                let json: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(0), error: nil)
+                if let j: AnyObject = json, rankings: [Ranking] = decode(j) {
+                    return rankings
+                } else {
+                    return []
+                }
+        }
     }
 
     // MARK: Internal Helpers

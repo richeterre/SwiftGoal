@@ -21,6 +21,8 @@
 		0F74F7171B0009B300F963E0 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F74F7161B0009B300F963E0 /* Store.swift */; };
 		0F9D10B31B614099002B9A20 /* RankingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F9D10B21B614099002B9A20 /* RankingsViewController.swift */; };
 		0F9D10B51B6140FC002B9A20 /* RankingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F9D10B41B6140FC002B9A20 /* RankingsViewModel.swift */; };
+		0F9D10B71B614B71002B9A20 /* RankingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F9D10B61B614B71002B9A20 /* RankingCell.swift */; };
+		0F9D10B91B625124002B9A20 /* Ranking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F9D10B81B625124002B9A20 /* Ranking.swift */; };
 		0FA80BDD1B013F33000531E3 /* Box.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FA80BDA1B013F33000531E3 /* Box.framework */; };
 		0FA80BDE1B013F33000531E3 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FA80BDB1B013F33000531E3 /* ReactiveCocoa.framework */; };
 		0FA80BDF1B013F33000531E3 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FA80BDC1B013F33000531E3 /* Result.framework */; };
@@ -65,6 +67,8 @@
 		0F74F7161B0009B300F963E0 /* Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		0F9D10B21B614099002B9A20 /* RankingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RankingsViewController.swift; sourceTree = "<group>"; };
 		0F9D10B41B6140FC002B9A20 /* RankingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RankingsViewModel.swift; sourceTree = "<group>"; };
+		0F9D10B61B614B71002B9A20 /* RankingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RankingCell.swift; sourceTree = "<group>"; };
+		0F9D10B81B625124002B9A20 /* Ranking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ranking.swift; sourceTree = "<group>"; };
 		0FA80BDA1B013F33000531E3 /* Box.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Box.framework; path = Carthage/Build/iOS/Box.framework; sourceTree = "<group>"; };
 		0FA80BDB1B013F33000531E3 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = Carthage/Build/iOS/ReactiveCocoa.framework; sourceTree = "<group>"; };
 		0FA80BDC1B013F33000531E3 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
@@ -170,6 +174,7 @@
 			children = (
 				0F2EF8271B24FBF800BABC20 /* MatchCell.swift */,
 				0FF57F371B433EFD001DD570 /* PlayerCell.swift */,
+				0F9D10B61B614B71002B9A20 /* RankingCell.swift */,
 				0F74F7111B00053D00F963E0 /* MatchesViewController.swift */,
 				0FE4EB741B3876C2007F9349 /* EditMatchViewController.swift */,
 				0FF57F331B431E17001DD570 /* ManagePlayersViewController.swift */,
@@ -216,6 +221,7 @@
 				0F3289ED1B1CF8340068DF12 /* Changeset.swift */,
 				0FA80BE31B014001000531E3 /* Match.swift */,
 				0F691B3D1B1D19DC00FD5AC1 /* Player.swift */,
+				0F9D10B81B625124002B9A20 /* Ranking.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -365,6 +371,7 @@
 				0FF57F341B431E17001DD570 /* ManagePlayersViewController.swift in Sources */,
 				0F9D10B31B614099002B9A20 /* RankingsViewController.swift in Sources */,
 				0FF57F381B433EFD001DD570 /* PlayerCell.swift in Sources */,
+				0F9D10B71B614B71002B9A20 /* RankingCell.swift in Sources */,
 				0FE4EB751B3876C2007F9349 /* EditMatchViewController.swift in Sources */,
 				0F74F7141B00058D00F963E0 /* MatchesViewModel.swift in Sources */,
 				0F74F7171B0009B300F963E0 /* Store.swift in Sources */,
@@ -376,6 +383,7 @@
 				0FE4EB731B38760B007F9349 /* EditMatchViewModel.swift in Sources */,
 				0F74F6F01B0002C400F963E0 /* AppDelegate.swift in Sources */,
 				0FF7B8B81B3A0CB300808433 /* Extensions.swift in Sources */,
+				0F9D10B91B625124002B9A20 /* Ranking.swift in Sources */,
 				0F2EF8281B24FBF800BABC20 /* MatchCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
