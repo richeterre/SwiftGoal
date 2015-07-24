@@ -29,6 +29,7 @@ If you want to provide your own backend, simply change the base URL path in `Sto
 * [x] Enjoy custom fonts and colors
 * [x] Get alerts about network and server errors
 * [ ] View player rankings
+* [ ] Switch between different ranking periods (last month, all time, …)
 * [ ] See date and time of each match
 * [ ] See matches grouped by date range (e.g. last week, last month, earlier)
 * [ ] View more player statistics (e.g. won/drawn/lost count, nemesis player, …)
