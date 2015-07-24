@@ -61,5 +61,8 @@ If you want to provide your own backend, simply change the base URL path in `Sto
 
 This project is kindly sponsored by [Futurice][futurice] as part of its fantastic [open-source program][spice-program]. Kiitos!
 
+The icons within the app are courtesy of [Icons8][icons8] – a resource well worth checking out.
+
 [futurice]: http://futurice.com/
 [spice-program]: http://www.spiceprogram.org/
+[icons8]: https://icons8.com/

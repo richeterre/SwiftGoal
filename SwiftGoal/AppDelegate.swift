@@ -42,8 +42,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let matchesNavigationController = UINavigationController(rootViewController: matchesViewController)
         matchesNavigationController.tabBarItem = UITabBarItem(
             title: matchesViewModel.title,
-            image: nil,
-            tag: NSNotFound
+            image: UIImage(named: "FootballFilled"),
+            selectedImage: UIImage(named: "FootballFilled")
         )
 
         let rankingsViewModel = RankingsViewModel(store: store)
@@ -51,8 +51,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let rankingsNavigationController = UINavigationController(rootViewController: rankingsViewController)
         rankingsNavigationController.tabBarItem = UITabBarItem(
             title: rankingsViewModel.title,
-            image: nil,
-            tag: NSNotFound
+            image: UIImage(named: "Crown"),
+            selectedImage: UIImage(named: "CrownFilled")
         )
 
         let tabBarController = UITabBarController()
