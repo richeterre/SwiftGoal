@@ -121,8 +121,6 @@ class ManagePlayersViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(playerCellIdentifier, forIndexPath: indexPath) as! PlayerCell
 
-        let (row, section) = (indexPath.row, indexPath.section)
-
         cell.nameLabel.enabled = viewModel.canSelectPlayerAtIndexPath(indexPath)
         cell.nameLabel.text = viewModel.playerNameAtIndexPath(indexPath)
         cell.accessoryType = viewModel.isPlayerSelectedAtIndexPath(indexPath) ? .Checkmark : .None
@@ -139,7 +137,6 @@ class ManagePlayersViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
 
-        let (row, section) = (indexPath.row, indexPath.section)
         let cell = tableView.cellForRowAtIndexPath(indexPath)
 
         if viewModel.isPlayerSelectedAtIndexPath(indexPath) {
