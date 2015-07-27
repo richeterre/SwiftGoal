@@ -1,0 +1,14 @@
+PODS:
+  - DZNEmptyDataSet (1.3)
+
+DEPENDENCIES:
+  - DZNEmptyDataSet (from `../../`)
+
+EXTERNAL SOURCES:
+  DZNEmptyDataSet:
+    :path: ../../
+
+SPEC CHECKSUMS:
+  DZNEmptyDataSet: c27af3478ce627b0cbf97d0d581c9752dd7a4b29
+
+COCOAPODS: 0.33.1

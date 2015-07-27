@@ -7,9 +7,10 @@
 //
 
 import UIKit
+import DZNEmptyDataSet
 import ReactiveCocoa
 
-class MatchesViewController: UITableViewController {
+class MatchesViewController: UITableViewController, DZNEmptyDataSetSource {
 
     private let matchCellIdentifier = "MatchCell"
     private let (isActiveSignal, isActiveSink) = Signal<Bool, NoError>.pipe()
@@ -35,6 +36,8 @@ class MatchesViewController: UITableViewController {
         tableView.allowsSelectionDuringEditing = true
         tableView.rowHeight = 60
         tableView.tableFooterView = UIView() // Prevent empty rows at bottom
+
+        tableView.emptyDataSetSource = self
 
         self.refreshControl = UIRefreshControl()
         self.refreshControl?.addTarget(self,
@@ -112,6 +115,25 @@ class MatchesViewController: UITableViewController {
 
     func refreshControlTriggered() {
         sendNext(viewModel.refreshSink, ())
+    }
+
+    // MARK: DZNEmptyDataSetSource
+
+    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let text = "No matches yet!"
+        let attributes = [
+            NSFontAttributeName: UIFont(name: "OpenSans-Semibold", size: 30)!
+        ]
+        return NSAttributedString(string: text, attributes: attributes)
+    }
+
+    func descriptionForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let text = "Tap the Add button at the top-right corner to get started."
+        let attributes = [
+            NSFontAttributeName: UIFont(name: "OpenSans", size: 20)!,
+            NSForegroundColorAttributeName: UIColor.lightGrayColor()
+        ]
+        return NSAttributedString(string: text, attributes: attributes)
     }
 
     // MARK: - UITableViewDataSource
