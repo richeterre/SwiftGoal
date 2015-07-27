@@ -21,7 +21,7 @@ The application uses [Goalbase][goalbase] as a backend to store, process and ret
 [goalbase]: https://github.com/richeterre/goalbase
 [goalbase-docs]: https://github.com/richeterre/goalbase/blob/master/README.md
 
-If you want to provide your own backend, simply change the base URL path in `Store.swift`.
+If you want to provide your own backend, you can do so by editing SwiftGoal's base URL in the Settings app.
 
 User Features
 -------------
