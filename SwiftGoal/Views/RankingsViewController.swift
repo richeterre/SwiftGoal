@@ -30,6 +30,7 @@ class RankingsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        tableView.allowsSelection = false
         tableView.rowHeight = 60
         tableView.tableFooterView = UIView() // Prevent empty rows at bottom
 
