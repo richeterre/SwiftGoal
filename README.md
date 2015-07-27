@@ -35,7 +35,7 @@ User Features
 * [x] See animated list changes
 * [x] Enjoy custom fonts and colors
 * [x] Get alerts about network and server errors
-* [ ] View player rankings
+* [x] View player rankings
 * [ ] Switch between different ranking periods (last month, all time, …)
 * [ ] See date and time of each match
 * [ ] See matches grouped by date range (e.g. last week, last month, earlier)
