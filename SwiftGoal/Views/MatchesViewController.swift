@@ -10,7 +10,7 @@ import UIKit
 import DZNEmptyDataSet
 import ReactiveCocoa
 
-class MatchesViewController: UITableViewController, DZNEmptyDataSetSource {
+class MatchesViewController: UITableViewController, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
 
     private let matchCellIdentifier = "MatchCell"
     private let (isActiveSignal, isActiveSink) = Signal<Bool, NoError>.pipe()
@@ -37,6 +37,7 @@ class MatchesViewController: UITableViewController, DZNEmptyDataSetSource {
         tableView.rowHeight = 60
         tableView.tableFooterView = UIView() // Prevent empty rows at bottom
 
+        tableView.emptyDataSetDelegate = self
         tableView.emptyDataSetSource = self
 
         self.refreshControl = UIRefreshControl()
@@ -117,6 +118,14 @@ class MatchesViewController: UITableViewController, DZNEmptyDataSetSource {
         sendNext(viewModel.refreshSink, ())
     }
 
+    // MARK: DZNEmptyDataSetDelegate
+
+    func emptyDataSetDidTapButton(scrollView: UIScrollView!) {
+        if let settingsURL = NSURL(string: UIApplicationOpenSettingsURLString) {
+            UIApplication.sharedApplication().openURL(settingsURL)
+        }
+    }
+
     // MARK: DZNEmptyDataSetSource
 
     func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
@@ -128,10 +137,21 @@ class MatchesViewController: UITableViewController, DZNEmptyDataSetSource {
     }
 
     func descriptionForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
-        let text = "Tap the Add button at the top-right corner to get started."
+        let text = "Check your server settings, then tap the “+” button to get started."
         let attributes = [
             NSFontAttributeName: UIFont(name: "OpenSans", size: 20)!,
             NSForegroundColorAttributeName: UIColor.lightGrayColor()
+        ]
+        return NSAttributedString(string: text, attributes: attributes)
+    }
+
+    func buttonTitleForEmptyDataSet(scrollView: UIScrollView!, forState state: UIControlState) -> NSAttributedString! {
+        let text = "Open App Settings"
+        let attributes = [
+            NSFontAttributeName: UIFont(name: "OpenSans", size: 20)!,
+            NSForegroundColorAttributeName: (state == .Normal
+                ? Color.primaryColor
+                : Color.lighterPrimaryColor)
         ]
         return NSAttributedString(string: text, attributes: attributes)
     }

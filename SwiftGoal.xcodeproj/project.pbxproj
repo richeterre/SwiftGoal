@@ -29,6 +29,7 @@
 		0FA80BDF1B013F33000531E3 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FA80BDC1B013F33000531E3 /* Result.framework */; };
 		0FA80BE41B014001000531E3 /* Match.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA80BE31B014001000531E3 /* Match.swift */; };
 		0FE2A7481B66CE17001F5C5B /* DZNEmptyDataSet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FE2A7461B66CD06001F5C5B /* DZNEmptyDataSet.framework */; };
+		0FE2A74A1B66E139001F5C5B /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FE2A7491B66E139001F5C5B /* Color.swift */; };
 		0FE4EB731B38760B007F9349 /* EditMatchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FE4EB721B38760B007F9349 /* EditMatchViewModel.swift */; };
 		0FE4EB751B3876C2007F9349 /* EditMatchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FE4EB741B3876C2007F9349 /* EditMatchViewController.swift */; };
 		0FE96BEA1B24D77700506E60 /* Argo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FE96BE81B24D77700506E60 /* Argo.framework */; };
@@ -77,6 +78,7 @@
 		0FA80BDC1B013F33000531E3 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
 		0FA80BE31B014001000531E3 /* Match.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Match.swift; sourceTree = "<group>"; };
 		0FE2A7461B66CD06001F5C5B /* DZNEmptyDataSet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DZNEmptyDataSet.framework; path = Carthage/Build/iOS/DZNEmptyDataSet.framework; sourceTree = "<group>"; };
+		0FE2A7491B66E139001F5C5B /* Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		0FE4EB721B38760B007F9349 /* EditMatchViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditMatchViewModel.swift; sourceTree = "<group>"; };
 		0FE4EB741B3876C2007F9349 /* EditMatchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditMatchViewController.swift; sourceTree = "<group>"; };
 		0FE96BE81B24D77700506E60 /* Argo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Argo.framework; path = Carthage/Build/iOS/Argo.framework; sourceTree = "<group>"; };
@@ -245,6 +247,7 @@
 		0FF7B8B61B3A0B3300808433 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				0FE2A7491B66E139001F5C5B /* Color.swift */,
 				0FF7B8B71B3A0CB300808433 /* Extensions.swift */,
 			);
 			path = Helpers;
@@ -387,6 +390,7 @@
 				0F3289EE1B1CF8340068DF12 /* Changeset.swift in Sources */,
 				0F74F7121B00053D00F963E0 /* MatchesViewController.swift in Sources */,
 				0F691B3E1B1D19DC00FD5AC1 /* Player.swift in Sources */,
+				0FE2A74A1B66E139001F5C5B /* Color.swift in Sources */,
 				0FA80BE41B014001000531E3 /* Match.swift in Sources */,
 				0F9D10B51B6140FC002B9A20 /* RankingsViewModel.swift in Sources */,
 				0FE4EB731B38760B007F9349 /* EditMatchViewModel.swift in Sources */,

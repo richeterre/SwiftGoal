@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Customize appearance
         application.statusBarStyle = .LightContent
-        let tintColor = UIColor(red:0.99, green:0.54, blue:0.19, alpha:1)
+        let tintColor = Color.primaryColor
         window?.tintColor = tintColor
         UINavigationBar.appearance().barTintColor = tintColor
         UINavigationBar.appearance().tintColor = UIColor.whiteColor()
