@@ -89,7 +89,8 @@ class RankingsViewModel {
     }
 
     func ratingAtIndexPath(indexPath: NSIndexPath) -> String {
-        return "\(rankingAtIndexPath(indexPath).rating)"
+        let rating = rankingAtIndexPath(indexPath).rating
+        return String(format: "%.2f", rating)
     }
 
     // MARK: Internal Helpers
