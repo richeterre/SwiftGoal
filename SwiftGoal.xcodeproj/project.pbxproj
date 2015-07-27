@@ -19,6 +19,7 @@
 		0F74F7121B00053D00F963E0 /* MatchesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F74F7111B00053D00F963E0 /* MatchesViewController.swift */; };
 		0F74F7141B00058D00F963E0 /* MatchesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F74F7131B00058D00F963E0 /* MatchesViewModel.swift */; };
 		0F74F7171B0009B300F963E0 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F74F7161B0009B300F963E0 /* Store.swift */; };
+		0F98C4F51B658B8B00C39E4C /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0F98C4F41B658B8B00C39E4C /* Settings.bundle */; };
 		0F9D10B31B614099002B9A20 /* RankingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F9D10B21B614099002B9A20 /* RankingsViewController.swift */; };
 		0F9D10B51B6140FC002B9A20 /* RankingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F9D10B41B6140FC002B9A20 /* RankingsViewModel.swift */; };
 		0F9D10B71B614B71002B9A20 /* RankingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F9D10B61B614B71002B9A20 /* RankingCell.swift */; };
@@ -65,6 +66,7 @@
 		0F74F7111B00053D00F963E0 /* MatchesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchesViewController.swift; sourceTree = "<group>"; };
 		0F74F7131B00058D00F963E0 /* MatchesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchesViewModel.swift; sourceTree = "<group>"; };
 		0F74F7161B0009B300F963E0 /* Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		0F98C4F41B658B8B00C39E4C /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		0F9D10B21B614099002B9A20 /* RankingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RankingsViewController.swift; sourceTree = "<group>"; };
 		0F9D10B41B6140FC002B9A20 /* RankingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RankingsViewModel.swift; sourceTree = "<group>"; };
 		0F9D10B61B614B71002B9A20 /* RankingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RankingCell.swift; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 			children = (
 				0FE96BEC1B24F09100506E60 /* Fonts */,
 				0F74F6EE1B0002C400F963E0 /* Info.plist */,
+				0F98C4F41B658B8B00C39E4C /* Settings.bundle */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -326,6 +329,7 @@
 			files = (
 				0FE96BEE1B24F0EB00506E60 /* OpenSans-Semibold.ttf in Resources */,
 				0F74F6FA1B0002C400F963E0 /* LaunchScreen.xib in Resources */,
+				0F98C4F51B658B8B00C39E4C /* Settings.bundle in Resources */,
 				0F2EF82C1B25000600BABC20 /* OpenSans-Regular.ttf in Resources */,
 				0F74F6F71B0002C400F963E0 /* Images.xcassets in Resources */,
 			);

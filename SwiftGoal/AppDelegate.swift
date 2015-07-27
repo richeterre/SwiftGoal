@@ -12,13 +12,16 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    let tabBarController = UITabBarController()
+
+    private let baseURLSettingKey = "base_url_setting"
+    private let baseURLSettingDefault = "http://localhost:3000/api/v1/"
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
 
         // Customize appearance
-
         application.statusBarStyle = .LightContent
         let tintColor = UIColor(red:0.99, green:0.54, blue:0.19, alpha:1)
         window?.tintColor = tintColor
@@ -29,13 +32,60 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             NSForegroundColorAttributeName: UIColor.whiteColor()
         ]
         UINavigationBar.appearance().translucent = false
-        UIBarButtonItem.appearance().setTitleTextAttributes([
-            NSFontAttributeName: UIFont(name: "OpenSans", size: 17)!
-        ], forState: .Normal)
+        UIBarButtonItem.appearance().setTitleTextAttributes(
+            [NSFontAttributeName: UIFont(name: "OpenSans", size: 17)!],
+            forState: .Normal
+        )
 
-        // Set up initial hierarchy
+        // Register initial settings
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        if userDefaults.stringForKey(baseURLSettingKey) == nil {
+            userDefaults.setObject(baseURLSettingDefault, forKey: baseURLSettingKey)
+        }
 
-        let store = Store()
+        // Get base URL from settings
+        let baseURLString = userDefaults.stringForKey(baseURLSettingKey) ?? baseURLSettingDefault
+        let baseURL = baseURLFromString(baseURLString)
+
+        // Set tab-level view controllers based on URL
+        tabBarController.viewControllers = tabViewControllersForBaseURL(baseURL)
+
+        // Register for settings changes to reload view hierarchy
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: Selector("userDefaultsDidChange:"),
+            name: NSUserDefaultsDidChangeNotification,
+            object: nil)
+
+        window?.rootViewController = tabBarController
+        window?.makeKeyAndVisible()
+
+        return true
+    }
+
+    // MARK: Notifications
+
+    func userDefaultsDidChange(notification: NSNotification) {
+        if let userDefaults = notification.object as? NSUserDefaults {
+            let baseURLString = userDefaults.stringForKey(baseURLSettingKey) ?? baseURLSettingDefault
+            let baseURL = baseURLFromString(baseURLString)
+            tabBarController.viewControllers = tabViewControllersForBaseURL(baseURL)
+        }
+    }
+
+    // MARK: Private Helpers
+
+    private func baseURLFromString(var baseURLString: String) -> NSURL {
+        // Append forward slash if needed to ensure proper relative URL behavior
+        let forwardSlash: Character = "/"
+        if !baseURLString.hasSuffix(String(forwardSlash)) {
+            baseURLString.append(forwardSlash)
+        }
+
+        return NSURL(string: baseURLString) ?? NSURL(string: baseURLSettingDefault)!
+    }
+
+    private func tabViewControllersForBaseURL(baseURL: NSURL) -> [UIViewController] {
+        let store = Store(baseURL: baseURL)
 
         let matchesViewModel = MatchesViewModel(store: store)
         let matchesViewController = MatchesViewController(viewModel: matchesViewModel)
@@ -55,13 +105,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             selectedImage: UIImage(named: "CrownFilled")
         )
 
-        let tabBarController = UITabBarController()
-        tabBarController.viewControllers = [matchesNavigationController, rankingsNavigationController]
-
-        window?.rootViewController = tabBarController
-        window?.makeKeyAndVisible()
-
-        return true
+        return [matchesNavigationController, rankingsNavigationController]
     }
 }
 

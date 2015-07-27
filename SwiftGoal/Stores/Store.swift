@@ -26,15 +26,24 @@ enum RequestMethod {
 
 class Store: NSObject {
 
-    private static let baseURL = NSURL(string: "http://localhost:3000/api/v1/")!
-    private static let matchesURL = NSURL(string: "matches", relativeToURL: baseURL)!
-    private static let playersURL = NSURL(string: "players", relativeToURL: baseURL)!
-    private static let rankingsURL = NSURL(string: "rankings", relativeToURL: baseURL)!
+    private let baseURL: NSURL
+    private let matchesURL: NSURL
+    private let playersURL: NSURL
+    private let rankingsURL: NSURL
+
+    // MARK: Lifecycle
+
+    init(baseURL: NSURL) {
+        self.baseURL = baseURL
+        self.matchesURL = NSURL(string: "matches", relativeToURL: baseURL)!
+        self.playersURL = NSURL(string: "players", relativeToURL: baseURL)!
+        self.rankingsURL = NSURL(string: "rankings", relativeToURL: baseURL)!
+    }
 
     // MARK: - Matches
 
     func fetchMatches() -> SignalProducer<[Match], NSError> {
-        let request = mutableRequestWithURL(Store.matchesURL, method: .GET)
+        let request = mutableRequestWithURL(matchesURL, method: .GET)
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
             |> map { data, response in
                 let json: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(0), error: nil)
@@ -48,7 +57,7 @@ class Store: NSObject {
 
     func createMatch(parameters: MatchParameters) -> SignalProducer<Bool, NSError> {
 
-        let request = mutableRequestWithURL(Store.matchesURL, method: .POST)
+        let request = mutableRequestWithURL(matchesURL, method: .POST)
         request.HTTPBody = httpBodyForMatchParameters(parameters)
 
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
@@ -92,7 +101,7 @@ class Store: NSObject {
     // MARK: Players
 
     func fetchPlayers() -> SignalProducer<[Player], NSError> {
-        let request = NSURLRequest(URL: Store.playersURL)
+        let request = NSURLRequest(URL: playersURL)
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
             |> map { data, response in
                 let json: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(0), error: nil)
@@ -105,7 +114,7 @@ class Store: NSObject {
     }
 
     func createPlayer(#name: String) -> SignalProducer<Bool, NSError> {
-        let request = mutableRequestWithURL(Store.playersURL, method: .POST)
+        let request = mutableRequestWithURL(playersURL, method: .POST)
         request.HTTPBody = httpBodyForPlayerName(name)
 
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
@@ -121,7 +130,7 @@ class Store: NSObject {
     // MARK: Rankings
 
     func fetchRankings() -> SignalProducer<[Ranking], NSError> {
-        let request = NSURLRequest(URL: Store.rankingsURL)
+        let request = NSURLRequest(URL: rankingsURL)
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
             |> map { data, response in
                 let json: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(0), error: nil)
@@ -133,7 +142,7 @@ class Store: NSObject {
         }
     }
 
-    // MARK: Internal Helpers
+    // MARK: Private Helpers
 
     private func httpBodyForMatchParameters(parameters: MatchParameters) -> NSData? {
         let jsonObject = [
@@ -155,7 +164,7 @@ class Store: NSObject {
     }
 
     private func urlForMatch(match: Match) -> NSURL {
-        return Store.matchesURL.URLByAppendingPathComponent(match.identifier)
+        return matchesURL.URLByAppendingPathComponent(match.identifier)
     }
 
     private func mutableRequestWithURL(url: NSURL, method: RequestMethod) -> NSMutableURLRequest {
