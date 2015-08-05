@@ -1,5 +1,7 @@
 github "robrix/Box" "1.2.2"
 github "dzenbot/DZNEmptyDataSet" "v1.7"
+github "Quick/Nimble" "v1.0.0"
+github "Quick/Quick" "v0.3.1"
 github "thoughtbot/Runes" "v2.0.0"
 github "SnapKit/SnapKit" "0.13.0"
 github "antitypical/Result" "0.4.4"
