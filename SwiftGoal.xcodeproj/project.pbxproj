@@ -33,6 +33,8 @@
 		0FB1AD971B72BA4600A8A3E4 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FB1AD951B72BA4600A8A3E4 /* Quick.framework */; };
 		0FB81C451B72C24300432698 /* Nimble.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0FB1AD941B72BA4600A8A3E4 /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0FB81C461B72C24400432698 /* Quick.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0FB1AD951B72BA4600A8A3E4 /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0FB81C491B72C44A00432698 /* MatchesViewModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB81C481B72C44A00432698 /* MatchesViewModelSpec.swift */; };
+		0FB81C4C1B72CAFE00432698 /* MockStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB81C4B1B72CAFE00432698 /* MockStore.swift */; };
 		0FE2A7481B66CE17001F5C5B /* DZNEmptyDataSet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FE2A7461B66CD06001F5C5B /* DZNEmptyDataSet.framework */; };
 		0FE2A74A1B66E139001F5C5B /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FE2A7491B66E139001F5C5B /* Color.swift */; };
 		0FE4EB731B38760B007F9349 /* EditMatchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FE4EB721B38760B007F9349 /* EditMatchViewModel.swift */; };
@@ -98,6 +100,8 @@
 		0FA80BE31B014001000531E3 /* Match.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Match.swift; sourceTree = "<group>"; };
 		0FB1AD941B72BA4600A8A3E4 /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
 		0FB1AD951B72BA4600A8A3E4 /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
+		0FB81C481B72C44A00432698 /* MatchesViewModelSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchesViewModelSpec.swift; sourceTree = "<group>"; };
+		0FB81C4B1B72CAFE00432698 /* MockStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockStore.swift; sourceTree = "<group>"; };
 		0FE2A7461B66CD06001F5C5B /* DZNEmptyDataSet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DZNEmptyDataSet.framework; path = Carthage/Build/iOS/DZNEmptyDataSet.framework; sourceTree = "<group>"; };
 		0FE2A7491B66E139001F5C5B /* Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		0FE4EB721B38760B007F9349 /* EditMatchViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditMatchViewModel.swift; sourceTree = "<group>"; };
@@ -188,6 +192,7 @@
 			isa = PBXGroup;
 			children = (
 				0FB1AD931B72B5B000A8A3E4 /* Models */,
+				0FB81C471B72C3FE00432698 /* ViewModels */,
 				0F74F7031B0002C400F963E0 /* Supporting Files */,
 			);
 			path = SwiftGoalTests;
@@ -196,6 +201,7 @@
 		0F74F7031B0002C400F963E0 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0FB81C4B1B72CAFE00432698 /* MockStore.swift */,
 				0F74F7041B0002C400F963E0 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -267,6 +273,14 @@
 				0F74F7051B0002C400F963E0 /* ChangesetSpec.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		0FB81C471B72C3FE00432698 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				0FB81C481B72C44A00432698 /* MatchesViewModelSpec.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		0FE96BEC1B24F09100506E60 /* Fonts */ = {
@@ -441,6 +455,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0F74F7061B0002C400F963E0 /* ChangesetSpec.swift in Sources */,
+				0FB81C491B72C44A00432698 /* MatchesViewModelSpec.swift in Sources */,
+				0FB81C4C1B72CAFE00432698 /* MockStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

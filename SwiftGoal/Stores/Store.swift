@@ -24,7 +24,7 @@ enum RequestMethod {
     case DELETE
 }
 
-class Store: NSObject {
+public class Store: NSObject {
 
     private let baseURL: NSURL
     private let matchesURL: NSURL
@@ -33,7 +33,7 @@ class Store: NSObject {
 
     // MARK: Lifecycle
 
-    init(baseURL: NSURL) {
+    public init(baseURL: NSURL) {
         self.baseURL = baseURL
         self.matchesURL = NSURL(string: "matches", relativeToURL: baseURL)!
         self.playersURL = NSURL(string: "players", relativeToURL: baseURL)!
@@ -42,7 +42,7 @@ class Store: NSObject {
 
     // MARK: - Matches
 
-    func fetchMatches() -> SignalProducer<[Match], NSError> {
+    public func fetchMatches() -> SignalProducer<[Match], NSError> {
         let request = mutableRequestWithURL(matchesURL, method: .GET)
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
             |> map { data, response in

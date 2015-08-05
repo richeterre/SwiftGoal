@@ -10,14 +10,14 @@ import Foundation
 import Argo
 import Runes
 
-struct Player {
-    let identifier: String
-    let name: String
+public struct Player {
+    public let identifier: String
+    public let name: String
 }
 
 // MARK: Equatable
 
-func ==(lhs: Player, rhs: Player) -> Bool {
+public func ==(lhs: Player, rhs: Player) -> Bool {
     return lhs.identifier == rhs.identifier
 }
 
@@ -28,7 +28,7 @@ extension Player: Decodable {
         return Player(identifier: identifier, name: name)
     }
 
-    static func decode(json: JSON) -> Decoded<Player> {
+    public static func decode(json: JSON) -> Decoded<Player> {
         return Player.create
             <^> json <| "id"
             <*> json <| "name"
@@ -38,7 +38,7 @@ extension Player: Decodable {
 // MARK: Hashable
 
 extension Player: Hashable {
-    var hashValue: Int {
+    public var hashValue: Int {
         return identifier.hashValue
     }
 }

@@ -8,10 +8,10 @@
 
 import ReactiveCocoa
 
-class MatchesViewModel {
+public class MatchesViewModel {
 
     // Inputs
-    let active = MutableProperty(false)
+    public let active = MutableProperty(false)
     let refreshSink: SinkOf<Event<Void, NoError>>
 
     // Outputs
@@ -36,7 +36,7 @@ class MatchesViewModel {
 
     // MARK: - Lifecycle
 
-    init(store: Store) {
+    public init(store: Store) {
         self.title = "Matches"
         self.store = store
         self.matches = []
@@ -99,7 +99,7 @@ class MatchesViewModel {
         return 1
     }
 
-    func numberOfMatchesInSection(section: Int) -> Int {
+    public func numberOfMatchesInSection(section: Int) -> Int {
         return count(matches)
     }
 
