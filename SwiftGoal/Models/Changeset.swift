@@ -8,11 +8,12 @@
 
 import Foundation
 
-struct Changeset {
-    let deletions: [NSIndexPath]
-    let insertions: [NSIndexPath]
+public struct Changeset {
 
-    init<T: Equatable>(oldItems: [T], newItems: [T]) {
+    public let deletions: [NSIndexPath]
+    public let insertions: [NSIndexPath]
+
+    public init<T: Equatable>(oldItems: [T], newItems: [T]) {
         // Find index paths for deleted items
         var deletions: [NSIndexPath] = []
         for (index, item) in enumerate(oldItems) {
@@ -20,6 +21,8 @@ struct Changeset {
                 deletions.append(NSIndexPath(forRow: index, inSection: 0))
             }
         }
+
+        // TODO: Compare edited changes within matches
 
         // Find index paths for newly inserted items
         var insertions: [NSIndexPath] = []

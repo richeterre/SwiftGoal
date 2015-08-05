@@ -15,7 +15,7 @@
 		0F74F6F01B0002C400F963E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F74F6EF1B0002C400F963E0 /* AppDelegate.swift */; };
 		0F74F6F71B0002C400F963E0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0F74F6F61B0002C400F963E0 /* Images.xcassets */; };
 		0F74F6FA1B0002C400F963E0 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0F74F6F81B0002C400F963E0 /* LaunchScreen.xib */; };
-		0F74F7061B0002C400F963E0 /* SwiftGoalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F74F7051B0002C400F963E0 /* SwiftGoalTests.swift */; };
+		0F74F7061B0002C400F963E0 /* ChangesetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F74F7051B0002C400F963E0 /* ChangesetTests.swift */; };
 		0F74F7121B00053D00F963E0 /* MatchesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F74F7111B00053D00F963E0 /* MatchesViewController.swift */; };
 		0F74F7141B00058D00F963E0 /* MatchesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F74F7131B00058D00F963E0 /* MatchesViewModel.swift */; };
 		0F74F7171B0009B300F963E0 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F74F7161B0009B300F963E0 /* Store.swift */; };
@@ -28,6 +28,7 @@
 		0FA80BDE1B013F33000531E3 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FA80BDB1B013F33000531E3 /* ReactiveCocoa.framework */; };
 		0FA80BDF1B013F33000531E3 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FA80BDC1B013F33000531E3 /* Result.framework */; };
 		0FA80BE41B014001000531E3 /* Match.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA80BE31B014001000531E3 /* Match.swift */; };
+		0FB1AD921B72B03D00A8A3E4 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FA80BDB1B013F33000531E3 /* ReactiveCocoa.framework */; };
 		0FE2A7481B66CE17001F5C5B /* DZNEmptyDataSet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FE2A7461B66CD06001F5C5B /* DZNEmptyDataSet.framework */; };
 		0FE2A74A1B66E139001F5C5B /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FE2A7491B66E139001F5C5B /* Color.swift */; };
 		0FE4EB731B38760B007F9349 /* EditMatchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FE4EB721B38760B007F9349 /* EditMatchViewModel.swift */; };
@@ -64,7 +65,7 @@
 		0F74F6F91B0002C400F963E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		0F74F6FF1B0002C400F963E0 /* SwiftGoalTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftGoalTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0F74F7041B0002C400F963E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0F74F7051B0002C400F963E0 /* SwiftGoalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftGoalTests.swift; sourceTree = "<group>"; };
+		0F74F7051B0002C400F963E0 /* ChangesetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangesetTests.swift; sourceTree = "<group>"; };
 		0F74F7111B00053D00F963E0 /* MatchesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchesViewController.swift; sourceTree = "<group>"; };
 		0F74F7131B00058D00F963E0 /* MatchesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchesViewModel.swift; sourceTree = "<group>"; };
 		0F74F7161B0009B300F963E0 /* Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
@@ -109,6 +110,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0FB1AD921B72B03D00A8A3E4 /* ReactiveCocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,7 +165,7 @@
 		0F74F7021B0002C400F963E0 /* SwiftGoalTests */ = {
 			isa = PBXGroup;
 			children = (
-				0F74F7051B0002C400F963E0 /* SwiftGoalTests.swift */,
+				0FB1AD931B72B5B000A8A3E4 /* Models */,
 				0F74F7031B0002C400F963E0 /* Supporting Files */,
 			);
 			path = SwiftGoalTests;
@@ -231,6 +233,14 @@
 				0FA80BE31B014001000531E3 /* Match.swift */,
 				0F691B3D1B1D19DC00FD5AC1 /* Player.swift */,
 				0F9D10B81B625124002B9A20 /* Ranking.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		0FB1AD931B72B5B000A8A3E4 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0F74F7051B0002C400F963E0 /* ChangesetTests.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -405,7 +415,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0F74F7061B0002C400F963E0 /* SwiftGoalTests.swift in Sources */,
+				0F74F7061B0002C400F963E0 /* ChangesetTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -549,6 +559,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -568,6 +579,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = SwiftGoalTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
