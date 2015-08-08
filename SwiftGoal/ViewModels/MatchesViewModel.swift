@@ -120,11 +120,11 @@ public class MatchesViewModel {
 
     // MARK: View Models
 
-    func editViewModelForNewMatch() -> EditMatchViewModel {
+    public func editViewModelForNewMatch() -> EditMatchViewModel {
         return EditMatchViewModel(store: store)
     }
 
-    func editViewModelForMatchAtIndexPath(indexPath: NSIndexPath) -> EditMatchViewModel {
+    public func editViewModelForMatchAtIndexPath(indexPath: NSIndexPath) -> EditMatchViewModel {
         let match = matchAtIndexPath(indexPath)
         return EditMatchViewModel(store: store, match: match)
     }

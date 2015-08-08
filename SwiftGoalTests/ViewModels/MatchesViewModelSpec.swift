@@ -111,6 +111,21 @@ class MatchesViewModelSpec: QuickSpec {
                 expect(mockStore.deletedMatch).to(equal(match))
                 expect(deletedSuccessfully).to(beTrue())
             }
+
+            it("should provide a view model for creating a new match") {
+                let createMatchViewModel = matchesViewModel.editViewModelForNewMatch()
+                expect(createMatchViewModel.title).to(equal("New Match"))
+            }
+
+            it("should provide the correct view model for editing an existing match") {
+                matchesViewModel.active.put(true)
+
+                let indexPath = NSIndexPath(forRow: 0, inSection: 0)
+                let editMatchViewModel = matchesViewModel.editViewModelForMatchAtIndexPath(indexPath)
+                expect(editMatchViewModel.title).to(equal("Edit Match"))
+                expect(editMatchViewModel.formattedHomeGoals.value).to(equal("2"))
+                expect(editMatchViewModel.formattedAwayGoals.value).to(equal("1"))
+            }
         }
     }
 }

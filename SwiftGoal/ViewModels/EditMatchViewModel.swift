@@ -8,19 +8,19 @@
 
 import ReactiveCocoa
 
-class EditMatchViewModel {
+public class EditMatchViewModel {
 
     // Inputs
     let homeGoals: MutableProperty<Int>
     let awayGoals: MutableProperty<Int>
 
     // Outputs
-    let title: String
-    let formattedHomeGoals = MutableProperty<String>("")
-    let formattedAwayGoals = MutableProperty<String>("")
-    let homePlayersString = MutableProperty<String>("")
-    let awayPlayersString = MutableProperty<String>("")
-    let inputIsValid = MutableProperty<Bool>(false)
+    public let title: String
+    public let formattedHomeGoals = MutableProperty<String>("")
+    public let formattedAwayGoals = MutableProperty<String>("")
+    public let homePlayersString = MutableProperty<String>("")
+    public let awayPlayersString = MutableProperty<String>("")
+    public let inputIsValid = MutableProperty<Bool>(false)
 
     // Actions
     lazy var saveAction: Action<Void, Bool, NSError> = { [unowned self] in
