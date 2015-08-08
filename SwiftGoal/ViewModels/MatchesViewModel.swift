@@ -12,16 +12,16 @@ public class MatchesViewModel {
 
     // Inputs
     public let active = MutableProperty(false)
-    let refreshSink: SinkOf<Event<Void, NoError>>
+    public let refreshSink: SinkOf<Event<Void, NoError>>
 
     // Outputs
-    let title: String
-    let contentChangesSignal: Signal<Changeset, NoError>
+    public let title: String
+    public let contentChangesSignal: Signal<Changeset, NoError>
     let isLoadingSignal: Signal<Bool, NoError>
     let alertMessageSignal: Signal<String, NoError>
 
     // Actions
-    lazy var deleteAction: Action<NSIndexPath, Bool, NSError> = { [unowned self] in
+    public lazy var deleteAction: Action<NSIndexPath, Bool, NSError> = { [unowned self] in
         return Action({ indexPath in
             let match = self.matchAtIndexPath(indexPath)
             return self.store.deleteMatch(match)
@@ -95,7 +95,7 @@ public class MatchesViewModel {
 
     // MARK: - Data Source
 
-    func numberOfSections() -> Int {
+    public func numberOfSections() -> Int {
         return 1
     }
 
@@ -103,17 +103,17 @@ public class MatchesViewModel {
         return count(matches)
     }
 
-    func homePlayersAtIndexPath(indexPath: NSIndexPath) -> String {
+    public func homePlayersAtIndexPath(indexPath: NSIndexPath) -> String {
         let match = matchAtIndexPath(indexPath)
         return separatedNamesForPlayers(match.homePlayers)
     }
 
-    func awayPlayersAtIndexPath(indexPath: NSIndexPath) -> String {
+    public func awayPlayersAtIndexPath(indexPath: NSIndexPath) -> String {
         let match = matchAtIndexPath(indexPath)
         return separatedNamesForPlayers(match.awayPlayers)
     }
 
-    func resultAtIndexPath(indexPath: NSIndexPath) -> String {
+    public func resultAtIndexPath(indexPath: NSIndexPath) -> String {
         let match = matchAtIndexPath(indexPath)
         return "\(match.homeGoals) : \(match.awayGoals)"
     }
