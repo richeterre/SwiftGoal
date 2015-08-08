@@ -78,6 +78,22 @@ class MatchesViewModelSpec: QuickSpec {
             }
 
             context("when becoming active and upon refresh") {
+                it("indicates its loading state") {
+                    // Aggregate loading states into an array
+                    var loadingStates: [Bool] = []
+                    matchesViewModel.isLoading.producer
+                        |> take(5)
+                        |> collect
+                        |> start(next: { values in
+                            loadingStates = values
+                        })
+
+                    matchesViewModel.active.put(true)
+                    sendNext(matchesViewModel.refreshSink, ())
+
+                    expect(loadingStates).to(equal([false, true, false, true, false]))
+                }
+
                 it("notifies subscribers about content changes") {
                     var changeset: Changeset?
                     matchesViewModel.contentChangesSignal.observe { contentChanges in
@@ -94,21 +110,6 @@ class MatchesViewModelSpec: QuickSpec {
                     sendNext(matchesViewModel.refreshSink, ())
                     expect(changeset?.deletions).to(beEmpty())
                     expect(changeset?.insertions).to(beEmpty())
-                }
-
-                it("indicates its loading state") {
-                    // Aggregate three loading states into an array
-                    var loadingStates: [Bool] = []
-                    matchesViewModel.isLoading.producer
-                        |> take(3)
-                        |> collect
-                        |> start(next: { values in
-                            loadingStates = values
-                        })
-
-                    matchesViewModel.active.put(true)
-
-                    expect(loadingStates).to(equal([false, true, false]))
                 }
             }
 
