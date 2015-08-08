@@ -26,7 +26,7 @@ class MatchesViewModelSpec: QuickSpec {
                 expect(matchesViewModel.title).to(equal("Matches"))
             }
 
-            it("initially has a single empty section") {
+            it("initially has a only single, empty section") {
                 expect(matchesViewModel.numberOfSections()).to(equal(1))
                 expect(matchesViewModel.numberOfMatchesInSection(0)).to(equal(0))
             }
@@ -36,33 +36,33 @@ class MatchesViewModelSpec: QuickSpec {
                     matchesViewModel.active.put(true)
                 }
 
-                it("should fetch a list of matches") {
+                it("fetches a list of matches") {
                     expect(mockStore.didFetchMatches).to(beTrue())
                 }
 
-                it("should only have a single section") {
+                it("has only a single section") {
                     expect(matchesViewModel.numberOfSections()).to(equal(1))
                 }
 
-                it("should have the right number of matches") {
+                it("has the right number of matches") {
                     expect(matchesViewModel.numberOfMatchesInSection(0)).to(equal(2))
                 }
 
-                it("should return the home players in alphabetical order") {
+                it("returns the home players in alphabetical order") {
                     let indexPath1 = NSIndexPath(forRow: 0, inSection: 0)
                     let indexPath2 = NSIndexPath(forRow: 1, inSection: 0)
                     expect(matchesViewModel.homePlayersAtIndexPath(indexPath1)).to(equal("C, A"))
                     expect(matchesViewModel.homePlayersAtIndexPath(indexPath2)).to(equal("C, B"))
                 }
 
-                it("should return the away players in alphabetical order") {
+                it("returns the away players in alphabetical order") {
                     let indexPath1 = NSIndexPath(forRow: 0, inSection: 0)
                     let indexPath2 = NSIndexPath(forRow: 1, inSection: 0)
                     expect(matchesViewModel.awayPlayersAtIndexPath(indexPath1)).to(equal("D, B"))
                     expect(matchesViewModel.awayPlayersAtIndexPath(indexPath2)).to(equal("A, D"))
                 }
 
-                it("should display the right match results") {
+                it("displays the right match results") {
                     let indexPath1 = NSIndexPath(forRow: 0, inSection: 0)
                     let indexPath2 = NSIndexPath(forRow: 1, inSection: 0)
                     expect(matchesViewModel.resultAtIndexPath(indexPath1)).to(equal("2 : 1"))
@@ -71,14 +71,14 @@ class MatchesViewModelSpec: QuickSpec {
             }
 
             context("when asked to refresh") {
-                it("should fetch a list of matches") {
+                it("fetches a list of matches") {
                     sendNext(matchesViewModel.refreshSink, ())
                     expect(mockStore.didFetchMatches).to(beTrue())
                 }
             }
 
             context("when becoming active and upon refresh") {
-                it("should notify subscribers about content changes") {
+                it("notifies subscribers about content changes") {
                     var changeset: Changeset?
                     matchesViewModel.contentChangesSignal.observe { contentChanges in
                         changeset = contentChanges
@@ -112,7 +112,7 @@ class MatchesViewModelSpec: QuickSpec {
                 }
             }
 
-            it("should delete the correct match when asked to") {
+            it("deletes the correct match when asked to") {
                 let match = mockStore.matches[1]
                 let indexPath = NSIndexPath(forRow: 1, inSection: 0)
 
@@ -127,12 +127,12 @@ class MatchesViewModelSpec: QuickSpec {
                 expect(deletedSuccessfully).to(beTrue())
             }
 
-            it("should provide a view model for creating a new match") {
+            it("provides a view model for creating a new match") {
                 let createMatchViewModel = matchesViewModel.editViewModelForNewMatch()
                 expect(createMatchViewModel.title).to(equal("New Match"))
             }
 
-            it("should provide the correct view model for editing an existing match") {
+            it("provides the correct view model for editing an existing match") {
                 matchesViewModel.active.put(true)
 
                 let indexPath = NSIndexPath(forRow: 0, inSection: 0)
