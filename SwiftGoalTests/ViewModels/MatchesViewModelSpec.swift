@@ -96,7 +96,7 @@ class MatchesViewModelSpec: QuickSpec {
                     expect(changeset?.insertions).to(beEmpty())
                 }
 
-                fit("indicates its loading state") {
+                it("indicates its loading state") {
                     // Aggregate three loading states into an array
                     var loadingStates: [Bool] = []
                     matchesViewModel.isLoading.producer
