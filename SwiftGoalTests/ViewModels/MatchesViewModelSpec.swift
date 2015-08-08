@@ -95,6 +95,21 @@ class MatchesViewModelSpec: QuickSpec {
                     expect(changeset?.deletions).to(beEmpty())
                     expect(changeset?.insertions).to(beEmpty())
                 }
+
+                fit("indicates its loading state") {
+                    // Aggregate three loading states into an array
+                    var loadingStates: [Bool] = []
+                    matchesViewModel.isLoading.producer
+                        |> take(3)
+                        |> collect
+                        |> start(next: { values in
+                            loadingStates = values
+                        })
+
+                    matchesViewModel.active.put(true)
+
+                    expect(loadingStates).to(equal([false, true, false]))
+                }
             }
 
             it("should delete the correct match when asked to") {

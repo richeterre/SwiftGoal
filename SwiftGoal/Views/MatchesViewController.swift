@@ -85,9 +85,9 @@ class MatchesViewController: UITableViewController, DZNEmptyDataSetDelegate, DZN
                 self?.tableView.insertRowsAtIndexPaths(changeset.insertions, withRowAnimation: .Automatic)
                 self?.tableView.endUpdates()
             })
-        viewModel.isLoadingSignal
-            |> observeOn(UIScheduler())
-            |> observe(next: { [weak self] isLoading in
+        viewModel.isLoading.producer
+            |> startOn(UIScheduler())
+            |> start(next: { [weak self] isLoading in
                 if !isLoading {
                     self?.refreshControl?.endRefreshing()
                 }

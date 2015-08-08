@@ -17,7 +17,7 @@ public class MatchesViewModel {
     // Outputs
     public let title: String
     public let contentChangesSignal: Signal<Changeset, NoError>
-    let isLoadingSignal: Signal<Bool, NoError>
+    public let isLoading: MutableProperty<Bool>
     let alertMessageSignal: Signal<String, NoError>
 
     // Actions
@@ -30,7 +30,6 @@ public class MatchesViewModel {
 
     private let store: Store
     private let contentChangesSink: SinkOf<Event<Changeset, NoError>>
-    private let isLoadingSink: SinkOf<Event<Bool, NoError>>
     private let alertMessageSink: SinkOf<Event<String, NoError>>
     private var matches: [Match]
 
@@ -48,9 +47,8 @@ public class MatchesViewModel {
         self.contentChangesSignal = contentChangesSignal
         self.contentChangesSink = contentChangesSink
 
-        let (isLoadingSignal, isLoadingSink) = Signal<Bool, NoError>.pipe()
-        self.isLoadingSignal = isLoadingSignal
-        self.isLoadingSink = isLoadingSink
+        let isLoading = MutableProperty(false)
+        self.isLoading = isLoading
 
         let (alertMessageSignal, alertMessageSink) = Signal<String, NoError>.pipe()
         self.alertMessageSignal = alertMessageSignal
@@ -69,7 +67,7 @@ public class MatchesViewModel {
             |> observe(refreshSink)
 
         refreshSignal
-            |> on(next: { _ in sendNext(isLoadingSink, true) })
+            |> on(next: { _ in isLoading.put(true) })
             |> flatMap(.Latest) { _ in
                 return store.fetchMatches()
                     |> catch { error in
@@ -77,7 +75,7 @@ public class MatchesViewModel {
                         return SignalProducer(value: [])
                     }
             }
-            |> on(next: { _ in sendNext(isLoadingSink, false) })
+            |> on(next: { _ in isLoading.put(false) })
             |> combinePrevious([]) // Preserve history to calculate changeset
             |> start(next: { [weak self] (oldMatches, newMatches) in
                 self?.matches = newMatches
