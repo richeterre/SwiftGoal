@@ -12,7 +12,7 @@ import SwiftGoal
 
 class MockStore: Store {
     let players: [Player]
-    let matches: [Match]
+    var matches: [Match]? // nil is used to cause error
 
     var didFetchMatches = false
     var deletedMatch: Match?
@@ -46,7 +46,12 @@ class MockStore: Store {
 
     override func fetchMatches() -> SignalProducer<[Match], NSError> {
         didFetchMatches = true
-        return SignalProducer(value: matches)
+        if let matches = self.matches {
+            return SignalProducer(value: matches)
+        } else {
+            let error = NSError(domain: "", code: 0, userInfo: nil)
+            return SignalProducer(error: error)
+        }
     }
 
     override func deleteMatch(match: Match) -> SignalProducer<Bool, NSError> {

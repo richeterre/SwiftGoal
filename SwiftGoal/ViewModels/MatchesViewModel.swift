@@ -18,7 +18,7 @@ public class MatchesViewModel {
     public let title: String
     public let contentChangesSignal: Signal<Changeset, NoError>
     public let isLoading: MutableProperty<Bool>
-    let alertMessageSignal: Signal<String, NoError>
+    public let alertMessageSignal: Signal<String, NoError>
 
     // Actions
     public lazy var deleteAction: Action<NSIndexPath, Bool, NSError> = { [unowned self] in

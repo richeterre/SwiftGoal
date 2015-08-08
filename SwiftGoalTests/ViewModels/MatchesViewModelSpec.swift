@@ -113,8 +113,21 @@ class MatchesViewModelSpec: QuickSpec {
                 }
             }
 
+            it("raises an alert when matches cannot be fetched") {
+                mockStore.matches = nil // will cause fetch error
+
+                var didRaiseAlert = false
+                matchesViewModel.alertMessageSignal.observe(next: { alertMessage in
+                    didRaiseAlert = true
+                })
+
+                matchesViewModel.active.put(true)
+
+                expect(didRaiseAlert).to(beTrue())
+            }
+
             it("deletes the correct match when asked to") {
-                let match = mockStore.matches[1]
+                let match = mockStore.matches![1]
                 let indexPath = NSIndexPath(forRow: 1, inSection: 0)
 
                 var deletedSuccessfully = false
