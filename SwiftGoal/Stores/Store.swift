@@ -100,7 +100,7 @@ public class Store: NSObject {
 
     // MARK: Players
 
-    func fetchPlayers() -> SignalProducer<[Player], NSError> {
+    public func fetchPlayers() -> SignalProducer<[Player], NSError> {
         let request = NSURLRequest(URL: playersURL)
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
             |> map { data, response in

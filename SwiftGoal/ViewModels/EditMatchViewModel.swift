@@ -11,8 +11,8 @@ import ReactiveCocoa
 public class EditMatchViewModel {
 
     // Inputs
-    let homeGoals: MutableProperty<Int>
-    let awayGoals: MutableProperty<Int>
+    public let homeGoals: MutableProperty<Int>
+    public let awayGoals: MutableProperty<Int>
 
     // Outputs
     public let title: String
@@ -46,7 +46,7 @@ public class EditMatchViewModel {
 
     // MARK: Lifecycle
 
-    init(store: Store, match: Match?) {
+    public init(store: Store, match: Match?) {
         self.store = store
         self.match = match
 
@@ -74,13 +74,13 @@ public class EditMatchViewModel {
             }
     }
 
-    convenience init(store: Store) {
+    public convenience init(store: Store) {
         self.init(store: store, match: nil)
     }
 
     // MARK: View Models
 
-    func manageHomePlayersViewModel() -> ManagePlayersViewModel {
+    public func manageHomePlayersViewModel() -> ManagePlayersViewModel {
         let homePlayersViewModel = ManagePlayersViewModel(
             store: store,
             initialPlayers: homePlayers.value,
@@ -91,7 +91,7 @@ public class EditMatchViewModel {
         return homePlayersViewModel
     }
 
-    func manageAwayPlayersViewModel() -> ManagePlayersViewModel {
+    public func manageAwayPlayersViewModel() -> ManagePlayersViewModel {
         let awayPlayersViewModel = ManagePlayersViewModel(
             store: store,
             initialPlayers: awayPlayers.value,

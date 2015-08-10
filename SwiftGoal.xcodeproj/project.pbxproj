@@ -46,6 +46,7 @@
 		0FF57F361B431E41001DD570 /* ManagePlayersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF57F351B431E41001DD570 /* ManagePlayersViewModel.swift */; };
 		0FF57F381B433EFD001DD570 /* PlayerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF57F371B433EFD001DD570 /* PlayerCell.swift */; };
 		0FF7B8B81B3A0CB300808433 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF7B8B71B3A0CB300808433 /* Extensions.swift */; };
+		0FFA97041B76C9D900DD4F58 /* EditMatchViewModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FFA97031B76C9D900DD4F58 /* EditMatchViewModelSpec.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -113,6 +114,7 @@
 		0FF57F351B431E41001DD570 /* ManagePlayersViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagePlayersViewModel.swift; sourceTree = "<group>"; };
 		0FF57F371B433EFD001DD570 /* PlayerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerCell.swift; sourceTree = "<group>"; };
 		0FF7B8B71B3A0CB300808433 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		0FFA97031B76C9D900DD4F58 /* EditMatchViewModelSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditMatchViewModelSpec.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -279,6 +281,7 @@
 			isa = PBXGroup;
 			children = (
 				0FB81C481B72C44A00432698 /* MatchesViewModelSpec.swift */,
+				0FFA97031B76C9D900DD4F58 /* EditMatchViewModelSpec.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -455,6 +458,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0F74F7061B0002C400F963E0 /* ChangesetSpec.swift in Sources */,
+				0FFA97041B76C9D900DD4F58 /* EditMatchViewModelSpec.swift in Sources */,
 				0FB81C491B72C44A00432698 /* MatchesViewModelSpec.swift in Sources */,
 				0FB81C4C1B72CAFE00432698 /* MockStore.swift in Sources */,
 			);

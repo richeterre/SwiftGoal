@@ -58,4 +58,8 @@ class MockStore: Store {
         deletedMatch = match
         return SignalProducer(value: true)
     }
+
+    override func fetchPlayers() -> SignalProducer<[Player], NSError> {
+        return SignalProducer(value: players)
+    }
 }
