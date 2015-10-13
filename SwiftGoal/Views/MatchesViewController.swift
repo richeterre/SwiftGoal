@@ -77,6 +77,7 @@ class MatchesViewController: UITableViewController, DZNEmptyDataSetDelegate, DZN
         self.title = viewModel.title
 
         viewModel.active <~ isActiveSignal
+
         viewModel.contentChangesSignal
             .observeOn(UIScheduler())
             .observeNext({ [weak self] changeset in
@@ -85,13 +86,15 @@ class MatchesViewController: UITableViewController, DZNEmptyDataSetDelegate, DZN
                 self?.tableView.insertRowsAtIndexPaths(changeset.insertions, withRowAnimation: .Automatic)
                 self?.tableView.endUpdates()
             })
+
         viewModel.isLoading.producer
-            .startOn(UIScheduler())
+            .observeOn(UIScheduler())
             .startWithNext({ [weak self] isLoading in
                 if !isLoading {
                     self?.refreshControl?.endRefreshing()
                 }
             })
+
         viewModel.alertMessageSignal
             .observeOn(UIScheduler())
             .observeNext({ [weak self] alertMessage in

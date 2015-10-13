@@ -125,31 +125,31 @@ class EditMatchViewController: UIViewController {
         viewModel.awayGoals <~ awayGoalsStepper.signalProducer()
 
         viewModel.formattedHomeGoals.producer
-            .startOn(UIScheduler())
+            .observeOn(UIScheduler())
             .startWithNext({ [weak self] formattedHomeGoals in
                 self?.homeGoalsLabel.text = formattedHomeGoals
             })
 
         viewModel.formattedAwayGoals.producer
-            .startOn(UIScheduler())
+            .observeOn(UIScheduler())
             .startWithNext({ [weak self] formattedAwayGoals in
                 self?.awayGoalsLabel.text = formattedAwayGoals
             })
 
         viewModel.homePlayersString.producer
-            .startOn(UIScheduler())
+            .observeOn(UIScheduler())
             .startWithNext({ [weak self] homePlayersString in
                 self?.homePlayersButton.setTitle(homePlayersString, forState: .Normal)
             })
 
         viewModel.awayPlayersString.producer
-            .startOn(UIScheduler())
+            .observeOn(UIScheduler())
             .startWithNext({ [weak self] awayPlayersString in
                 self?.awayPlayersButton.setTitle(awayPlayersString, forState: .Normal)
             })
 
         viewModel.inputIsValid.producer
-            .startOn(UIScheduler())
+            .observeOn(UIScheduler())
             .startWithNext({ [weak self] inputIsValid in
                 self?.saveButtonItem.enabled = inputIsValid
             })
