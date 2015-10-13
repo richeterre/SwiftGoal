@@ -8,7 +8,7 @@
 
 import Quick
 import Nimble
-import SwiftGoal
+@testable import SwiftGoal
 
 class ChangesetSpec: QuickSpec {
 

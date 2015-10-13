@@ -8,8 +8,7 @@
 
 import Quick
 import Nimble
-import ReactiveCocoa
-import SwiftGoal
+@testable import SwiftGoal
 
 class EditMatchViewModelSpec: QuickSpec {
     override func spec() {

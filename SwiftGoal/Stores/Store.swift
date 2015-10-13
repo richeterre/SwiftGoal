@@ -6,9 +6,8 @@
 //  Copyright (c) 2015 Martin Richter. All rights reserved.
 //
 
-import Foundation
-import ReactiveCocoa
 import Argo
+import ReactiveCocoa
 
 struct MatchParameters {
     let homePlayers: Set<Player>
@@ -24,7 +23,7 @@ enum RequestMethod {
     case DELETE
 }
 
-public class Store: NSObject {
+class Store: NSObject {
 
     private let baseURL: NSURL
     private let matchesURL: NSURL
@@ -33,7 +32,7 @@ public class Store: NSObject {
 
     // MARK: Lifecycle
 
-    public init(baseURL: NSURL) {
+    init(baseURL: NSURL) {
         self.baseURL = baseURL
         self.matchesURL = NSURL(string: "matches", relativeToURL: baseURL)!
         self.playersURL = NSURL(string: "players", relativeToURL: baseURL)!
@@ -42,7 +41,7 @@ public class Store: NSObject {
 
     // MARK: - Matches
 
-    public func fetchMatches() -> SignalProducer<[Match], NSError> {
+    func fetchMatches() -> SignalProducer<[Match], NSError> {
         let request = mutableRequestWithURL(matchesURL, method: .GET)
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
             .map { data, response in
@@ -85,7 +84,7 @@ public class Store: NSObject {
             }
     }
 
-    public func deleteMatch(match: Match) -> SignalProducer<Bool, NSError> {
+    func deleteMatch(match: Match) -> SignalProducer<Bool, NSError> {
         let request = mutableRequestWithURL(urlForMatch(match), method: .DELETE)
 
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
@@ -100,7 +99,7 @@ public class Store: NSObject {
 
     // MARK: Players
 
-    public func fetchPlayers() -> SignalProducer<[Player], NSError> {
+    func fetchPlayers() -> SignalProducer<[Player], NSError> {
         let request = NSURLRequest(URL: playersURL)
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
             .map { data, response in

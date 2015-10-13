@@ -8,12 +8,12 @@
 
 import Foundation
 
-public struct Changeset {
+struct Changeset {
 
-    public let deletions: [NSIndexPath]
-    public let insertions: [NSIndexPath]
+    let deletions: [NSIndexPath]
+    let insertions: [NSIndexPath]
 
-    public init<T: Equatable>(oldItems: [T], newItems: [T]) {
+    init<T: Equatable>(oldItems: [T], newItems: [T]) {
         // Find index paths for deleted items
         var deletions: [NSIndexPath] = []
         for (index, item) in oldItems.enumerate() {

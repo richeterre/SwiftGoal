@@ -8,14 +8,14 @@
 
 import Argo
 
-public struct Match {
+struct Match {
     let identifier: String
     let homePlayers: [Player]
     let awayPlayers: [Player]
     let homeGoals: Int
     let awayGoals: Int
 
-    public init(identifier: String, homePlayers: [Player], awayPlayers: [Player], homeGoals: Int, awayGoals: Int) {
+    init(identifier: String, homePlayers: [Player], awayPlayers: [Player], homeGoals: Int, awayGoals: Int) {
         self.identifier = identifier
         self.homePlayers = homePlayers
         self.awayPlayers = awayPlayers
@@ -28,7 +28,7 @@ public struct Match {
 
 extension Match: Equatable {}
 
-public func ==(lhs: Match, rhs: Match) -> Bool {
+func ==(lhs: Match, rhs: Match) -> Bool {
     return lhs.identifier == rhs.identifier
         && lhs.homePlayers == rhs.homePlayers
         && lhs.awayPlayers == rhs.awayPlayers
@@ -49,7 +49,7 @@ extension Match: Decodable {
         )
     }
 
-    public static func decode(json: JSON) -> Decoded<Match> {
+    static func decode(json: JSON) -> Decoded<Match> {
         return Match.create
             <^> json <| "id"
             <*> json <|| "home_players"

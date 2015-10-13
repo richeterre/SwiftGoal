@@ -8,20 +8,20 @@
 
 import ReactiveCocoa
 
-public class MatchesViewModel {
+class MatchesViewModel {
 
     // Inputs
-    public let active = MutableProperty(false)
-    public let refreshSink: Event<Void, NoError> -> ()
+    let active = MutableProperty(false)
+    let refreshSink: Event<Void, NoError> -> ()
 
     // Outputs
-    public let title: String
-    public let contentChangesSignal: Signal<Changeset, NoError>
-    public let isLoading: MutableProperty<Bool>
-    public let alertMessageSignal: Signal<String, NoError>
+    let title: String
+    let contentChangesSignal: Signal<Changeset, NoError>
+    let isLoading: MutableProperty<Bool>
+    let alertMessageSignal: Signal<String, NoError>
 
     // Actions
-    public lazy var deleteAction: Action<NSIndexPath, Bool, NSError> = { [unowned self] in
+    lazy var deleteAction: Action<NSIndexPath, Bool, NSError> = { [unowned self] in
         return Action({ indexPath in
             let match = self.matchAtIndexPath(indexPath)
             return self.store.deleteMatch(match)
@@ -35,7 +35,7 @@ public class MatchesViewModel {
 
     // MARK: - Lifecycle
 
-    public init(store: Store) {
+    init(store: Store) {
         self.title = "Matches"
         self.store = store
         self.matches = []
@@ -93,36 +93,36 @@ public class MatchesViewModel {
 
     // MARK: - Data Source
 
-    public func numberOfSections() -> Int {
+    func numberOfSections() -> Int {
         return 1
     }
 
-    public func numberOfMatchesInSection(section: Int) -> Int {
+    func numberOfMatchesInSection(section: Int) -> Int {
         return matches.count
     }
 
-    public func homePlayersAtIndexPath(indexPath: NSIndexPath) -> String {
+    func homePlayersAtIndexPath(indexPath: NSIndexPath) -> String {
         let match = matchAtIndexPath(indexPath)
         return separatedNamesForPlayers(match.homePlayers)
     }
 
-    public func awayPlayersAtIndexPath(indexPath: NSIndexPath) -> String {
+    func awayPlayersAtIndexPath(indexPath: NSIndexPath) -> String {
         let match = matchAtIndexPath(indexPath)
         return separatedNamesForPlayers(match.awayPlayers)
     }
 
-    public func resultAtIndexPath(indexPath: NSIndexPath) -> String {
+    func resultAtIndexPath(indexPath: NSIndexPath) -> String {
         let match = matchAtIndexPath(indexPath)
         return "\(match.homeGoals) : \(match.awayGoals)"
     }
 
     // MARK: View Models
 
-    public func editViewModelForNewMatch() -> EditMatchViewModel {
+    func editViewModelForNewMatch() -> EditMatchViewModel {
         return EditMatchViewModel(store: store)
     }
 
-    public func editViewModelForMatchAtIndexPath(indexPath: NSIndexPath) -> EditMatchViewModel {
+    func editViewModelForMatchAtIndexPath(indexPath: NSIndexPath) -> EditMatchViewModel {
         let match = matchAtIndexPath(indexPath)
         return EditMatchViewModel(store: store, match: match)
     }

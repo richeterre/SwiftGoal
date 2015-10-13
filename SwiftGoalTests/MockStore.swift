@@ -6,9 +6,8 @@
 //  Copyright (c) 2015 Martin Richter. All rights reserved.
 //
 
-import Foundation
 import ReactiveCocoa
-import SwiftGoal
+@testable import SwiftGoal
 
 class MockStore: Store {
     let players: [Player]

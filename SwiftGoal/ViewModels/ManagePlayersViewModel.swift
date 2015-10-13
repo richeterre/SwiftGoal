@@ -8,10 +8,10 @@
 
 import ReactiveCocoa
 
-public class ManagePlayersViewModel {
+class ManagePlayersViewModel {
 
     // Inputs
-    public let active = MutableProperty(false)
+    let active = MutableProperty(false)
     let playerName = MutableProperty("")
     let refreshSink: Event<Void, NoError> -> ()
 
@@ -125,12 +125,12 @@ public class ManagePlayersViewModel {
 
     // MARK: Player Selection
 
-    public func selectPlayerAtIndexPath(indexPath: NSIndexPath) {
+    func selectPlayerAtIndexPath(indexPath: NSIndexPath) {
         let player = playerAtIndexPath(indexPath)
         selectedPlayers.value.insert(player)
     }
 
-    public func deselectPlayerAtIndexPath(indexPath: NSIndexPath) {
+    func deselectPlayerAtIndexPath(indexPath: NSIndexPath) {
         let player = playerAtIndexPath(indexPath)
         selectedPlayers.value.remove(player)
     }

@@ -6,14 +6,13 @@
 //  Copyright (c) 2015 Martin Richter. All rights reserved.
 //
 
-import Foundation
 import Argo
 
-public struct Player {
-    public let identifier: String
-    public let name: String
+struct Player {
+    let identifier: String
+    let name: String
 
-    public init(identifier: String, name: String) {
+    init(identifier: String, name: String) {
         self.identifier = identifier
         self.name = name
     }
@@ -21,7 +20,7 @@ public struct Player {
 
 // MARK: Equatable
 
-public func ==(lhs: Player, rhs: Player) -> Bool {
+func ==(lhs: Player, rhs: Player) -> Bool {
     return lhs.identifier == rhs.identifier
 }
 
@@ -32,7 +31,7 @@ extension Player: Decodable {
         return Player(identifier: identifier, name: name)
     }
 
-    public static func decode(json: JSON) -> Decoded<Player> {
+    static func decode(json: JSON) -> Decoded<Player> {
         return Player.create
             <^> json <| "id"
             <*> json <| "name"
@@ -42,7 +41,7 @@ extension Player: Decodable {
 // MARK: Hashable
 
 extension Player: Hashable {
-    public var hashValue: Int {
+    var hashValue: Int {
         return identifier.hashValue
     }
 }

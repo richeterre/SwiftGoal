@@ -8,19 +8,19 @@
 
 import ReactiveCocoa
 
-public class EditMatchViewModel {
+class EditMatchViewModel {
 
     // Inputs
-    public let homeGoals: MutableProperty<Int>
-    public let awayGoals: MutableProperty<Int>
+    let homeGoals: MutableProperty<Int>
+    let awayGoals: MutableProperty<Int>
 
     // Outputs
-    public let title: String
-    public let formattedHomeGoals = MutableProperty<String>("")
-    public let formattedAwayGoals = MutableProperty<String>("")
-    public let homePlayersString = MutableProperty<String>("")
-    public let awayPlayersString = MutableProperty<String>("")
-    public let inputIsValid = MutableProperty<Bool>(false)
+    let title: String
+    let formattedHomeGoals = MutableProperty<String>("")
+    let formattedAwayGoals = MutableProperty<String>("")
+    let homePlayersString = MutableProperty<String>("")
+    let awayPlayersString = MutableProperty<String>("")
+    let inputIsValid = MutableProperty<Bool>(false)
 
     // Actions
     lazy var saveAction: Action<Void, Bool, NSError> = { [unowned self] in
@@ -46,7 +46,7 @@ public class EditMatchViewModel {
 
     // MARK: Lifecycle
 
-    public init(store: Store, match: Match?) {
+    init(store: Store, match: Match?) {
         self.store = store
         self.match = match
 
@@ -74,13 +74,13 @@ public class EditMatchViewModel {
             }
     }
 
-    public convenience init(store: Store) {
+    convenience init(store: Store) {
         self.init(store: store, match: nil)
     }
 
     // MARK: View Models
 
-    public func manageHomePlayersViewModel() -> ManagePlayersViewModel {
+    func manageHomePlayersViewModel() -> ManagePlayersViewModel {
         let homePlayersViewModel = ManagePlayersViewModel(
             store: store,
             initialPlayers: homePlayers.value,
@@ -91,7 +91,7 @@ public class EditMatchViewModel {
         return homePlayersViewModel
     }
 
-    public func manageAwayPlayersViewModel() -> ManagePlayersViewModel {
+    func manageAwayPlayersViewModel() -> ManagePlayersViewModel {
         let awayPlayersViewModel = ManagePlayersViewModel(
             store: store,
             initialPlayers: awayPlayers.value,
