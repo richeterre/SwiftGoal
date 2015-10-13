@@ -57,19 +57,19 @@ public class EditMatchViewModel {
         self.homeGoals = MutableProperty(match?.homeGoals ?? 0)
         self.awayGoals = MutableProperty(match?.awayGoals ?? 0)
 
-        self.formattedHomeGoals <~ homeGoals.producer |> map { goals in return "\(goals)" }
-        self.formattedAwayGoals <~ awayGoals.producer |> map { goals in return "\(goals)" }
+        self.formattedHomeGoals <~ homeGoals.producer.map { goals in return "\(goals)" }
+        self.formattedAwayGoals <~ awayGoals.producer.map { goals in return "\(goals)" }
 
         self.homePlayersString <~ homePlayers.producer
-            |> map { players in
-                return players.isEmpty ? "Set Home Players" : ", ".join(map(players, { $0.name }))
+            .map { players in
+                return players.isEmpty ? "Set Home Players" : players.map({ $0.name }).joinWithSeparator(", ")
             }
         self.awayPlayersString <~ awayPlayers.producer
-            |> map { players in
-                return players.isEmpty ? "Set Away Players" : ", ".join(map(players, { $0.name }))
+            .map { players in
+                return players.isEmpty ? "Set Away Players" : players.map({ $0.name }).joinWithSeparator(", ")
             }
         self.inputIsValid <~ combineLatest(homePlayers.producer, awayPlayers.producer)
-            |> map { (homePlayers, awayPlayers) in
+            .map { (homePlayers, awayPlayers) in
                 return !homePlayers.isEmpty && !awayPlayers.isEmpty
             }
     }

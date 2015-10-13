@@ -45,9 +45,9 @@ public class Store: NSObject {
     public func fetchMatches() -> SignalProducer<[Match], NSError> {
         let request = mutableRequestWithURL(matchesURL, method: .GET)
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
-            |> map { data, response in
-                let json: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(0), error: nil)
-                if let j: AnyObject = json, matches: [Match] = decode(j) {
+            .map { data, response in
+                if let json = try? NSJSONSerialization.JSONObjectWithData(data, options: []),
+                    matches: [Match] = decode(json) {
                     return matches
                 } else {
                     return []
@@ -61,7 +61,7 @@ public class Store: NSObject {
         request.HTTPBody = httpBodyForMatchParameters(parameters)
 
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
-            |> map { data, response in
+            .map { data, response in
                 if let httpResponse = response as? NSHTTPURLResponse {
                     return httpResponse.statusCode == 201
                 } else {
@@ -76,7 +76,7 @@ public class Store: NSObject {
         request.HTTPBody = httpBodyForMatchParameters(parameters)
 
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
-            |> map { data, response in
+            .map { data, response in
                 if let httpResponse = response as? NSHTTPURLResponse {
                     return httpResponse.statusCode == 200
                 } else {
@@ -89,7 +89,7 @@ public class Store: NSObject {
         let request = mutableRequestWithURL(urlForMatch(match), method: .DELETE)
 
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
-            |> map { data, response in
+            .map { data, response in
                 if let httpResponse = response as? NSHTTPURLResponse {
                     return httpResponse.statusCode == 200
                 } else {
@@ -103,9 +103,9 @@ public class Store: NSObject {
     public func fetchPlayers() -> SignalProducer<[Player], NSError> {
         let request = NSURLRequest(URL: playersURL)
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
-            |> map { data, response in
-                let json: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(0), error: nil)
-                if let j: AnyObject = json, players: [Player] = decode(j) {
+            .map { data, response in
+                if let json = try? NSJSONSerialization.JSONObjectWithData(data, options: []),
+                    players: [Player] = decode(json) {
                     return players
                 } else {
                     return []
@@ -113,12 +113,12 @@ public class Store: NSObject {
             }
     }
 
-    func createPlayer(#name: String) -> SignalProducer<Bool, NSError> {
+    func createPlayerWithName(name: String) -> SignalProducer<Bool, NSError> {
         let request = mutableRequestWithURL(playersURL, method: .POST)
         request.HTTPBody = httpBodyForPlayerName(name)
 
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
-            |> map { data, response in
+            .map { data, response in
                 if let httpResponse = response as? NSHTTPURLResponse {
                     return httpResponse.statusCode == 201
                 } else {
@@ -132,9 +132,9 @@ public class Store: NSObject {
     func fetchRankings() -> SignalProducer<[Ranking], NSError> {
         let request = NSURLRequest(URL: rankingsURL)
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
-            |> map { data, response in
-                let json: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(0), error: nil)
-                if let j: AnyObject = json, rankings: [Ranking] = decode(j) {
+            .map { data, response in
+                if let json = try? NSJSONSerialization.JSONObjectWithData(data, options: []),
+                    rankings: [Ranking] = decode(json) {
                     return rankings
                 } else {
                     return []
@@ -152,7 +152,7 @@ public class Store: NSObject {
             "away_goals": parameters.awayGoals
         ]
 
-        return NSJSONSerialization.dataWithJSONObject(jsonObject, options: nil, error: nil)
+        return try? NSJSONSerialization.dataWithJSONObject(jsonObject, options: [])
     }
 
     private func httpBodyForPlayerName(name: String) -> NSData? {
@@ -160,7 +160,7 @@ public class Store: NSObject {
             "name": name
         ]
 
-        return NSJSONSerialization.dataWithJSONObject(jsonObject, options: nil, error: nil)
+        return try? NSJSONSerialization.dataWithJSONObject(jsonObject, options: [])
     }
 
     private func urlForMatch(match: Match) -> NSURL {

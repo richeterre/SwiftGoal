@@ -33,7 +33,7 @@ class MatchesViewModelSpec: QuickSpec {
 
             context("after becoming active") {
                 beforeEach {
-                    matchesViewModel.active.put(true)
+                    matchesViewModel.active.value = true
                 }
 
                 it("fetches a list of matches") {
@@ -82,13 +82,13 @@ class MatchesViewModelSpec: QuickSpec {
                     // Aggregate loading states into an array
                     var loadingStates: [Bool] = []
                     matchesViewModel.isLoading.producer
-                        |> take(5)
-                        |> collect
-                        |> start(next: { values in
+                        .take(5)
+                        .collect()
+                        .startWithNext({ values in
                             loadingStates = values
                         })
 
-                    matchesViewModel.active.put(true)
+                    matchesViewModel.active.value = true
                     sendNext(matchesViewModel.refreshSink, ())
 
                     expect(loadingStates).to(equal([false, true, false, true, false]))
@@ -96,14 +96,14 @@ class MatchesViewModelSpec: QuickSpec {
 
                 it("notifies subscribers about content changes") {
                     var changeset: Changeset?
-                    matchesViewModel.contentChangesSignal.observe { contentChanges in
+                    matchesViewModel.contentChangesSignal.observeNext { contentChanges in
                         changeset = contentChanges
                     }
 
                     let indexPath1 = NSIndexPath(forRow: 0, inSection: 0)
                     let indexPath2 = NSIndexPath(forRow: 1, inSection: 0)
 
-                    matchesViewModel.active.put(true)
+                    matchesViewModel.active.value = true
                     expect(changeset?.deletions).to(beEmpty())
                     expect(changeset?.insertions).to(equal([indexPath1, indexPath2]))
 
@@ -117,11 +117,11 @@ class MatchesViewModelSpec: QuickSpec {
                 mockStore.matches = nil // will cause fetch error
 
                 var didRaiseAlert = false
-                matchesViewModel.alertMessageSignal.observe(next: { alertMessage in
+                matchesViewModel.alertMessageSignal.observeNext({ alertMessage in
                     didRaiseAlert = true
                 })
 
-                matchesViewModel.active.put(true)
+                matchesViewModel.active.value = true
 
                 expect(didRaiseAlert).to(beTrue())
             }
@@ -132,8 +132,8 @@ class MatchesViewModelSpec: QuickSpec {
 
                 var deletedSuccessfully = false
 
-                matchesViewModel.active.put(true)
-                matchesViewModel.deleteAction.apply(indexPath).start(next: { success in
+                matchesViewModel.active.value = true
+                matchesViewModel.deleteAction.apply(indexPath).startWithNext({ success in
                     deletedSuccessfully = success
                 })
 
@@ -147,7 +147,7 @@ class MatchesViewModelSpec: QuickSpec {
             }
 
             it("provides the correct view model for editing an existing match") {
-                matchesViewModel.active.put(true)
+                matchesViewModel.active.value = true
 
                 let indexPath = NSIndexPath(forRow: 0, inSection: 0)
                 let editMatchViewModel = matchesViewModel.editViewModelForMatchAtIndexPath(indexPath)

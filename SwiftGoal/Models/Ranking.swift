@@ -8,7 +8,6 @@
 
 import Foundation
 import Argo
-import Runes
 
 struct Ranking {
     let player: Player

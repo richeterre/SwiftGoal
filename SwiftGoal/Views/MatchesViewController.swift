@@ -23,7 +23,7 @@ class MatchesViewController: UITableViewController, DZNEmptyDataSetDelegate, DZN
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init!(coder aDecoder: NSCoder!) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding is not supported")
     }
 
@@ -78,23 +78,23 @@ class MatchesViewController: UITableViewController, DZNEmptyDataSetDelegate, DZN
 
         viewModel.active <~ isActiveSignal
         viewModel.contentChangesSignal
-            |> observeOn(UIScheduler())
-            |> observe(next: { [weak self] changeset in
+            .observeOn(UIScheduler())
+            .observeNext({ [weak self] changeset in
                 self?.tableView.beginUpdates()
                 self?.tableView.deleteRowsAtIndexPaths(changeset.deletions, withRowAnimation: .Left)
                 self?.tableView.insertRowsAtIndexPaths(changeset.insertions, withRowAnimation: .Automatic)
                 self?.tableView.endUpdates()
             })
         viewModel.isLoading.producer
-            |> startOn(UIScheduler())
-            |> start(next: { [weak self] isLoading in
+            .startOn(UIScheduler())
+            .startWithNext({ [weak self] isLoading in
                 if !isLoading {
                     self?.refreshControl?.endRefreshing()
                 }
             })
         viewModel.alertMessageSignal
-            |> observeOn(UIScheduler())
-            |> observe(next: { [weak self] alertMessage in
+            .observeOn(UIScheduler())
+            .observeNext({ [weak self] alertMessage in
                 let alertController = UIAlertController(
                     title: "Oops!",
                     message: alertMessage,

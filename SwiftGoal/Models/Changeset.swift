@@ -16,8 +16,8 @@ public struct Changeset {
     public init<T: Equatable>(oldItems: [T], newItems: [T]) {
         // Find index paths for deleted items
         var deletions: [NSIndexPath] = []
-        for (index, item) in enumerate(oldItems) {
-            if !contains(newItems, item) {
+        for (index, item) in oldItems.enumerate() {
+            if !newItems.contains(item) {
                 deletions.append(NSIndexPath(forRow: index, inSection: 0))
             }
         }
@@ -26,8 +26,8 @@ public struct Changeset {
 
         // Find index paths for newly inserted items
         var insertions: [NSIndexPath] = []
-        for (index, item) in enumerate(newItems) {
-            if !contains(oldItems, item) {
+        for (index, item) in newItems.enumerate() {
+            if !oldItems.contains(item) {
                 insertions.append(NSIndexPath(forRow: index, inSection: 0))
             }
         }

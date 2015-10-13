@@ -12,7 +12,7 @@ class RankingsViewModel {
 
     // Inputs
     let active = MutableProperty(false)
-    let refreshSink: SinkOf<Event<Void, NoError>>
+    let refreshSink: Event<Void, NoError> -> ()
 
     // Outputs
     let title: String
@@ -21,9 +21,9 @@ class RankingsViewModel {
     let alertMessageSignal: Signal<String, NoError>
 
     private let store: Store
-    private let contentChangesSink: SinkOf<Event<Changeset, NoError>>
-    private let isLoadingSink: SinkOf<Event<Bool, NoError>>
-    private let alertMessageSink: SinkOf<Event<String, NoError>>
+    private let contentChangesSink: Event<Changeset, NoError> -> ()
+    private let isLoadingSink: Event<Bool, NoError> -> ()
+    private let alertMessageSink: Event<String, NoError> -> ()
 
     private var rankings: [Ranking]
 
@@ -50,22 +50,22 @@ class RankingsViewModel {
         self.alertMessageSink = alertMessageSink
 
         active.producer
-            |> filter { $0 }
-            |> map { _ in () }
-            |> start(refreshSink)
+            .filter { $0 }
+            .map { _ in () }
+            .start(refreshSink)
 
         refreshSignal
-            |> on(next: { _ in sendNext(isLoadingSink, true) })
-            |> flatMap(.Latest, { _ in
+            .on(next: { _ in sendNext(isLoadingSink, true) })
+            .flatMap(.Latest, transform: { _ in
                 return store.fetchRankings()
-                    |> catch { error in
+                    .flatMapError { error in
                         sendNext(alertMessageSink, error.localizedDescription)
                         return SignalProducer(value: [])
                 }
             })
-            |> on(next: { _ in sendNext(isLoadingSink, false) })
-            |> combinePrevious([]) // Preserve history to calculate changeset
-            |> start(next: { [weak self] (oldRankings, newRankings) in
+            .on(next: { _ in sendNext(isLoadingSink, false) })
+            .combinePrevious([]) // Preserve history to calculate changeset
+            .startWithNext({ [weak self] (oldRankings, newRankings) in
                 self?.rankings = newRankings
                 if let sink = self?.contentChangesSink {
                     let changeset = Changeset(oldItems: oldRankings, newItems: newRankings)
@@ -81,7 +81,7 @@ class RankingsViewModel {
     }
 
     func numberOfRankingsInSection(section: Int) -> Int {
-        return count(rankings)
+        return rankings.count
     }
 
     func playerNameAtIndexPath(indexPath: NSIndexPath) -> String {

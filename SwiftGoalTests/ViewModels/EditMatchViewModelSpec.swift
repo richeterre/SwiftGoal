@@ -28,12 +28,12 @@ class EditMatchViewModelSpec: QuickSpec {
                 }
 
                 it("formats the home goals correctly") {
-                    viewModel.homeGoals.put(1)
+                    viewModel.homeGoals.value = 1
                     expect(viewModel.formattedHomeGoals.value).to(equal("1"))
                 }
 
                 it("formats the away goals correctly") {
-                    viewModel.awayGoals.put(1)
+                    viewModel.awayGoals.value = 1
                     expect(viewModel.formattedAwayGoals.value).to(equal("1"))
                 }
 
@@ -45,7 +45,7 @@ class EditMatchViewModelSpec: QuickSpec {
                     it("fails when there are no home players") {
                         let awayPlayersViewModel = viewModel.manageAwayPlayersViewModel()
                         let awayPlayerIndexPath = NSIndexPath(forRow: 1, inSection: 0)
-                        awayPlayersViewModel.active.put(true)
+                        awayPlayersViewModel.active.value = true
                         awayPlayersViewModel.selectPlayerAtIndexPath(awayPlayerIndexPath)
 
                         expect(viewModel.inputIsValid.value).to(beFalse())
@@ -54,7 +54,7 @@ class EditMatchViewModelSpec: QuickSpec {
                     it("fails when there are no away players") {
                         let homePlayersViewModel = viewModel.manageHomePlayersViewModel()
                         let homePlayerIndexPath = NSIndexPath(forRow: 0, inSection: 0)
-                        homePlayersViewModel.active.put(true)
+                        homePlayersViewModel.active.value = true
                         homePlayersViewModel.selectPlayerAtIndexPath(homePlayerIndexPath)
 
                         expect(viewModel.inputIsValid.value).to(beFalse())
@@ -63,12 +63,12 @@ class EditMatchViewModelSpec: QuickSpec {
                     it("passes when there are both home and away players") {
                         let homePlayersViewModel = viewModel.manageHomePlayersViewModel()
                         let homePlayerIndexPath = NSIndexPath(forRow: 0, inSection: 0)
-                        homePlayersViewModel.active.put(true)
+                        homePlayersViewModel.active.value = true
                         homePlayersViewModel.selectPlayerAtIndexPath(homePlayerIndexPath)
 
                         let awayPlayersViewModel = viewModel.manageAwayPlayersViewModel()
                         let awayPlayerIndexPath = NSIndexPath(forRow: 1, inSection: 0)
-                        awayPlayersViewModel.active.put(true)
+                        awayPlayersViewModel.active.value = true
                         awayPlayersViewModel.selectPlayerAtIndexPath(awayPlayerIndexPath)
 
                         expect(viewModel.inputIsValid.value).to(beTrue())

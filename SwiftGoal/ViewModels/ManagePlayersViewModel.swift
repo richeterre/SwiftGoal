@@ -13,7 +13,7 @@ public class ManagePlayersViewModel {
     // Inputs
     public let active = MutableProperty(false)
     let playerName = MutableProperty("")
-    let refreshSink: SinkOf<Event<Void, NoError>>
+    let refreshSink: Event<Void, NoError> -> ()
 
     // Outputs
     let title: String
@@ -26,14 +26,14 @@ public class ManagePlayersViewModel {
     // Actions
     lazy var saveAction: Action<Void, Bool, NSError> = { [unowned self] in
         return Action(enabledIf: self.inputIsValid, { _ in
-            return self.store.createPlayer(name: self.playerName.value)
+            return self.store.createPlayerWithName(self.playerName.value)
         })
     }()
 
     private let store: Store
-    private let contentChangesSink: SinkOf<Event<Changeset, NoError>>
-    private let isLoadingSink: SinkOf<Event<Bool, NoError>>
-    private let alertMessageSink: SinkOf<Event<String, NoError>>
+    private let contentChangesSink: Event<Changeset, NoError> -> ()
+    private let isLoadingSink: Event<Bool, NoError> -> ()
+    private let alertMessageSink: Event<String, NoError> -> ()
     private let disabledPlayers: Set<Player>
 
     private var players: [Player]
@@ -63,27 +63,27 @@ public class ManagePlayersViewModel {
         self.alertMessageSink = alertMessageSink
 
         active.producer
-            |> filter { $0 }
-            |> map { _ in () }
-            |> start(refreshSink)
+            .filter { $0 }
+            .map { _ in () }
+            .start(refreshSink)
 
         saveAction.values
-            |> filter { $0 }
-            |> map { _ in () }
-            |> observe(refreshSink)
+            .filter { $0 }
+            .map { _ in () }
+            .observe(refreshSink)
 
         refreshSignal
-            |> on(next: { _ in sendNext(isLoadingSink, true) })
-            |> flatMap(.Latest, { _ in
+            .on(next: { _ in sendNext(isLoadingSink, true) })
+            .flatMap(.Latest, transform: { _ in
                 return store.fetchPlayers()
-                    |> catch { error in
+                    .flatMapError { error in
                         sendNext(alertMessageSink, error.localizedDescription)
                         return SignalProducer(value: [])
                     }
             })
-            |> on(next: { _ in sendNext(isLoadingSink, false) })
-            |> combinePrevious([]) // Preserve history to calculate changeset
-            |> start(next: { [weak self] (oldPlayers, newPlayers) in
+            .on(next: { _ in sendNext(isLoadingSink, false) })
+            .combinePrevious([]) // Preserve history to calculate changeset
+            .startWithNext({ [weak self] (oldPlayers, newPlayers) in
                 self?.players = newPlayers
                 if let sink = self?.contentChangesSink {
                     let changeset = Changeset(oldItems: oldPlayers, newItems: newPlayers)
@@ -92,9 +92,11 @@ public class ManagePlayersViewModel {
             })
 
         // Feed saving errors into alert message signal
-        saveAction.errors |> map { $0.localizedDescription } |> observe(alertMessageSink)
+        saveAction.errors
+            .map { $0.localizedDescription }
+            .observe(alertMessageSink)
 
-        inputIsValid <~ playerName.producer |> map { count($0) > 0 }
+        inputIsValid <~ playerName.producer.map { $0.characters.count > 0 }
     }
 
     // MARK: Data Source
@@ -104,7 +106,7 @@ public class ManagePlayersViewModel {
     }
 
     func numberOfPlayersInSection(section: Int) -> Int {
-        return count(players)
+        return players.count
     }
 
     func playerNameAtIndexPath(indexPath: NSIndexPath) -> String {

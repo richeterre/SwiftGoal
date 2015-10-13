@@ -12,7 +12,7 @@ public class MatchesViewModel {
 
     // Inputs
     public let active = MutableProperty(false)
-    public let refreshSink: SinkOf<Event<Void, NoError>>
+    public let refreshSink: Event<Void, NoError> -> ()
 
     // Outputs
     public let title: String
@@ -29,8 +29,8 @@ public class MatchesViewModel {
     }()
 
     private let store: Store
-    private let contentChangesSink: SinkOf<Event<Changeset, NoError>>
-    private let alertMessageSink: SinkOf<Event<String, NoError>>
+    private let contentChangesSink: Event<Changeset, NoError> -> ()
+    private let alertMessageSink: Event<String, NoError> -> ()
     private var matches: [Match]
 
     // MARK: - Lifecycle
@@ -56,28 +56,28 @@ public class MatchesViewModel {
 
         // Trigger refresh when view becomes active
         active.producer
-            |> filter { $0 }
-            |> map { _ in () }
-            |> start(refreshSink)
+            .filter { $0 }
+            .map { _ in () }
+            .start(refreshSink)
 
         // Trigger refresh after deleting a match
         deleteAction.values
-            |> filter { $0 }
-            |> map { _ in () }
-            |> observe(refreshSink)
+            .filter { $0 }
+            .map { _ in () }
+            .observe(refreshSink)
 
         refreshSignal
-            |> on(next: { _ in isLoading.put(true) })
-            |> flatMap(.Latest) { _ in
+            .on(next: { _ in isLoading.value = true })
+            .flatMap(.Latest) { _ in
                 return store.fetchMatches()
-                    |> catch { error in
+                    .flatMapError { error in
                         sendNext(alertMessageSink, error.localizedDescription)
                         return SignalProducer(value: [])
                     }
             }
-            |> on(next: { _ in isLoading.put(false) })
-            |> combinePrevious([]) // Preserve history to calculate changeset
-            |> start(next: { [weak self] (oldMatches, newMatches) in
+            .on(next: { _ in isLoading.value = false })
+            .combinePrevious([]) // Preserve history to calculate changeset
+            .startWithNext({ [weak self] (oldMatches, newMatches) in
                 self?.matches = newMatches
                 if let sink = self?.contentChangesSink {
                     let changeset = Changeset(oldItems: oldMatches, newItems: newMatches)
@@ -87,8 +87,8 @@ public class MatchesViewModel {
 
         // Feed deletion errors into alert message signal
         deleteAction.errors
-            |> map { $0.localizedDescription }
-            |> observe(alertMessageSink)
+            .map { $0.localizedDescription }
+            .observe(alertMessageSink)
     }
 
     // MARK: - Data Source
@@ -98,7 +98,7 @@ public class MatchesViewModel {
     }
 
     public func numberOfMatchesInSection(section: Int) -> Int {
-        return count(matches)
+        return matches.count
     }
 
     public func homePlayersAtIndexPath(indexPath: NSIndexPath) -> String {
@@ -135,6 +135,6 @@ public class MatchesViewModel {
 
     private func separatedNamesForPlayers(players: [Player]) -> String {
         let playerNames = players.map { player in player.name }
-        return ", ".join(playerNames)
+        return playerNames.joinWithSeparator(", ")
     }
 }

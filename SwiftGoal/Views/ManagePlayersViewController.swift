@@ -22,7 +22,7 @@ class ManagePlayersViewController: UITableViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init!(coder aDecoder: NSCoder!) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -70,23 +70,23 @@ class ManagePlayersViewController: UITableViewController {
 
         viewModel.active <~ isActiveSignal
         viewModel.contentChangesSignal
-            |> observeOn(UIScheduler())
-            |> observe(next: { [weak self] changeset in
+            .observeOn(UIScheduler())
+            .observeNext({ [weak self] changeset in
                 self?.tableView.beginUpdates()
                 self?.tableView.deleteRowsAtIndexPaths(changeset.deletions, withRowAnimation: .Left)
                 self?.tableView.insertRowsAtIndexPaths(changeset.insertions, withRowAnimation: .Automatic)
                 self?.tableView.endUpdates()
             })
         viewModel.isLoadingSignal
-            |> observeOn(UIScheduler())
-            |> observe(next: { [weak self] isLoading in
+            .observeOn(UIScheduler())
+            .observeNext({ [weak self] isLoading in
                 if !isLoading {
                     self?.refreshControl?.endRefreshing()
                 }
             })
         viewModel.alertMessageSignal
-            |> observeOn(UIScheduler())
-            |> observe(next: { [weak self] alertMessage in
+            .observeOn(UIScheduler())
+            .observeNext({ [weak self] alertMessage in
                 let alertController = UIAlertController(
                     title: "Oops!",
                     message: alertMessage,
@@ -165,7 +165,7 @@ class ManagePlayersViewController: UITableViewController {
         newPlayerViewController.addAction(saveAction)
 
         // Allow saving only with valid input
-        viewModel.inputIsValid.producer.start(next: { isValid in
+        viewModel.inputIsValid.producer.startWithNext({ isValid in
             saveAction.enabled = isValid
         })
 
@@ -175,7 +175,7 @@ class ManagePlayersViewController: UITableViewController {
         }
 
         // Forward text input to view model
-        if let nameField = newPlayerViewController.textFields?.first as? UITextField {
+        if let nameField = newPlayerViewController.textFields?.first {
             viewModel.playerName <~ nameField.signalProducer()
         }
 

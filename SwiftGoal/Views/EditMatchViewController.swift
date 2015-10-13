@@ -47,7 +47,7 @@ class EditMatchViewController: UIViewController {
         navigationItem.rightBarButtonItem = self.saveButtonItem
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -84,7 +84,7 @@ class EditMatchViewController: UIViewController {
         view.addSubview(awayGoalsStepper)
         self.awayGoalsStepper = awayGoalsStepper
 
-        let homePlayersButton = UIButton.buttonWithType(.System) as! UIButton
+        let homePlayersButton = UIButton(type: .System)
         homePlayersButton.titleLabel?.font = UIFont(name: "OpenSans", size: 17)
         homePlayersButton.addTarget(self,
             action: Selector("homePlayersButtonTapped"),
@@ -93,7 +93,7 @@ class EditMatchViewController: UIViewController {
         view.addSubview(homePlayersButton)
         self.homePlayersButton = homePlayersButton
 
-        let awayPlayersButton = UIButton.buttonWithType(.System) as! UIButton
+        let awayPlayersButton = UIButton(type: .System)
         awayPlayersButton.titleLabel?.font = UIFont(name: "OpenSans", size: 17)
         awayPlayersButton.addTarget(self,
             action: Selector("awayPlayersButtonTapped"),
@@ -125,46 +125,44 @@ class EditMatchViewController: UIViewController {
         viewModel.awayGoals <~ awayGoalsStepper.signalProducer()
 
         viewModel.formattedHomeGoals.producer
-            |> startOn(UIScheduler())
-            |> start(next: { [weak self] formattedHomeGoals in
+            .startOn(UIScheduler())
+            .startWithNext({ [weak self] formattedHomeGoals in
                 self?.homeGoalsLabel.text = formattedHomeGoals
             })
 
         viewModel.formattedAwayGoals.producer
-            |> startOn(UIScheduler())
-            |> start(next: { [weak self] formattedAwayGoals in
+            .startOn(UIScheduler())
+            .startWithNext({ [weak self] formattedAwayGoals in
                 self?.awayGoalsLabel.text = formattedAwayGoals
             })
 
         viewModel.homePlayersString.producer
-            |> startOn(UIScheduler())
-            |> start(next: { [weak self] homePlayersString in
+            .startOn(UIScheduler())
+            .startWithNext({ [weak self] homePlayersString in
                 self?.homePlayersButton.setTitle(homePlayersString, forState: .Normal)
             })
 
         viewModel.awayPlayersString.producer
-            |> startOn(UIScheduler())
-            |> start(next: { [weak self] awayPlayersString in
+            .startOn(UIScheduler())
+            .startWithNext({ [weak self] awayPlayersString in
                 self?.awayPlayersButton.setTitle(awayPlayersString, forState: .Normal)
             })
 
         viewModel.inputIsValid.producer
-            |> startOn(UIScheduler())
-            |> start(next: { [weak self] inputIsValid in
+            .startOn(UIScheduler())
+            .startWithNext({ [weak self] inputIsValid in
                 self?.saveButtonItem.enabled = inputIsValid
             })
 
-        viewModel.saveAction.events.observe(next: { [weak self] event in
+        viewModel.saveAction.events.observeNext({ [weak self] event in
             switch event {
-            case let .Next(data):
-                let success = data.value
+            case let .Next(success):
                 if success {
                     self?.dismissViewControllerAnimated(true, completion: nil)
                 } else {
                     self?.presentErrorMessage("The match could not be saved.")
                 }
-            case let .Error(data):
-                let error = data.value
+            case let .Error(error):
                 self?.presentErrorMessage(error.localizedDescription)
             default:
                 return

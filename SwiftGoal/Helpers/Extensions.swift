@@ -12,15 +12,15 @@ import ReactiveCocoa
 extension UIStepper {
     func signalProducer() -> SignalProducer<Int, NoError> {
         return self.rac_newValueChannelWithNilValue(0).toSignalProducer()
-            |> map { $0 as! Int }
-            |> catch { _ in return SignalProducer<Int, NoError>.empty }
+            .map { $0 as! Int }
+            .flatMapError { _ in return SignalProducer<Int, NoError>.empty }
     }
 }
 
 extension UITextField {
     func signalProducer() -> SignalProducer<String, NoError> {
         return self.rac_textSignal().toSignalProducer()
-            |> map { $0 as! String }
-            |> catch { _ in return SignalProducer<String, NoError>.empty }
+            .map { $0 as! String }
+            .flatMapError { _ in return SignalProducer<String, NoError>.empty }
     }
 }

@@ -190,7 +190,7 @@ public final class TestScheduler: DateSchedulerType {
 		}
 
 		func less(rhs: ScheduledAction) -> Bool {
-			return date.compare(rhs.date) == NSComparisonResult.OrderedAscending
+			return date.compare(rhs.date) == .OrderedAscending
 		}
 	}
 
@@ -219,7 +219,7 @@ public final class TestScheduler: DateSchedulerType {
 	private func schedule(action: ScheduledAction) -> Disposable {
 		lock.lock()
 		scheduledActions.append(action)
-		scheduledActions.sort { $0.less($1) }
+		scheduledActions.sortInPlace { $0.less($1) }
 		lock.unlock()
 
 		return ActionDisposable {
@@ -292,11 +292,11 @@ public final class TestScheduler: DateSchedulerType {
 	public func advanceToDate(newDate: NSDate) {
 		lock.lock()
 
-		assert(currentDate.compare(newDate) != NSComparisonResult.OrderedDescending)
+		assert(currentDate.compare(newDate) != .OrderedDescending)
 		_currentDate = newDate
 
 		while scheduledActions.count > 0 {
-			if newDate.compare(scheduledActions[0].date) == NSComparisonResult.OrderedAscending {
+			if newDate.compare(scheduledActions[0].date) == .OrderedAscending {
 				break
 			}
 
@@ -311,6 +311,6 @@ public final class TestScheduler: DateSchedulerType {
 	/// Dequeues and executes all scheduled actions, leaving the scheduler's
 	/// date at `NSDate.distantFuture()`.
 	public func run() {
-		advanceToDate(NSDate.distantFuture() as! NSDate)
+		advanceToDate(NSDate.distantFuture())
 	}
 }
