@@ -13,7 +13,7 @@ class ManagePlayersViewModel {
     // Inputs
     let active = MutableProperty(false)
     let playerName = MutableProperty("")
-    let refreshSink: Event<Void, NoError> -> ()
+    let refreshSink: Observer<Void, NoError>
 
     // Outputs
     let title: String
@@ -31,9 +31,9 @@ class ManagePlayersViewModel {
     }()
 
     private let store: Store
-    private let contentChangesSink: Event<Changeset, NoError> -> ()
-    private let isLoadingSink: Event<Bool, NoError> -> ()
-    private let alertMessageSink: Event<String, NoError> -> ()
+    private let contentChangesSink: Observer<Changeset, NoError>
+    private let isLoadingSink: Observer<Bool, NoError>
+    private let alertMessageSink: Observer<String, NoError>
     private let disabledPlayers: Set<Player>
 
     private var players: [Player]
@@ -73,21 +73,21 @@ class ManagePlayersViewModel {
             .observe(refreshSink)
 
         refreshSignal
-            .on(next: { _ in sendNext(isLoadingSink, true) })
+            .on(next: { _ in isLoadingSink.sendNext(true) })
             .flatMap(.Latest, transform: { _ in
                 return store.fetchPlayers()
                     .flatMapError { error in
-                        sendNext(alertMessageSink, error.localizedDescription)
+                        alertMessageSink.sendNext(error.localizedDescription)
                         return SignalProducer(value: [])
                     }
             })
-            .on(next: { _ in sendNext(isLoadingSink, false) })
+            .on(next: { _ in isLoadingSink.sendNext(false) })
             .combinePrevious([]) // Preserve history to calculate changeset
             .startWithNext({ [weak self] (oldPlayers, newPlayers) in
                 self?.players = newPlayers
                 if let sink = self?.contentChangesSink {
                     let changeset = Changeset(oldItems: oldPlayers, newItems: newPlayers)
-                    sendNext(sink, changeset)
+                    sink.sendNext(changeset)
                 }
             })
 

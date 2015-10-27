@@ -12,7 +12,7 @@ class RankingsViewModel {
 
     // Inputs
     let active = MutableProperty(false)
-    let refreshSink: Event<Void, NoError> -> ()
+    let refreshSink: Observer<Void, NoError>
 
     // Outputs
     let title: String
@@ -21,9 +21,9 @@ class RankingsViewModel {
     let alertMessageSignal: Signal<String, NoError>
 
     private let store: Store
-    private let contentChangesSink: Event<Changeset, NoError> -> ()
-    private let isLoadingSink: Event<Bool, NoError> -> ()
-    private let alertMessageSink: Event<String, NoError> -> ()
+    private let contentChangesSink: Observer<Changeset, NoError>
+    private let isLoadingSink: Observer<Bool, NoError>
+    private let alertMessageSink: Observer<String, NoError>
 
     private var rankings: [Ranking]
 
@@ -55,21 +55,21 @@ class RankingsViewModel {
             .start(refreshSink)
 
         refreshSignal
-            .on(next: { _ in sendNext(isLoadingSink, true) })
+            .on(next: { _ in isLoadingSink.sendNext(true) })
             .flatMap(.Latest, transform: { _ in
                 return store.fetchRankings()
                     .flatMapError { error in
-                        sendNext(alertMessageSink, error.localizedDescription)
+                        alertMessageSink.sendNext(error.localizedDescription)
                         return SignalProducer(value: [])
                 }
             })
-            .on(next: { _ in sendNext(isLoadingSink, false) })
+            .on(next: { _ in isLoadingSink.sendNext(false) })
             .combinePrevious([]) // Preserve history to calculate changeset
             .startWithNext({ [weak self] (oldRankings, newRankings) in
                 self?.rankings = newRankings
                 if let sink = self?.contentChangesSink {
                     let changeset = Changeset(oldItems: oldRankings, newItems: newRankings)
-                    sendNext(sink, changeset)
+                    sink.sendNext(changeset)
                 }
             })
     }

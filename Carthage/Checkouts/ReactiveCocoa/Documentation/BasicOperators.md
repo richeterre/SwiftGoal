@@ -38,10 +38,10 @@ types will be referred to by name.
   1. [Merging](#merging)
   1. [Switching to the latest](#switching-to-the-latest)
 
-**[Handling errors](#handling-errors)**
+**[Handling failures](#handling-failures)**
 
-  1. [Catching errors](#catch)
-  1. [Mapping errors](#mapping-error)
+  1. [Catching failures](#catch)
+  1. [Mapping errors](#mapping-errors)
   1. [Retrying](#retrying)
 
 ## Performing side effects with event streams
@@ -54,32 +54,35 @@ types will be referred to by name.
 signal.observe(Signal.Observer { event in
     switch event {
     case let .Next(next):
-        println("Next: \(next)")
-    case let .Error(error):
-        println("Error: \(error)")
+        print("Next: \(next)")
+    case let .Failed(error):
+        print("Failed: \(error)")
     case .Completed:
-        println("Completed")
+        print("Completed")
     case .Interrupted:
-        println("Interrupted")
+        print("Interrupted")
     }
 })
 ```
 
-Alternatively, callbacks for the `Next`, `Error`, `Completed` and `Interrupted` events can be provided which will be called when a corresponding event occurs.
+Alternatively, callbacks for the `Next`, `Failed`, `Completed` and `Interrupted` events can be provided which will be called when a corresponding event occurs.
 
 ```Swift
-signal.observe(next: { next in
-    println("Next: \(next)")
-}, error: { error in
-    println("Error: \(error)")
-}, completed: {
-    println("Completed")
-}, interrupted: {
-    println("Interrupted")
-})
+signal.observeNext { next in 
+  print("Next: \(next)") 
+}
+signal.observeFailed { error in
+  print("Failed: \(error)")
+}
+signal.observeCompleted { 
+  print("Completed") 
+}
+signal.observeInterrupted { 
+  print("Interrupted")
+}
 ```
 
-Note that it is not necessary to provide all four parameters - all of them are optional, you only need to provide callbacks for the events you care about.
+Note that it is not necessary to observe all four types of event - all of them are optional, you only need to provide callbacks for the events you care about.
 
 ### Injecting effects
 
@@ -88,21 +91,21 @@ Side effects can be injected on a `SignalProducer` with the `on` operator withou
 ```Swift
 let producer = signalProducer
     .on(started: {
-        println("Started")
+        print("Started")
     }, event: { event in
-        println("Event: \(event)")
-    }, error: { error in
-        println("Error: \(error)")
+        print("Event: \(event)")
+    }, failed: { error in
+        print("Failed: \(error)")
     }, completed: {
-        println("Completed")
+        print("Completed")
     }, interrupted: {
-        println("Interrupted")
+        print("Interrupted")
     }, terminated: {
-        println("Terminated")
+        print("Terminated")
     }, disposed: {
-        println("Disposed")
-    }, next: { next in
-        println("Next: \(next)")
+        print("Disposed")
+    }, next: { value in
+        print("Next: \(value)")
     })
 ```
 
@@ -131,15 +134,15 @@ The `map` operator is used to transform the values in a event stream, creating
 a new stream with the results.
 
 ```Swift
-let (signal, sink) = Signal<String, NoError>.pipe()
+let (signal, observer) = Signal<String, NoError>.pipe()
 
 signal
     .map { string in string.uppercaseString }
-    .observe(next: println)
+    .observeNext { next in print(next) }
 
-sendNext(sink, "a")     // Prints A
-sendNext(sink, "b")     // Prints B
-sendNext(sink, "c")     // Prints C
+observer.sendNext("a")     // Prints A
+observer.sendNext("b")     // Prints B
+observer.sendNext("c")     // Prints C
 ```
 
 [Interactive visualisation of the `map` operator.](http://neilpa.me/rac-marbles/#map)
@@ -150,16 +153,16 @@ The `filter` operator is used to only include values in an event stream that
 satisfy a predicate.
 
 ```Swift
-let (signal, sink) = Signal<Int, NoError>.pipe()
+let (signal, observer) = Signal<Int, NoError>.pipe()
 
 signal
     .filter { number in number % 2 == 0 }
-    .observe(next: println)
+    .observeNext { next in print(next) }
 
-sendNext(sink, 1)     // Not printed
-sendNext(sink, 2)     // Prints 2
-sendNext(sink, 3)     // Not printed
-sendNext(sink, 4)     // prints 4
+observer.sendNext(1)     // Not printed
+observer.sendNext(2)     // Prints 2
+observer.sendNext(3)     // Not printed
+observer.sendNext(4)     // prints 4
 ```
 
 [Interactive visualisation of the `filter` operator.](http://neilpa.me/rac-marbles/#filter)
@@ -171,16 +174,16 @@ combined value. Note that the final value is only sent after the input stream
 completes.
 
 ```Swift
-let (signal, sink) = Signal<Int, NoError>.pipe()
+let (signal, observer) = Signal<Int, NoError>.pipe()
 
 signal
     .reduce(1) { $0 * $1 }
-    .observe(next: println)
+    .observeNext { next in print(next) }
 
-sendNext(sink, 1)     // nothing printed
-sendNext(sink, 2)     // nothing printed
-sendNext(sink, 3)     // nothing printed
-sendCompleted(sink)   // prints 6
+observer.sendNext(1)     // nothing printed
+observer.sendNext(2)     // nothing printed
+observer.sendNext(3)     // nothing printed
+observer.sendCompleted()   // prints 6
 ```
 
 The `collect` operator is used to aggregate a event stream’s values into
@@ -188,13 +191,16 @@ a single array value. Note that the final value is only sent after the input
 stream completes.
 
 ```Swift
-let (signal, sink) = Signal<Int, NoError>.pipe()
-signal.collect().observe(next: println)
+let (signal, observer) = Signal<Int, NoError>.pipe()
 
-sendNext(sink, 1)     // nothing printed
-sendNext(sink, 2)     // nothing printed
-sendNext(sink, 3)     // nothing printed
-sendCompleted(sink)   // prints [1, 2, 3]
+signal
+    .collect()
+    .observeNext { next in print(next) }
+
+observer.sendNext(1)     // nothing printed
+observer.sendNext(2)     // nothing printed
+observer.sendNext(3)     // nothing printed
+observer.sendCompleted()   // prints [1, 2, 3]
 ```
 
 [Interactive visualisation of the `reduce` operator.](http://neilpa.me/rac-marbles/#reduce)
@@ -214,20 +220,21 @@ least one value. After that, new values on any of the inputs will result in
 a new value on the output.
 
 ```Swift
-let (numbersSignal, numbersSink) = Signal<Int, NoError>.pipe()
-let (lettersSignal, lettersSink) = Signal<String, NoError>.pipe()
+let (numbersSignal, numbersObserver) = Signal<Int, NoError>.pipe()
+let (lettersSignal, lettersObserver) = Signal<String, NoError>.pipe()
 
-combineLatest(numbersSignal, lettersSignal)
-    .observe(next: println, completed: { println("Completed") })
+let signal = combineLatest(numbersSignal, lettersSignal)
+signal.observeNext { next in print("Next: \(next)") }
+signal.observeCompleted { print("Completed") }
 
-sendNext(numbersSink, 0)    // nothing printed
-sendNext(numbersSink, 1)    // nothing printed
-sendNext(lettersSink, "A")  // prints (1, A)
-sendNext(numbersSink, 2)    // prints (2, A)
-sendCompleted(numbersSink)  // nothing printed
-sendNext(lettersSink, "B")  // prints (2, B)
-sendNext(lettersSink, "C")  // prints (2, C)
-sendCompleted(lettersSink)  // prints "Completed"
+numbersObserver.sendNext(0)      // nothing printed
+numbersObserver.sendNext(1)      // nothing printed
+lettersObserver.sendNext("A")    // prints (1, A)
+numbersObserver.sendNext(2)      // prints (2, A)
+numbersObserver.sendCompleted()  // nothing printed
+lettersObserver.sendNext("B")    // prints (2, B)
+lettersObserver.sendNext("C")    // prints (2, C)
+lettersObserver.sendCompleted()  // prints "Completed"
 ```
 
 The `combineLatestWith` operator works in the same way, but as an operator.
@@ -243,19 +250,20 @@ That means the Nth value of the output stream cannot be sent until each input
 has sent at least N values.
 
 ```Swift
-let (numbersSignal, numbersSink) = Signal<Int, NoError>.pipe()
-let (lettersSignal, lettersSink) = Signal<String, NoError>.pipe()
+let (numbersSignal, numbersObserver) = Signal<Int, NoError>.pipe()
+let (lettersSignal, lettersObserver) = Signal<String, NoError>.pipe()
 
-zip(numbersSignal, lettersSignal)
-    .observe(next: println, completed: { println("Completed") })
+let signal = zip(numbersSignal, lettersSignal)
+signal.observeNext { next in print("Next: \(next)") }
+signal.observeCompleted { print("Completed") }
 
-sendNext(numbersSink, 0)    // nothing printed
-sendNext(numbersSink, 1)    // nothing printed
-sendNext(lettersSink, "A")  // prints (0, A)
-sendNext(numbersSink, 2)    // nothing printed
-sendCompleted(numbersSink)  // nothing printed
-sendNext(lettersSink, "B")  // prints (1, B)
-sendNext(lettersSink, "C")  // prints (2, C) & "Completed"
+numbersObserver.sendNext(0)      // nothing printed
+numbersObserver.sendNext(1)      // nothing printed
+lettersObserver.sendNext("A")    // prints (0, A)
+numbersObserver.sendNext(2)      // nothing printed
+numbersObserver.sendCompleted()  // nothing printed
+lettersObserver.sendNext("B")    // prints (1, B)
+lettersObserver.sendNext("C")    // prints (2, C) & "Completed"
 
 ```
 
@@ -292,52 +300,52 @@ Note, how the values interleave and which values are even included in the result
 
 ### Merging
 
-The `.Merge` strategy immediately forwards every value of the inner `SignalProducer`s to the outer `SignalProducer`. Any error sent on the outer producer or any inner producer is immediately sent on the flattened producer and terminates it.
+The `.Merge` strategy immediately forwards every value of the inner `SignalProducer`s to the outer `SignalProducer`. Any failure sent on the outer producer or any inner producer is immediately sent on the flattened producer and terminates it.
 
 ```Swift
-let (producerA, lettersSink) = SignalProducer<String, NoError>.buffer(5)
-let (producerB, numbersSink) = SignalProducer<String, NoError>.buffer(5)
-let (signal, sink) = SignalProducer<SignalProducer<String, NoError>, NoError>.buffer(5)
+let (producerA, lettersObserver) = SignalProducer<String, NoError>.buffer(5)
+let (producerB, numbersObserver) = SignalProducer<String, NoError>.buffer(5)
+let (signal, observer) = SignalProducer<SignalProducer<String, NoError>, NoError>.buffer(5)
 
-signal.flatten(.Merge).start(next: println)
+signal.flatten(.Merge).startWithNext { next in print(next) }
 
-sendNext(sink, producerA)
-sendNext(sink, producerB)
-sendCompleted(sink)
+observer.sendNext(producerA)
+observer.sendNext(producerB)
+observer.sendCompleted()
 
-sendNext(lettersSink, "a")    // prints "a"
-sendNext(numbersSink, "1")    // prints "1"
-sendNext(lettersSink, "b")    // prints "b"
-sendNext(numbersSink, "2")    // prints "2"
-sendNext(lettersSink, "c")    // prints "c"
-sendNext(numbersSink, "3")    // prints "3"
+lettersObserver.sendNext("a")    // prints "a"
+numbersObserver.sendNext("1")    // prints "1"
+lettersObserver.sendNext("b")    // prints "b"
+numbersObserver.sendNext("2")    // prints "2"
+lettersObserver.sendNext("c")    // prints "c"
+numbersObserver.sendNext("3")    // prints "3"
 ```
 
 [Interactive visualisation of the `flatten(.Merge)` operator.](http://neilpa.me/rac-marbles/#merge)
 
 ### Concatenating
 
-The `.Concat` strategy is used to serialize work of the inner `SignalProducer`s. The outer producer is started immediately. Each subsequent producer is not started until the preceeding one has completed. Errors are immediately forwarded to the flattened producer.
+The `.Concat` strategy is used to serialize work of the inner `SignalProducer`s. The outer producer is started immediately. Each subsequent producer is not started until the preceeding one has completed. Failures are immediately forwarded to the flattened producer.
 
 ```Swift
-let (producerA, lettersSink) = SignalProducer<String, NoError>.buffer(5)
-let (producerB, numbersSink) = SignalProducer<String, NoError>.buffer(5)
-let (signal, sink) = SignalProducer<SignalProducer<String, NoError>, NoError>.buffer(5)
+let (producerA, lettersObserver) = SignalProducer<String, NoError>.buffer(5)
+let (producerB, numbersObserver) = SignalProducer<String, NoError>.buffer(5)
+let (signal, observer) = SignalProducer<SignalProducer<String, NoError>, NoError>.buffer(5)
 
-signal.flatten(.Concat).start(next: println)
+signal.flatten(.Concat).startWithNext { next in print(next) }
 
-sendNext(sink, producerA)
-sendNext(sink, producerB)
-sendCompleted(sink)
+observer.sendNext(producerA)
+observer.sendNext(producerB)
+observer.sendCompleted()
 
-sendNext(numbersSink, "1")    // nothing printed
-sendNext(lettersSink, "a")    // prints "a"
-sendNext(lettersSink, "b")    // prints "b"
-sendNext(numbersSink, "2")    // nothing printed
-sendNext(lettersSink, "c")    // prints "c"
-sendCompleted(lettersSink)    // prints "1", "2"
-sendNext(numbersSink, "3")    // prints "3"
-sendCompleted(numbersSink)
+numbersObserver.sendNext("1")    // nothing printed
+lettersObserver.sendNext("a")    // prints "a"
+lettersObserver.sendNext("b")    // prints "b"
+numbersObserver.sendNext("2")    // nothing printed
+lettersObserver.sendNext("c")    // prints "c"
+lettersObserver.sendCompleted()    // prints "1", "2"
+numbersObserver.sendNext("3")    // prints "3"
+numbersObserver.sendCompleted()
 ```
 
 [Interactive visualisation of the `flatten(.Concat)` operator.](http://neilpa.me/rac-marbles/#concat)
@@ -347,78 +355,88 @@ sendCompleted(numbersSink)
 The `.Latest` strategy forwards only values from the latest input `SignalProducer`.
 
 ```Swift
-let (producerA, sinkA) = SignalProducer<String, NoError>.buffer(5)
-let (producerB, sinkB) = SignalProducer<String, NoError>.buffer(5)
-let (producerC, sinkC) = SignalProducer<String, NoError>.buffer(5)
-let (signal, sink) = SignalProducer<SignalProducer<String, NoError>, NoError>.buffer(5)
+let (producerA, observerA) = SignalProducer<String, NoError>.buffer(5)
+let (producerB, observerB) = SignalProducer<String, NoError>.buffer(5)
+let (producerC, observerC) = SignalProducer<String, NoError>.buffer(5)
+let (signal, observer) = SignalProducer<SignalProducer<String, NoError>, NoError>.buffer(5)
 
-signal.flatten(.Latest).start(next: println)
+signal.flatten(.Latest).startWithNext { next in print(next) }
 
-sendNext(sink, producerA)   // nothing printed
-sendNext(sinkC, "X")        // nothing printed
-sendNext(sinkA, "a")        // prints "a"
-sendNext(sinkB, "1")        // nothing printed
-sendNext(sink, producerB)   // prints "1"
-sendNext(sinkA, "b")        // nothing printed
-sendNext(sinkB, "2")        // prints "2"
-sendNext(sinkC, "Y")        // nothing printed
-sendNext(sinkA, "c")        // nothing printed
-sendNext(sink, producerC)   // prints "X", "Y"
-sendNext(sinkB, "3")        // nothing printed
-sendNext(sinkC, "Z")        // prints "Z"
+observer.sendNext(producerA)   // nothing printed
+observerC.sendNext("X")        // nothing printed
+observerA.sendNext("a")        // prints "a"
+observerB.sendNext("1")        // nothing printed
+observer.sendNext(producerB)   // prints "1"
+observerA.sendNext("b")        // nothing printed
+observerB.sendNext("2")        // prints "2"
+observerC.sendNext("Y")        // nothing printed
+observerA.sendNext("c")        // nothing printed
+observer.sendNext(producerC)   // prints "X", "Y"
+observerB.sendNext("3")        // nothing printed
+observerC.sendNext("Z")        // prints "Z"
 ```
 
-## Handling errors
+## Handling failures
 
-These operators are used to handle errors that might occur on an event stream.
+These operators are used to handle failures that might occur on an event stream.
 
-### Catching errors
+### Catching failures
 
-The `catch` operator catches any error that may occur on the input `SignalProducer`, then starts a new `SignalProducer` in its place.
+The `flatMapError` operator catches any failure that may occur on the input `SignalProducer`, then starts a new `SignalProducer` in its place.
 
 ```Swift
-let (producer, sink) = SignalProducer<String, NSError>.buffer(5)
+let (producer, observer) = SignalProducer<String, NSError>.buffer(5)
 let error = NSError(domain: "domain", code: 0, userInfo: nil)
 
 producer
-    .catch { error in SignalProducer<String, NSError>(value: "Default") }
-    .start(next: println)
+    .flatMapError { _ in SignalProducer<String, NoError>(value: "Default") }
+    .startWithNext { next in print(next) }
 
 
-sendNext(sink, "First")     // prints "First"
-sendNext(sink, "Second")    // prints "Second"
-sendError(sink, error)      // prints "Default"
+observer.sendNext("First")     // prints "First"
+observer.sendNext("Second")    // prints "Second"
+observer.sendFailed(error)     // prints "Default"
 ```
 
 ### Retrying
 
-The `retry` operator will restart the original `SignalProducer` on error up to `count` times.
+The `retry` operator will restart the original `SignalProducer` on failure up to `count` times.
 
 ```Swift
 var tries = 0
 let limit = 2
 let error = NSError(domain: "domain", code: 0, userInfo: nil)
-let producer = SignalProducer<String, NSError> { (sink, _) in
+let producer = SignalProducer<String, NSError> { (observer, _) in
     if tries++ < limit {
-        sendError(sink, error)
+        observer.sendFailed(error)
     } else {
-        sendNext(sink, "Success")
-        sendCompleted(sink)
+        observer.sendNext("Success")
+        observer.sendCompleted()
     }
 }
 
 producer
-    .on(error: {e in println("Error")})             // prints "Error" twice
+    .on(failed: {e in print("Failure")})    // prints "Failure" twice
     .retry(2)
-    .start(next: println,                           // prints "Success"
-          error: { _ in println("Signal Error")})
+    .start { event in
+        switch event {
+        case let .Next(next):
+            print(next)                     // prints "Success"
+        case let .Failed(error):
+            print("Failed: \(error)")
+        case .Completed:
+            print("Completed")
+        case .Interrupted:
+            print("Interrupted")
+        }
+    }
 ```
 
-If the `SignalProducer` does not succeed after `count` tries, the resulting `SignalProducer` will fail. E.g., if  `retry(1)` is used in the example above instead of `retry(2)`, `"Signal Error"` will be printed instead of `"Success"`.
+If the `SignalProducer` does not succeed after `count` tries, the resulting `SignalProducer` will fail. E.g., if  `retry(1)` is used in the example above instead of `retry(2)`, `"Signal Failure"` will be printed instead of `"Success"`.
 
 ### Mapping errors
 
-The `mapError` operator transforms any error in an event stream into a new error. 
+The `mapError` operator transforms the error of any failure in an event stream into a new error.
 
 ```Swift
 enum CustomError: String, ErrorType {
@@ -435,7 +453,7 @@ enum CustomError: String, ErrorType {
     }
 }
 
-let (signal, sink) = Signal<String, NSError>.pipe()
+let (signal, observer) = Signal<String, NSError>.pipe()
 
 signal
     .mapError { (error: NSError) -> CustomError in
@@ -448,25 +466,27 @@ signal
             return .Other
         }
     }
-    .observe(error: println)
+    .observeFailed { error in
+        print(error)
+    }
 
-sendError(sink, NSError(domain: "com.example.foo", code: 42, userInfo: nil))    // prints "Foo Error"
+observer.sendFailed(NSError(domain: "com.example.foo", code: 42, userInfo: nil))    // prints "Foo Error"
 ```
 
 ### Promote
 
-The `promoteErrors` operator promotes an event stream that does not generate errors into one that can. 
+The `promoteErrors` operator promotes an event stream that does not generate failures into one that can. 
 
 ```Swift
-let (numbersSignal, numbersSink) = Signal<Int, NoError>.pipe()
-let (lettersSignal, lettersSink) = Signal<String, NSError>.pipe()
+let (numbersSignal, numbersObserver) = Signal<Int, NoError>.pipe()
+let (lettersSignal, lettersObserver) = Signal<String, NSError>.pipe()
 
 numbersSignal
     .promoteErrors(NSError)
     .combineLatestWith(lettersSignal)
 ```
 
-The given stream will still not _actually_ generate errors, but this is useful
+The given stream will still not _actually_ generate failures, but this is useful
 because some operators to [combine streams](#combining-event-streams) require
 the inputs to have matching error types.
 

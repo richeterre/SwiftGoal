@@ -12,7 +12,7 @@ class MatchesViewModel {
 
     // Inputs
     let active = MutableProperty(false)
-    let refreshSink: Event<Void, NoError> -> ()
+    let refreshSink: Observer<Void, NoError>
 
     // Outputs
     let title: String
@@ -29,8 +29,8 @@ class MatchesViewModel {
     }()
 
     private let store: Store
-    private let contentChangesSink: Event<Changeset, NoError> -> ()
-    private let alertMessageSink: Event<String, NoError> -> ()
+    private let contentChangesSink: Observer<Changeset, NoError>
+    private let alertMessageSink: Observer<String, NoError>
     private var matches: [Match]
 
     // MARK: - Lifecycle
@@ -71,7 +71,7 @@ class MatchesViewModel {
             .flatMap(.Latest) { _ in
                 return store.fetchMatches()
                     .flatMapError { error in
-                        sendNext(alertMessageSink, error.localizedDescription)
+                        alertMessageSink.sendNext(error.localizedDescription)
                         return SignalProducer(value: [])
                     }
             }
@@ -81,7 +81,7 @@ class MatchesViewModel {
                 self?.matches = newMatches
                 if let sink = self?.contentChangesSink {
                     let changeset = Changeset(oldItems: oldMatches, newItems: newMatches)
-                    sendNext(sink, changeset)
+                    sink.sendNext(changeset)
                 }
             })
 

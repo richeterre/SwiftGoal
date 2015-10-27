@@ -62,13 +62,13 @@ class MatchesViewController: UITableViewController, DZNEmptyDataSetDelegate, DZN
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        sendNext(isActiveSink, true)
+        isActiveSink.sendNext(true)
     }
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
 
-        sendNext(isActiveSink, false)
+        isActiveSink.sendNext(false)
     }
 
     // MARK: - Bindings
@@ -118,7 +118,7 @@ class MatchesViewController: UITableViewController, DZNEmptyDataSetDelegate, DZN
     }
 
     func refreshControlTriggered() {
-        sendNext(viewModel.refreshSink, ())
+        viewModel.refreshSink.sendNext(())
     }
 
     // MARK: DZNEmptyDataSetDelegate

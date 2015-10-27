@@ -1,4 +1,4 @@
-# 4.0 
+# 4.0
 
 **The RAC 4 APIs are work in progress**. There may be significant breaking
 changes in later alphas so be prepared for that before taking a dependency.
@@ -9,6 +9,67 @@ If you're new to the Swift API and migrating from RAC 2, start with the
 
 ReactiveCocoa 4.0 targets Swift 2 and the current focus is on leveraging the
 improvements from Swift 1.2 to provide a simpler API.
+
+## Alpha 3
+
+#### Renamed Event.Error to Event.Failed
+
+The `Error` case of `Event` has changed to `Failed`. This aims to help clarify
+the terminating nature of failure/error events and puts them in the same tense
+as other terminating cases (`Interrupted` and `Completed`). Likewise, some
+operations and parameters have been renamed (e.g. `Signal.observeError` is now
+`Signal.observeFailed`, `Observer.sendError` is now `Observer.sendFailed`).
+
+## Alpha 2
+
+#### Simplified Observer API
+
+There were two related sticking points that seemed like incidental complexity:
+the conflation of “sink” and “observer”, and the fact that `sendNext` and
+friends were free functions (didn’t autocomplete, looked weird, etc)
+
+* `Event` no longer knows about sinks or observers.
+* `Observer` is now its own thing akin to `SinkOf` but specific to `Event`s.
+There is no such thing as a sink anymore.
+* `Event.sink()` becomes a convenience initializer for `Observer`.
+* `send*` become methods on Observer
+* Convenience overloads where raw observer/sink functions were arguments so
+that they can continue to be used that way for less line noise.
+
+#### Renamed signal generic parameters
+
+The generic paramters of `Signal`, `SignalProducer`, and other related types
+have been renamed to `Value` and `Error` from `T` and `E` respectively. This
+is in-line with changes to the standard library to give more descriptive names
+to type parameters for increased clarity. This should have limited impact,
+only affecting generic, custom signal/producer extensions.
+
+#### Added flatten to all signal and producer combos
+
+Before this change, `flatten` and `flatMap` were only defined for
+signals-of-producers and producers-of-producers. After much discussion it
+was determined these should be safe for the remaining combinations of signals
+and producers. See #2449
+
+#### Added missing SignalProducer operators
+
+There were some `Signal` operators that were missing `SignalProducer`
+equivalents:
+
+* `takeUntil`
+* `combineLatestWith`
+* `sampleOn`
+* `takeUntilReplacement`
+* `zipWith`
+
+#### Renamed PropertyOf<T> to AnyProperty<T>
+
+This is in-line with changes to the standard library in Swift 2.
+
+#### Publicized Bag and Atomic
+
+`Bag` and `Atomic` are now public. These are useful when creating custom
+operators for RAC types.
 
 ## Alpha 1
 
@@ -80,14 +141,6 @@ hot `Signal` of values that need to be mapped to "work" -- `SignalProducer`.
 The addition of `flatten` and `flatMap` over signals-of-producers makes it
 easy to serialize (`Concat`) or parallelize (`Merge`) the work, or only run
 the most recent (`Latest`).
-
-#### Renaming T and E generic parameters
-
-Probably coming to later alpha. See #2212 and #2349.
-
-#### Renaming Event.Error to Event.Failed
-
-Maybe coming to a later alpha. See #2360.
 
 # 3.0
 

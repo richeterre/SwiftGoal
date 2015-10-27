@@ -54,13 +54,13 @@ class ManagePlayersViewController: UITableViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        sendNext(isActiveSink, true)
+        isActiveSink.sendNext(true)
     }
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
 
-        sendNext(isActiveSink, false)
+        isActiveSink.sendNext(false)
     }
 
     // MARK: Bindings
@@ -105,7 +105,7 @@ class ManagePlayersViewController: UITableViewController {
     }
 
     func refreshControlTriggered() {
-        sendNext(viewModel.refreshSink, ())
+        viewModel.refreshSink.sendNext(())
     }
 
     // MARK: UITableViewDataSource

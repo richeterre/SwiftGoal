@@ -72,7 +72,7 @@ class MatchesViewModelSpec: QuickSpec {
 
             context("when asked to refresh") {
                 it("fetches a list of matches") {
-                    sendNext(matchesViewModel.refreshSink, ())
+                    matchesViewModel.refreshSink.sendNext(())
                     expect(mockStore.didFetchMatches).to(beTrue())
                 }
             }
@@ -89,7 +89,7 @@ class MatchesViewModelSpec: QuickSpec {
                         })
 
                     matchesViewModel.active.value = true
-                    sendNext(matchesViewModel.refreshSink, ())
+                    matchesViewModel.refreshSink.sendNext(())
 
                     expect(loadingStates).to(equal([false, true, false, true, false]))
                 }
@@ -107,7 +107,7 @@ class MatchesViewModelSpec: QuickSpec {
                     expect(changeset?.deletions).to(beEmpty())
                     expect(changeset?.insertions).to(equal([indexPath1, indexPath2]))
 
-                    sendNext(matchesViewModel.refreshSink, ())
+                    matchesViewModel.refreshSink.sendNext(())
                     expect(changeset?.deletions).to(beEmpty())
                     expect(changeset?.insertions).to(beEmpty())
                 }

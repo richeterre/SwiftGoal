@@ -162,7 +162,7 @@ class EditMatchViewController: UIViewController {
                 } else {
                     self?.presentErrorMessage("The match could not be saved.")
                 }
-            case let .Error(error):
+            case let .Failed(error):
                 self?.presentErrorMessage(error.localizedDescription)
             default:
                 return
