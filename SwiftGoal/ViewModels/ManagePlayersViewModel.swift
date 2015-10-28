@@ -13,7 +13,7 @@ class ManagePlayersViewModel {
     // Inputs
     let active = MutableProperty(false)
     let playerName = MutableProperty("")
-    let refreshSink: Observer<Void, NoError>
+    let refreshObserver: Observer<Void, NoError>
 
     // Outputs
     let title: String
@@ -31,9 +31,9 @@ class ManagePlayersViewModel {
     }()
 
     private let store: Store
-    private let contentChangesSink: Observer<Changeset, NoError>
-    private let isLoadingSink: Observer<Bool, NoError>
-    private let alertMessageSink: Observer<String, NoError>
+    private let contentChangesObserver: Observer<Changeset, NoError>
+    private let isLoadingObserver: Observer<Bool, NoError>
+    private let alertMessageObserver: Observer<String, NoError>
     private let disabledPlayers: Set<Player>
 
     private var players: [Player]
@@ -47,54 +47,54 @@ class ManagePlayersViewModel {
         self.selectedPlayers = MutableProperty(initialPlayers)
         self.disabledPlayers = disabledPlayers
 
-        let (refreshSignal, refreshSink) = SignalProducer<Void, NoError>.buffer()
-        self.refreshSink = refreshSink
+        let (refreshSignal, refreshObserver) = SignalProducer<Void, NoError>.buffer()
+        self.refreshObserver = refreshObserver
 
-        let (contentChangesSignal, contentChangesSink) = Signal<Changeset, NoError>.pipe()
+        let (contentChangesSignal, contentChangesObserver) = Signal<Changeset, NoError>.pipe()
         self.contentChangesSignal = contentChangesSignal
-        self.contentChangesSink = contentChangesSink
+        self.contentChangesObserver = contentChangesObserver
 
-        let (isLoadingSignal, isLoadingSink) = Signal<Bool, NoError>.pipe()
+        let (isLoadingSignal, isLoadingObserver) = Signal<Bool, NoError>.pipe()
         self.isLoadingSignal = isLoadingSignal
-        self.isLoadingSink = isLoadingSink
+        self.isLoadingObserver = isLoadingObserver
 
-        let (alertMessageSignal, alertMessageSink) = Signal<String, NoError>.pipe()
+        let (alertMessageSignal, alertMessageObserver) = Signal<String, NoError>.pipe()
         self.alertMessageSignal = alertMessageSignal
-        self.alertMessageSink = alertMessageSink
+        self.alertMessageObserver = alertMessageObserver
 
         active.producer
             .filter { $0 }
             .map { _ in () }
-            .start(refreshSink)
+            .start(refreshObserver)
 
         saveAction.values
             .filter { $0 }
             .map { _ in () }
-            .observe(refreshSink)
+            .observe(refreshObserver)
 
         refreshSignal
-            .on(next: { _ in isLoadingSink.sendNext(true) })
+            .on(next: { _ in isLoadingObserver.sendNext(true) })
             .flatMap(.Latest, transform: { _ in
                 return store.fetchPlayers()
                     .flatMapError { error in
-                        alertMessageSink.sendNext(error.localizedDescription)
+                        alertMessageObserver.sendNext(error.localizedDescription)
                         return SignalProducer(value: [])
                     }
             })
-            .on(next: { _ in isLoadingSink.sendNext(false) })
+            .on(next: { _ in isLoadingObserver.sendNext(false) })
             .combinePrevious([]) // Preserve history to calculate changeset
             .startWithNext({ [weak self] (oldPlayers, newPlayers) in
                 self?.players = newPlayers
-                if let sink = self?.contentChangesSink {
+                if let observer = self?.contentChangesObserver {
                     let changeset = Changeset(oldItems: oldPlayers, newItems: newPlayers)
-                    sink.sendNext(changeset)
+                    observer.sendNext(changeset)
                 }
             })
 
         // Feed saving errors into alert message signal
         saveAction.errors
             .map { $0.localizedDescription }
-            .observe(alertMessageSink)
+            .observe(alertMessageObserver)
 
         inputIsValid <~ playerName.producer.map { $0.characters.count > 0 }
     }

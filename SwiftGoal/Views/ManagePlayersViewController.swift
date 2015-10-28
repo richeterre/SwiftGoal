@@ -12,7 +12,7 @@ import ReactiveCocoa
 class ManagePlayersViewController: UITableViewController {
 
     private let playerCellIdentifier = "PlayerCell"
-    private let (isActiveSignal, isActiveSink) = Signal<Bool, NoError>.pipe()
+    private let (isActiveSignal, isActiveObserver) = Signal<Bool, NoError>.pipe()
     private let viewModel: ManagePlayersViewModel
 
     // MARK: Lifecycle
@@ -54,13 +54,13 @@ class ManagePlayersViewController: UITableViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        isActiveSink.sendNext(true)
+        isActiveObserver.sendNext(true)
     }
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
 
-        isActiveSink.sendNext(false)
+        isActiveObserver.sendNext(false)
     }
 
     // MARK: Bindings
@@ -105,7 +105,7 @@ class ManagePlayersViewController: UITableViewController {
     }
 
     func refreshControlTriggered() {
-        viewModel.refreshSink.sendNext(())
+        viewModel.refreshObserver.sendNext(())
     }
 
     // MARK: UITableViewDataSource

@@ -13,7 +13,7 @@ import ReactiveCocoa
 class MatchesViewController: UITableViewController, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
 
     private let matchCellIdentifier = "MatchCell"
-    private let (isActiveSignal, isActiveSink) = Signal<Bool, NoError>.pipe()
+    private let (isActiveSignal, isActiveObserver) = Signal<Bool, NoError>.pipe()
     private let viewModel: MatchesViewModel
 
     // MARK: - Lifecycle
@@ -62,13 +62,13 @@ class MatchesViewController: UITableViewController, DZNEmptyDataSetDelegate, DZN
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        isActiveSink.sendNext(true)
+        isActiveObserver.sendNext(true)
     }
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
 
-        isActiveSink.sendNext(false)
+        isActiveObserver.sendNext(false)
     }
 
     // MARK: - Bindings
@@ -118,7 +118,7 @@ class MatchesViewController: UITableViewController, DZNEmptyDataSetDelegate, DZN
     }
 
     func refreshControlTriggered() {
-        viewModel.refreshSink.sendNext(())
+        viewModel.refreshObserver.sendNext(())
     }
 
     // MARK: DZNEmptyDataSetDelegate

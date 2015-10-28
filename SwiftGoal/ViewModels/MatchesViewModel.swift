@@ -12,7 +12,7 @@ class MatchesViewModel {
 
     // Inputs
     let active = MutableProperty(false)
-    let refreshSink: Observer<Void, NoError>
+    let refreshObserver: Observer<Void, NoError>
 
     // Outputs
     let title: String
@@ -29,8 +29,8 @@ class MatchesViewModel {
     }()
 
     private let store: Store
-    private let contentChangesSink: Observer<Changeset, NoError>
-    private let alertMessageSink: Observer<String, NoError>
+    private let contentChangesObserver: Observer<Changeset, NoError>
+    private let alertMessageObserver: Observer<String, NoError>
     private var matches: [Match]
 
     // MARK: - Lifecycle
@@ -40,38 +40,38 @@ class MatchesViewModel {
         self.store = store
         self.matches = []
 
-        let (refreshSignal, refreshSink) = SignalProducer<Void, NoError>.buffer()
-        self.refreshSink = refreshSink
+        let (refreshSignal, refreshObserver) = SignalProducer<Void, NoError>.buffer()
+        self.refreshObserver = refreshObserver
 
-        let (contentChangesSignal, contentChangesSink) = Signal<Changeset, NoError>.pipe()
+        let (contentChangesSignal, contentChangesObserver) = Signal<Changeset, NoError>.pipe()
         self.contentChangesSignal = contentChangesSignal
-        self.contentChangesSink = contentChangesSink
+        self.contentChangesObserver = contentChangesObserver
 
         let isLoading = MutableProperty(false)
         self.isLoading = isLoading
 
-        let (alertMessageSignal, alertMessageSink) = Signal<String, NoError>.pipe()
+        let (alertMessageSignal, alertMessageObserver) = Signal<String, NoError>.pipe()
         self.alertMessageSignal = alertMessageSignal
-        self.alertMessageSink = alertMessageSink
+        self.alertMessageObserver = alertMessageObserver
 
         // Trigger refresh when view becomes active
         active.producer
             .filter { $0 }
             .map { _ in () }
-            .start(refreshSink)
+            .start(refreshObserver)
 
         // Trigger refresh after deleting a match
         deleteAction.values
             .filter { $0 }
             .map { _ in () }
-            .observe(refreshSink)
+            .observe(refreshObserver)
 
         refreshSignal
             .on(next: { _ in isLoading.value = true })
             .flatMap(.Latest) { _ in
                 return store.fetchMatches()
                     .flatMapError { error in
-                        alertMessageSink.sendNext(error.localizedDescription)
+                        alertMessageObserver.sendNext(error.localizedDescription)
                         return SignalProducer(value: [])
                     }
             }
@@ -79,16 +79,16 @@ class MatchesViewModel {
             .combinePrevious([]) // Preserve history to calculate changeset
             .startWithNext({ [weak self] (oldMatches, newMatches) in
                 self?.matches = newMatches
-                if let sink = self?.contentChangesSink {
+                if let observer = self?.contentChangesObserver {
                     let changeset = Changeset(oldItems: oldMatches, newItems: newMatches)
-                    sink.sendNext(changeset)
+                    observer.sendNext(changeset)
                 }
             })
 
         // Feed deletion errors into alert message signal
         deleteAction.errors
             .map { $0.localizedDescription }
-            .observe(alertMessageSink)
+            .observe(alertMessageObserver)
     }
 
     // MARK: - Data Source

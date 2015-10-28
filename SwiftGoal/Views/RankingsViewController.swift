@@ -11,7 +11,7 @@ import ReactiveCocoa
 class RankingsViewController: UITableViewController {
 
     private let rankingCellIdentifier = "RankingCell"
-    private let (isActiveSignal, isActiveSink) = Signal<Bool, NoError>.pipe()
+    private let (isActiveSignal, isActiveObserver) = Signal<Bool, NoError>.pipe()
     private let viewModel: RankingsViewModel
 
     // MARK: Lifecycle
@@ -48,13 +48,13 @@ class RankingsViewController: UITableViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        isActiveSink.sendNext(true)
+        isActiveObserver.sendNext(true)
     }
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
 
-        isActiveSink.sendNext(false)
+        isActiveObserver.sendNext(false)
     }
 
     // MARK: Bindings
@@ -94,7 +94,7 @@ class RankingsViewController: UITableViewController {
     // MARK: User Interaction
 
     func refreshControlTriggered() {
-        viewModel.refreshSink.sendNext(())
+        viewModel.refreshObserver.sendNext(())
     }
 
     // MARK: UITableViewDataSource
