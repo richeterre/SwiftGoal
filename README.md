@@ -53,7 +53,7 @@ Code Checklist
 * [x] Validate player name before creating
 * [x] Validate match player counts before creating
 * [x] Move base URL to Settings for easy customization
-* [ ] Cancel network requests when the associated view becomes inactive
+* [x] Cancel network requests when the associated view becomes inactive
 * [x] Retry network requests 1 or 2 times before giving up
 * [ ] Improve algorithm that determines list changes
     * [ ] Detect match data changes
