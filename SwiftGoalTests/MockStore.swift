@@ -43,7 +43,7 @@ class MockStore: Store {
         super.init(baseURL: NSURL(string: "")!)
     }
 
-    override func fetchMatches() -> SignalProducer<[Match], NSError> {
+    override func fetchMatches(tries: Int) -> SignalProducer<[Match], NSError> {
         didFetchMatches = true
         if let matches = self.matches {
             return SignalProducer(value: matches)

@@ -41,9 +41,11 @@ class Store: NSObject {
 
     // MARK: - Matches
 
-    func fetchMatches() -> SignalProducer<[Match], NSError> {
+    func fetchMatches(tries: Int = 1) -> SignalProducer<[Match], NSError> {
+       
         let request = mutableRequestWithURL(matchesURL, method: .GET)
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
+            .retry(tries)
             .map { data, response in
                 if let json = try? NSJSONSerialization.JSONObjectWithData(data, options: []),
                     matches: [Match] = decode(json) {

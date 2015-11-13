@@ -54,7 +54,7 @@ Code Checklist
 * [x] Validate match player counts before creating
 * [x] Move base URL to Settings for easy customization
 * [ ] Cancel network requests when the associated view becomes inactive
-* [ ] Retry network requests 1 or 2 times before giving up
+* [x] Retry network requests 1 or 2 times before giving up
 * [ ] Improve algorithm that determines list changes
     * [ ] Detect match data changes
     * [ ] Add support for sections
