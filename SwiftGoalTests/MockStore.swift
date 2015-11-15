@@ -14,6 +14,7 @@ class MockStore: Store {
     var matches: [Match]? // nil is used to cause error
 
     var didFetchMatches = false
+    var numFetched = 0
     var deletedMatch: Match?
 
     init() {
@@ -43,10 +44,12 @@ class MockStore: Store {
         super.init(baseURL: NSURL(string: "")!)
     }
 
-    override func fetchMatches() -> SignalProducer<[Match], NSError> {
+    override func fetchMatches(tries: Int) -> SignalProducer<[Match], NSError> {
         didFetchMatches = true
         if let matches = self.matches {
-            return SignalProducer(value: matches)
+            return SignalProducer(value: matches).on(next: { _ in
+                self.numFetched++
+            })
         } else {
             let error = NSError(domain: "", code: 0, userInfo: nil)
             return SignalProducer(error: error)

@@ -119,7 +119,7 @@ class MatchesViewController: UITableViewController, DZNEmptyDataSetDelegate, DZN
     }
 
     func refreshControlTriggered() {
-        viewModel.refreshObserver.sendNext(())
+        viewModel.refreshObserver.sendNext(true)
     }
 
     // MARK: DZNEmptyDataSetDelegate

@@ -14,7 +14,7 @@ class MatchesViewModel {
 
     // Inputs
     let active = MutableProperty(false)
-    let refreshObserver: Observer<Void, NoError>
+    let refreshObserver: Observer<Bool, NoError>
 
     // Outputs
     let title: String
@@ -42,7 +42,7 @@ class MatchesViewModel {
         self.store = store
         self.matches = []
 
-        let (refreshSignal, refreshObserver) = SignalProducer<Void, NoError>.buffer()
+        let (refreshSignal, refreshObserver) = SignalProducer<Bool, NoError>.buffer()
         self.refreshObserver = refreshObserver
 
         let (contentChangesSignal, contentChangesObserver) = Signal<MatchChangeset, NoError>.pipe()
@@ -58,24 +58,25 @@ class MatchesViewModel {
 
         // Trigger refresh when view becomes active
         active.producer
-            .filter { $0 }
-            .map { _ in () }
             .start(refreshObserver)
 
         // Trigger refresh after deleting a match
         deleteAction.values
             .filter { $0 }
-            .map { _ in () }
             .observe(refreshObserver)
-
+        
         refreshSignal
             .on(next: { _ in isLoading.value = true })
-            .flatMap(.Latest) { _ in
-                return store.fetchMatches()
-                    .flatMapError { error in
-                        alertMessageObserver.sendNext(error.localizedDescription)
-                        return SignalProducer(value: [])
+            .flatMap(.Latest) { (isActive: Bool) -> SignalProducer<[Match], NoError> in
+                if(isActive){
+                    return store.fetchMatches()
+                        .flatMapError { error in
+                            alertMessageObserver.sendNext(error.localizedDescription)
+                            return SignalProducer(value: [])
                     }
+                } else {
+                    return SignalProducer(value: [])
+                }
             }
             .on(next: { _ in isLoading.value = false })
             .combinePrevious([]) // Preserve history to calculate changeset

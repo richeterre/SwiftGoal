@@ -72,7 +72,7 @@ class MatchesViewModelSpec: QuickSpec {
 
             context("when asked to refresh") {
                 it("fetches a list of matches") {
-                    matchesViewModel.refreshObserver.sendNext(())
+                    matchesViewModel.refreshObserver.sendNext(true)
                     expect(mockStore.didFetchMatches).to(beTrue())
                 }
             }
@@ -89,7 +89,7 @@ class MatchesViewModelSpec: QuickSpec {
                         })
 
                     matchesViewModel.active.value = true
-                    matchesViewModel.refreshObserver.sendNext(())
+                    matchesViewModel.refreshObserver.sendNext(true)
 
                     expect(loadingStates).to(equal([false, true, false, true, false]))
                 }
@@ -107,7 +107,7 @@ class MatchesViewModelSpec: QuickSpec {
                     expect(changeset?.deletions).to(beEmpty())
                     expect(changeset?.insertions).to(equal([indexPath1, indexPath2]))
 
-                    matchesViewModel.refreshObserver.sendNext(())
+                    matchesViewModel.refreshObserver.sendNext(true)
                     expect(changeset?.deletions).to(beEmpty())
                     expect(changeset?.insertions).to(beEmpty())
                 }
@@ -124,6 +124,13 @@ class MatchesViewModelSpec: QuickSpec {
                 matchesViewModel.active.value = true
 
                 expect(didRaiseAlert).to(beTrue())
+            }
+            
+            it("cancel network requests when the associated view becomes inactive") {
+                matchesViewModel.active.value = true
+                matchesViewModel.active.value = false
+                
+                expect(mockStore.numFetched).to(equal(1))
             }
 
             it("deletes the correct match when asked to") {
