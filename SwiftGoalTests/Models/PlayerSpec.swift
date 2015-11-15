@@ -43,5 +43,30 @@ class PlayerSpec: QuickSpec {
                 }
             }
         }
+
+        describe("An array of Players") {
+            context("when compared by content to another array of Players") {
+
+                let p1 = Player(identifier: "a", name: "John")
+                let p2 = Player(identifier: "b", name: "Mary")
+
+                it("does not match when item counts differ") {
+                    expect(Player.contentMatches([p1, p2], [p1])).to(beFalse())
+                }
+
+                it("does not match when the item order differs") {
+                    expect(Player.contentMatches([p1, p2], [p2, p1])).to(beFalse())
+                }
+
+                it("does not match when player contents differ") {
+                    let p3 = Player(identifier: "a", name: "Jack")
+                    expect(Player.contentMatches([p1], [p3])).to(beFalse())
+                }
+
+                it("matches when the contents of all players match") {
+                    expect(Player.contentMatches([p1, p2], [p1, p2])).to(beTrue())
+                }
+            }
+        }
     }
 }
