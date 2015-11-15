@@ -55,9 +55,7 @@ Code Checklist
 * [x] Move base URL to Settings for easy customization
 * [ ] Cancel network requests when the associated view becomes inactive
 * [ ] Retry network requests 1 or 2 times before giving up
-* [-] Improve algorithm that determines list changes
-    * [x] Detect match data changes
-    * [ ] Add support for sections
+* [x] Detect and animate match data changes
 * [x] Write tests for models
 * [ ] Write tests for view models, helpers and store
 * [ ] Deduplicate `isActiveSignal` code on view controllers (via a protocol extension?)
