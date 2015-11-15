@@ -79,7 +79,7 @@ __Encapsulation of state:__ As suggested by Gary Bernhardt in his famous talk [â
 Acknowledgements
 ----------------
 
-This project is kindly sponsored by [Futurice][futurice] as part of its fantastic [open-source program][spice-program]. Kiitos!
+This project is kindly sponsored by [Futurice][futurice] as part of their fantastic [open-source program][spice-program]. Kiitos!
 
 The icons within the app are courtesy of [Icons8][icons8] â€“ a resource well worth checking out.
 
