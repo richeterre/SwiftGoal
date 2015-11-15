@@ -76,13 +76,6 @@ __Encapsulation of state:__ As suggested by Gary Bernhardt in his famous talk [â
 [mvc-tweet]: https://twitter.com/colin_campbell/status/293167951132098560
 [boundaries-talk]: https://www.destroyallsoftware.com/talks/boundaries
 
-Open Issues
------------
-
-* What does match identity mean? Is `first.identifier == second.identifier` enough?
-    * Pro: Allows detection of match data changes via separate function, e.g. to animate list
-    * Con: Breaks the concept of value-type identity, if two match structs differ only in data
-
 Acknowledgements
 ----------------
 
