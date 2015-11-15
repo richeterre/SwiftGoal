@@ -85,7 +85,7 @@ class EditMatchViewController: UIViewController {
         self.awayGoalsStepper = awayGoalsStepper
 
         let homePlayersButton = UIButton(type: .System)
-        homePlayersButton.titleLabel?.font = UIFont(name: "OpenSans", size: 17)
+        homePlayersButton.titleLabel?.font = UIFont(name: "OpenSans", size: 15)
         homePlayersButton.addTarget(self,
             action: Selector("homePlayersButtonTapped"),
             forControlEvents: .TouchUpInside
@@ -94,7 +94,7 @@ class EditMatchViewController: UIViewController {
         self.homePlayersButton = homePlayersButton
 
         let awayPlayersButton = UIButton(type: .System)
-        awayPlayersButton.titleLabel?.font = UIFont(name: "OpenSans", size: 17)
+        awayPlayersButton.titleLabel?.font = UIFont(name: "OpenSans", size: 15)
         awayPlayersButton.addTarget(self,
             action: Selector("awayPlayersButtonTapped"),
             forControlEvents: .TouchUpInside
@@ -176,7 +176,7 @@ class EditMatchViewController: UIViewController {
         let superview = self.view
 
         homeGoalsLabel.snp_makeConstraints { make in
-            make.trailing.equalTo(goalSeparatorLabel.snp_leading).offset(-20)
+            make.trailing.equalTo(goalSeparatorLabel.snp_leading).offset(-10)
             make.baseline.equalTo(goalSeparatorLabel.snp_baseline)
         }
 
@@ -186,28 +186,28 @@ class EditMatchViewController: UIViewController {
         }
 
         awayGoalsLabel.snp_makeConstraints { make in
-            make.leading.equalTo(goalSeparatorLabel.snp_trailing).offset(20)
+            make.leading.equalTo(goalSeparatorLabel.snp_trailing).offset(10)
             make.baseline.equalTo(goalSeparatorLabel.snp_baseline)
         }
 
         homeGoalsStepper.snp_makeConstraints { make in
-            make.top.equalTo(goalSeparatorLabel.snp_baseline).offset(20)
+            make.top.equalTo(goalSeparatorLabel.snp_bottom).offset(10)
             make.trailing.equalTo(homeGoalsLabel.snp_trailing)
         }
 
         awayGoalsStepper.snp_makeConstraints { make in
-            make.top.equalTo(goalSeparatorLabel.snp_baseline).offset(20)
+            make.top.equalTo(goalSeparatorLabel.snp_bottom).offset(10)
             make.leading.equalTo(awayGoalsLabel.snp_leading)
         }
 
         homePlayersButton.snp_makeConstraints { make in
-            make.top.equalTo(homeGoalsStepper.snp_bottom).offset(40)
+            make.top.equalTo(homeGoalsStepper.snp_bottom).offset(30)
             make.leading.greaterThanOrEqualTo(superview.snp_leadingMargin)
             make.trailing.equalTo(homeGoalsLabel.snp_trailing)
         }
 
         awayPlayersButton.snp_makeConstraints { make in
-            make.top.equalTo(awayGoalsStepper.snp_bottom).offset(40)
+            make.top.equalTo(awayGoalsStepper.snp_bottom).offset(30)
             make.leading.equalTo(awayGoalsLabel.snp_leading)
             make.trailing.lessThanOrEqualTo(superview.snp_trailingMargin)
         }
