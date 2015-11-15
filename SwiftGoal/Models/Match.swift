@@ -22,6 +22,15 @@ struct Match {
         self.homeGoals = homeGoals
         self.awayGoals = awayGoals
     }
+
+    // TODO: Decide if content matching should include identifier or not
+    static func contentMatches(lhs: Match, _ rhs: Match) -> Bool {
+        return lhs.identifier == rhs.identifier
+            && Player.contentMatches(lhs.homePlayers, rhs.homePlayers)
+            && Player.contentMatches(lhs.awayPlayers, rhs.awayPlayers)
+            && lhs.homeGoals == rhs.homeGoals
+            && lhs.awayGoals == rhs.awayGoals
+    }
 }
 
 // MARK: Equatable

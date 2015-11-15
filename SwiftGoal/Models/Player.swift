@@ -16,6 +16,23 @@ struct Player {
         self.identifier = identifier
         self.name = name
     }
+
+    static func contentMatches(lhs: Player, _ rhs: Player) -> Bool {
+        return lhs.identifier == rhs.identifier
+            && lhs.name == rhs.name
+    }
+
+    static func contentMatches(lhs: [Player], _ rhs: [Player]) -> Bool {
+        if lhs.count != rhs.count { return false }
+
+        for (index, player) in lhs.enumerate() {
+            if !contentMatches(rhs[index], player) {
+                return false
+            }
+        }
+
+        return true
+    }
 }
 
 // MARK: Equatable

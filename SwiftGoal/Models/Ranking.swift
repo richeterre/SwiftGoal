@@ -11,6 +11,11 @@ import Argo
 struct Ranking {
     let player: Player
     let rating: Float
+
+    static func contentMatches(lhs: Ranking, _ rhs: Ranking) -> Bool {
+        return Player.contentMatches(lhs.player, rhs.player)
+            && lhs.rating == rhs.rating
+    }
 }
 
 // MARK: Equatable

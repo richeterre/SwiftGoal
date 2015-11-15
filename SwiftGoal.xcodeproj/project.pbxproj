@@ -23,6 +23,9 @@
 		0F79DAEB1BCDBB170073988A /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F79DAE91BCDBB170073988A /* Quick.framework */; };
 		0F79DAEC1BCDBB250073988A /* Nimble.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0F79DAE81BCDBB170073988A /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0F79DAED1BCDBB250073988A /* Quick.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0F79DAE91BCDBB170073988A /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0F89040C1BF8B2B4007135C9 /* MatchSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F89040B1BF8B2B4007135C9 /* MatchSpec.swift */; };
+		0F89040E1BF8B907007135C9 /* PlayerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F89040D1BF8B907007135C9 /* PlayerSpec.swift */; };
+		0F8904101BF8BACF007135C9 /* RankingSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F89040F1BF8BACF007135C9 /* RankingSpec.swift */; };
 		0F98C4F51B658B8B00C39E4C /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0F98C4F41B658B8B00C39E4C /* Settings.bundle */; };
 		0F9D10B31B614099002B9A20 /* RankingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F9D10B21B614099002B9A20 /* RankingsViewController.swift */; };
 		0F9D10B51B6140FC002B9A20 /* RankingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F9D10B41B6140FC002B9A20 /* RankingsViewModel.swift */; };
@@ -89,6 +92,9 @@
 		0F74F7161B0009B300F963E0 /* Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		0F79DAE81BCDBB170073988A /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
 		0F79DAE91BCDBB170073988A /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
+		0F89040B1BF8B2B4007135C9 /* MatchSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchSpec.swift; sourceTree = "<group>"; };
+		0F89040D1BF8B907007135C9 /* PlayerSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerSpec.swift; sourceTree = "<group>"; };
+		0F89040F1BF8BACF007135C9 /* RankingSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RankingSpec.swift; sourceTree = "<group>"; };
 		0F98C4F41B658B8B00C39E4C /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		0F9D10B21B614099002B9A20 /* RankingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RankingsViewController.swift; sourceTree = "<group>"; };
 		0F9D10B41B6140FC002B9A20 /* RankingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RankingsViewModel.swift; sourceTree = "<group>"; };
@@ -263,6 +269,9 @@
 			isa = PBXGroup;
 			children = (
 				0F74F7051B0002C400F963E0 /* ChangesetSpec.swift */,
+				0F89040B1BF8B2B4007135C9 /* MatchSpec.swift */,
+				0F89040D1BF8B907007135C9 /* PlayerSpec.swift */,
+				0F89040F1BF8BACF007135C9 /* RankingSpec.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -448,9 +457,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				0F74F7061B0002C400F963E0 /* ChangesetSpec.swift in Sources */,
+				0F8904101BF8BACF007135C9 /* RankingSpec.swift in Sources */,
 				0FFA97041B76C9D900DD4F58 /* EditMatchViewModelSpec.swift in Sources */,
 				0FB81C491B72C44A00432698 /* MatchesViewModelSpec.swift in Sources */,
 				0FB81C4C1B72CAFE00432698 /* MockStore.swift in Sources */,
+				0F89040C1BF8B2B4007135C9 /* MatchSpec.swift in Sources */,
+				0F89040E1BF8B907007135C9 /* PlayerSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
