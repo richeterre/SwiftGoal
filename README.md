@@ -55,10 +55,11 @@ Code Checklist
 * [x] Move base URL to Settings for easy customization
 * [ ] Cancel network requests when the associated view becomes inactive
 * [ ] Retry network requests 1 or 2 times before giving up
-* [ ] Improve algorithm that determines list changes
-    * [ ] Detect match data changes
+* [-] Improve algorithm that determines list changes
+    * [x] Detect match data changes
     * [ ] Add support for sections
-* [ ] Write tests for view models, models, helpers and store
+* [x] Write tests for models
+* [ ] Write tests for view models, helpers and store
 * [ ] Deduplicate `isActiveSignal` code on view controllers (via a protocol extension?)
 * [ ] Create watchOS 2 app for quick match entry
 * [ ] Drop Auto Layout [library][snapkit] in favor of `UIStackView` and `NSLayoutAnchor`
