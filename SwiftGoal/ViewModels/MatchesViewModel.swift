@@ -10,13 +10,15 @@ import ReactiveCocoa
 
 class MatchesViewModel {
 
+    typealias MatchChangeset = Changeset<Match>
+
     // Inputs
     let active = MutableProperty(false)
     let refreshObserver: Observer<Void, NoError>
 
     // Outputs
     let title: String
-    let contentChangesSignal: Signal<Changeset, NoError>
+    let contentChangesSignal: Signal<MatchChangeset, NoError>
     let isLoading: MutableProperty<Bool>
     let alertMessageSignal: Signal<String, NoError>
 
@@ -29,7 +31,7 @@ class MatchesViewModel {
     }()
 
     private let store: Store
-    private let contentChangesObserver: Observer<Changeset, NoError>
+    private let contentChangesObserver: Observer<MatchChangeset, NoError>
     private let alertMessageObserver: Observer<String, NoError>
     private var matches: [Match]
 
@@ -43,7 +45,7 @@ class MatchesViewModel {
         let (refreshSignal, refreshObserver) = SignalProducer<Void, NoError>.buffer()
         self.refreshObserver = refreshObserver
 
-        let (contentChangesSignal, contentChangesObserver) = Signal<Changeset, NoError>.pipe()
+        let (contentChangesSignal, contentChangesObserver) = Signal<MatchChangeset, NoError>.pipe()
         self.contentChangesSignal = contentChangesSignal
         self.contentChangesObserver = contentChangesObserver
 
@@ -80,7 +82,11 @@ class MatchesViewModel {
             .startWithNext({ [weak self] (oldMatches, newMatches) in
                 self?.matches = newMatches
                 if let observer = self?.contentChangesObserver {
-                    let changeset = Changeset(oldItems: oldMatches, newItems: newMatches)
+                    let changeset = Changeset(
+                        oldItems: oldMatches,
+                        newItems: newMatches,
+                        contentMatches: Match.contentMatches
+                    )
                     observer.sendNext(changeset)
                 }
             })

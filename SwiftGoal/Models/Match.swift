@@ -39,10 +39,6 @@ extension Match: Equatable {}
 
 func ==(lhs: Match, rhs: Match) -> Bool {
     return lhs.identifier == rhs.identifier
-        && lhs.homePlayers == rhs.homePlayers
-        && lhs.awayPlayers == rhs.awayPlayers
-        && lhs.homeGoals == rhs.homeGoals
-        && lhs.awayGoals == rhs.awayGoals
 }
 
 // MARK: Decodable

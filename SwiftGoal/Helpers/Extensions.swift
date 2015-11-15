@@ -9,6 +9,36 @@
 import UIKit
 import ReactiveCocoa
 
+extension Array {
+    func difference<T: Equatable>(otherArray: [T]) -> [T] {
+        var result = [T]()
+
+        for e in self {
+            if let element = e as? T {
+                if !otherArray.contains(element) {
+                    result.append(element)
+                }
+            }
+        }
+
+        return result
+    }
+
+    func intersection<T: Equatable>(otherArray: [T]) -> [T] {
+        var result = [T]()
+
+        for e in self {
+            if let element = e as? T {
+                if otherArray.contains(element) {
+                    result.append(element)
+                }
+            }
+        }
+
+        return result
+    }
+}
+
 extension UIStepper {
     func signalProducer() -> SignalProducer<Int, NoError> {
         return self.rac_newValueChannelWithNilValue(0).toSignalProducer()

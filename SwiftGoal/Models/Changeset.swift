@@ -8,35 +8,35 @@
 
 import Foundation
 
-struct Changeset {
+struct Changeset<T: Equatable> {
 
-    let deletions: [NSIndexPath]
-    let insertions: [NSIndexPath]
+    var deletions: [NSIndexPath]
+    var modifications: [NSIndexPath]
+    var insertions: [NSIndexPath]
 
-    init<T: Equatable>(oldItems: [T], newItems: [T]) {
-        // Find index paths for deleted items
-        var deletions: [NSIndexPath] = []
-        for (index, item) in oldItems.enumerate() {
-            if !newItems.contains(item) {
-                deletions.append(NSIndexPath(forRow: index, inSection: 0))
-            }
+    typealias ContentMatches = (T, T) -> Bool
+
+    init(oldItems: [T], newItems: [T], contentMatches: ContentMatches) {
+
+        deletions = oldItems.difference(newItems).map { item in
+            return Changeset.indexPathForIndex(oldItems.indexOf(item)!)
         }
 
-        // TODO: Compare edited changes within matches
+        modifications = oldItems.intersection(newItems)
+            .filter({ item in
+                let newItem = newItems[newItems.indexOf(item)!]
+                return !contentMatches(item, newItem)
+            })
+            .map({ item in
+                return Changeset.indexPathForIndex(oldItems.indexOf(item)!)
+            })
 
-        // Find index paths for newly inserted items
-        var insertions: [NSIndexPath] = []
-        for (index, item) in newItems.enumerate() {
-            if !oldItems.contains(item) {
-                insertions.append(NSIndexPath(forRow: index, inSection: 0))
-            }
+        insertions = newItems.difference(oldItems).map { item in
+            return NSIndexPath(forRow: newItems.indexOf(item)!, inSection: 0)
         }
-
-        self.init(deletions: deletions, insertions: insertions)
     }
 
-    private init(deletions: [NSIndexPath], insertions: [NSIndexPath]) {
-        self.deletions = deletions
-        self.insertions = insertions
+    private static func indexPathForIndex(index: Int) -> NSIndexPath {
+        return NSIndexPath(forRow: index, inSection: 0)
     }
 }

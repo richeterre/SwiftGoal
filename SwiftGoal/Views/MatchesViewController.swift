@@ -83,6 +83,7 @@ class MatchesViewController: UITableViewController, DZNEmptyDataSetDelegate, DZN
             .observeNext({ [weak self] changeset in
                 self?.tableView.beginUpdates()
                 self?.tableView.deleteRowsAtIndexPaths(changeset.deletions, withRowAnimation: .Left)
+                self?.tableView.reloadRowsAtIndexPaths(changeset.modifications, withRowAnimation: .Automatic)
                 self?.tableView.insertRowsAtIndexPaths(changeset.insertions, withRowAnimation: .Automatic)
                 self?.tableView.endUpdates()
             })

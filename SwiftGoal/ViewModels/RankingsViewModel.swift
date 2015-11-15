@@ -10,18 +10,20 @@ import ReactiveCocoa
 
 class RankingsViewModel {
 
+    typealias RankingChangeset = Changeset<Ranking>
+
     // Inputs
     let active = MutableProperty(false)
     let refreshObserver: Observer<Void, NoError>
 
     // Outputs
     let title: String
-    let contentChangesSignal: Signal<Changeset, NoError>
+    let contentChangesSignal: Signal<RankingChangeset, NoError>
     let isLoadingSignal: Signal<Bool, NoError>
     let alertMessageSignal: Signal<String, NoError>
 
     private let store: Store
-    private let contentChangesObserver: Observer<Changeset, NoError>
+    private let contentChangesObserver: Observer<RankingChangeset, NoError>
     private let isLoadingObserver: Observer<Bool, NoError>
     private let alertMessageObserver: Observer<String, NoError>
 
@@ -37,7 +39,7 @@ class RankingsViewModel {
         let (refreshSignal, refreshObserver) = SignalProducer<Void, NoError>.buffer()
         self.refreshObserver = refreshObserver
 
-        let (contentChangesSignal, contentChangesObserver) = Signal<Changeset, NoError>.pipe()
+        let (contentChangesSignal, contentChangesObserver) = Signal<RankingChangeset, NoError>.pipe()
         self.contentChangesSignal = contentChangesSignal
         self.contentChangesObserver = contentChangesObserver
 
@@ -68,7 +70,11 @@ class RankingsViewModel {
             .startWithNext({ [weak self] (oldRankings, newRankings) in
                 self?.rankings = newRankings
                 if let observer = self?.contentChangesObserver {
-                    let changeset = Changeset(oldItems: oldRankings, newItems: newRankings)
+                    let changeset = Changeset(
+                        oldItems: oldRankings,
+                        newItems: newRankings,
+                        contentMatches: Ranking.contentMatches
+                    )
                     observer.sendNext(changeset)
                 }
             })

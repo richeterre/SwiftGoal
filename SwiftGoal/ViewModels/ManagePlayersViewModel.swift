@@ -10,6 +10,8 @@ import ReactiveCocoa
 
 class ManagePlayersViewModel {
 
+    typealias PlayerChangeset = Changeset<Player>
+
     // Inputs
     let active = MutableProperty(false)
     let playerName = MutableProperty("")
@@ -17,7 +19,7 @@ class ManagePlayersViewModel {
 
     // Outputs
     let title: String
-    let contentChangesSignal: Signal<Changeset, NoError>
+    let contentChangesSignal: Signal<PlayerChangeset, NoError>
     let isLoadingSignal: Signal<Bool, NoError>
     let alertMessageSignal: Signal<String, NoError>
     let selectedPlayers: MutableProperty<Set<Player>>
@@ -31,7 +33,7 @@ class ManagePlayersViewModel {
     }()
 
     private let store: Store
-    private let contentChangesObserver: Observer<Changeset, NoError>
+    private let contentChangesObserver: Observer<PlayerChangeset, NoError>
     private let isLoadingObserver: Observer<Bool, NoError>
     private let alertMessageObserver: Observer<String, NoError>
     private let disabledPlayers: Set<Player>
@@ -50,7 +52,7 @@ class ManagePlayersViewModel {
         let (refreshSignal, refreshObserver) = SignalProducer<Void, NoError>.buffer()
         self.refreshObserver = refreshObserver
 
-        let (contentChangesSignal, contentChangesObserver) = Signal<Changeset, NoError>.pipe()
+        let (contentChangesSignal, contentChangesObserver) = Signal<PlayerChangeset, NoError>.pipe()
         self.contentChangesSignal = contentChangesSignal
         self.contentChangesObserver = contentChangesObserver
 
@@ -86,7 +88,11 @@ class ManagePlayersViewModel {
             .startWithNext({ [weak self] (oldPlayers, newPlayers) in
                 self?.players = newPlayers
                 if let observer = self?.contentChangesObserver {
-                    let changeset = Changeset(oldItems: oldPlayers, newItems: newPlayers)
+                    let changeset = Changeset(
+                        oldItems: oldPlayers,
+                        newItems: newPlayers,
+                        contentMatches: Player.contentMatches
+                    )
                     observer.sendNext(changeset)
                 }
             })

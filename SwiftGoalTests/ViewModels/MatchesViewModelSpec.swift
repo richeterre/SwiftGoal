@@ -95,7 +95,7 @@ class MatchesViewModelSpec: QuickSpec {
                 }
 
                 it("notifies subscribers about content changes") {
-                    var changeset: Changeset?
+                    var changeset: Changeset<Match>?
                     matchesViewModel.contentChangesSignal.observeNext { contentChanges in
                         changeset = contentChanges
                     }

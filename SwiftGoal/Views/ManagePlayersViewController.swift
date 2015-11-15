@@ -69,14 +69,17 @@ class ManagePlayersViewController: UITableViewController {
         self.title = viewModel.title
 
         viewModel.active <~ isActiveSignal
+        
         viewModel.contentChangesSignal
             .observeOn(UIScheduler())
             .observeNext({ [weak self] changeset in
                 self?.tableView.beginUpdates()
                 self?.tableView.deleteRowsAtIndexPaths(changeset.deletions, withRowAnimation: .Left)
+                self?.tableView.reloadRowsAtIndexPaths(changeset.modifications, withRowAnimation: .Automatic)
                 self?.tableView.insertRowsAtIndexPaths(changeset.insertions, withRowAnimation: .Automatic)
                 self?.tableView.endUpdates()
             })
+
         viewModel.isLoadingSignal
             .observeOn(UIScheduler())
             .observeNext({ [weak self] isLoading in
@@ -84,6 +87,7 @@ class ManagePlayersViewController: UITableViewController {
                     self?.refreshControl?.endRefreshing()
                 }
             })
+
         viewModel.alertMessageSignal
             .observeOn(UIScheduler())
             .observeNext({ [weak self] alertMessage in
