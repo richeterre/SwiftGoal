@@ -82,7 +82,7 @@ public final class Signal<Value, Error: ErrorType> {
 	}
 
 	/// A Signal that never sends any events to its observers.
-	public class var never: Signal {
+	public static var never: Signal {
 		return self.init { _ in nil }
 	}
 
@@ -91,7 +91,7 @@ public final class Signal<Value, Error: ErrorType> {
 	///
 	/// The Signal will remain alive until a terminating event is sent to the
 	/// observer.
-	public class func pipe() -> (Signal, Observer) {
+	public static func pipe() -> (Signal, Observer) {
 		var observer: Observer!
 		let signal = self.init { innerObserver in
 			observer = innerObserver
@@ -229,6 +229,33 @@ extension SignalType {
 		}
 	}
 
+	/// Catches any failure that may occur on the input signal, mapping to a new producer
+	/// that starts in its place.
+	@warn_unused_result(message="Did you forget to call `observe` on the signal?")
+	public func flatMapError<F>(handler: Error -> SignalProducer<Value, F>) -> Signal<Value, F> {
+		return Signal { observer in
+			let serialDisposable = SerialDisposable()
+
+			serialDisposable.innerDisposable = self.observe { event in
+				switch event {
+				case let .Next(value):
+					observer.sendNext(value)
+				case let .Failed(error):
+					handler(error).startWithSignal { signal, signalDisposable in
+						serialDisposable.innerDisposable = signalDisposable
+						signal.observe(observer)
+					}
+				case .Completed:
+					observer.sendCompleted()
+				case .Interrupted:
+					observer.sendInterrupted()
+				}
+			}
+
+			return serialDisposable
+		}
+	}
+
 	/// Preserves only the values of the signal that pass the given predicate.
 	@warn_unused_result(message="Did you forget to call `observe` on the signal?")
 	public func filter(predicate: Value -> Bool) -> Signal<Value, Error> {
@@ -328,6 +355,21 @@ extension SignalType {
 	@warn_unused_result(message="Did you forget to call `observe` on the signal?")
 	public func flatMap<U>(strategy: FlattenStrategy, transform: Value -> Signal<U, Error>) -> Signal<U, Error> {
 		return map(transform).flatten(strategy)
+	}
+}
+
+extension SignalType {
+	/// Merges the given signals into a single `Signal` that will emit all values
+	/// from each of them, and complete when all of them have completed.
+	public static func merge<S: SequenceType where S.Generator.Element == Signal<Value, Error>>(signals: S) -> Signal<Value, Error> {
+		let producer = SignalProducer<Signal<Value, Error>, Error>(values: signals)
+		var result: Signal<Value, Error>!
+
+		producer.startWithSignal { (signal, _) in
+			result = signal.flatten(.Merge)
+		}
+
+		return result
 	}
 }
 
@@ -844,6 +886,44 @@ extension SignalType where Value: EventType, Error == NoError {
 	}
 }
 
+extension SignalType {
+	/// Injects side effects to be performed upon the specified signal events.
+	@warn_unused_result(message="Did you forget to call `observe` on the signal?")
+	public func on(event event: (Event<Value, Error> -> ())? = nil, failed: (Error -> ())? = nil, completed: (() -> ())? = nil, interrupted: (() -> ())? = nil, terminated: (() -> ())? = nil, disposed: (() -> ())? = nil, next: (Value -> ())? = nil) -> Signal<Value, Error> {
+		return Signal { observer in
+			let disposable = CompositeDisposable()
+
+			_ = disposed.map(disposable.addDisposable)
+
+			disposable += signal.observe { receivedEvent in
+				event?(receivedEvent)
+
+				switch receivedEvent {
+				case let .Next(value):
+					next?(value)
+
+				case let .Failed(error):
+					failed?(error)
+
+				case .Completed:
+					completed?()
+
+				case .Interrupted:
+					interrupted?()
+				}
+
+				if receivedEvent.isTerminating {
+					terminated?()
+				}
+
+				observer.action(receivedEvent)
+			}
+
+			return disposable
+		}
+	}
+}
+
 private struct SampleState<Value> {
 	var latestValue: Value? = nil
 	var signalCompleted: Bool = false
@@ -933,6 +1013,28 @@ extension SignalType {
 				}
 			}
 
+			return disposable
+		}
+	}
+	
+	/// Does not forward any values from `self` until `trigger` sends a Next or
+	/// Completed event, at which point the returned signal behaves exactly like
+	/// `signal`.
+	@warn_unused_result(message="Did you forget to call `observe` on the signal?")
+	public func skipUntil(trigger: Signal<(), NoError>) -> Signal<Value, Error> {
+		return Signal { observer in
+			let disposable = SerialDisposable()
+			
+			disposable.innerDisposable = trigger.observe { event in
+				switch event {
+				case .Next, .Completed:
+					disposable.innerDisposable = self.observe(observer)
+					
+				case .Failed, .Interrupted:
+					break
+				}
+			}
+			
 			return disposable
 		}
 	}
