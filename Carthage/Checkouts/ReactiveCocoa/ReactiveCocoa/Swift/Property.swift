@@ -1,3 +1,5 @@
+import Foundation
+
 /// Represents a property that allows observation of its changes.
 public protocol PropertyType {
 	typealias Value
@@ -156,8 +158,8 @@ public final class MutableProperty<Value>: MutablePropertyType {
 			return object.rac_valuesForKeyPath(keyPath, observer: nil).toSignalProducer()
 				// Errors aren't possible, but the compiler doesn't know that.
 				.flatMapError { error in
+					0 // suppresses implicit return error on fatalError
 					fatalError("Received unexpected error from KVO signal: \(error)")
-					return .empty
 				}
 		} else {
 			return .empty

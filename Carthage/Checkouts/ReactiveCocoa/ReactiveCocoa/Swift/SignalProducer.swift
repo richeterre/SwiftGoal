@@ -1,3 +1,4 @@
+import Foundation
 import Result
 
 /// A SignalProducer creates Signals that can produce values of type `Value` and/or
@@ -139,9 +140,10 @@ public struct SignalProducer<Value, Error: ErrorType> {
 			var token: RemovalToken?
 
 			let replay: () -> () = {
-				let originalState = state.modify { (var state) in
-					token = state.observers?.insert(observer)
-					return state
+				let originalState = state.modify { state in
+					var mutableState = state
+					token = mutableState.observers?.insert(observer)
+					return mutableState
 				}
 
 				for value in originalState.values {
@@ -167,9 +169,10 @@ public struct SignalProducer<Value, Error: ErrorType> {
 
 			if let token = token {
 				disposable.addDisposable {
-					state.modify { (var state) in
-						state.observers?.removeValueForToken(token)
-						return state
+					state.modify { state in
+						var mutableState = state
+						mutableState.observers?.removeValueForToken(token)
+						return mutableState
 					}
 				}
 			}
@@ -179,17 +182,19 @@ public struct SignalProducer<Value, Error: ErrorType> {
 			// Send serially with respect to other senders, and never while
 			// another thread is in the process of replaying.
 			dispatch_sync(queue) {
-				let originalState = state.modify { (var state) in
+				let originalState = state.modify { state in
+					var mutableState = state
+
 					if let value = event.value {
-						state.addValue(value, upToCapacity: capacity)
+						mutableState.addValue(value, upToCapacity: capacity)
 					} else {
 						// Disconnect all observers and prevent future
 						// attachments.
-						state.terminationEvent = event
-						state.observers = nil
+						mutableState.terminationEvent = event
+						mutableState.observers = nil
 					}
 
-					return state
+					return mutableState
 				}
 
 				if let observers = originalState.observers {
@@ -1032,76 +1037,6 @@ public func zip<S: SequenceType, Value, Error where S.Generator.Element == Signa
 	return .empty
 }
 
-
-extension SignalProducerType where Value: SignalProducerType, Error == Value.Error {
-	/// Flattens the inner producers sent upon `producer` (into a single producer of
-	/// values), according to the semantics of the given strategy.
-	///
-	/// If `producer` or an active inner producer fails, the returned
-	/// producer will forward that failure immediately.
-	///
-	/// `Interrupted` events on inner producers will be treated like `Completed`
-	/// events on inner producers.
-	@warn_unused_result(message="Did you forget to call `start` on the producer?")
-	public func flatten(strategy: FlattenStrategy) -> SignalProducer<Value.Value, Error> {
-		return lift { (signal: Signal<Value, Error>) -> Signal<Value.Value, Error> in
-			return signal.flatten(strategy)
-		}
-	}
-}
-
-extension SignalProducerType where Value: SignalType, Error == Value.Error {
-	/// Flattens the inner signals sent upon `producer` (into a single producer of
-	/// values), according to the semantics of the given strategy.
-	///
-	/// If `producer` or an active inner signal emits an error, the returned
-	/// producer will forward that error immediately.
-	///
-	/// `Interrupted` events on inner signals will be treated like `Completed`
-	/// events on inner signals.
-	@warn_unused_result(message="Did you forget to call `start` on the producer?")
-	public func flatten(strategy: FlattenStrategy) -> SignalProducer<Value.Value, Error> {
-		return self.lift { $0.flatten(strategy) }
-	}
-}
-
-
-extension SignalProducerType {
-	/// Maps each event from `producer` to a new producer, then flattens the
-	/// resulting producers (into a single producer of values), according to the
-	/// semantics of the given strategy.
-	///
-	/// If `producer` or any of the created producers fail, the returned
-	/// producer will forward that failure immediately.
-	@warn_unused_result(message="Did you forget to call `start` on the producer?")
-	public func flatMap<U>(strategy: FlattenStrategy, transform: Value -> SignalProducer<U, Error>) -> SignalProducer<U, Error> {
-		return map(transform).flatten(strategy)
-	}
-
-	/// Maps each event from `producer` to a new signal, then flattens the
-	/// resulting signals (into a single producer of values), according to the
-	/// semantics of the given strategy.
-	///
-	/// If `producer` or any of the created signals emit an error, the returned
-	/// producer will forward that error immediately.
-	@warn_unused_result(message="Did you forget to call `start` on the producer?")
-	public func flatMap<U>(strategy: FlattenStrategy, transform: Value -> Signal<U, Error>) -> SignalProducer<U, Error> {
-		return map(transform).flatten(strategy)
-	}
-
-	/// Catches any failure that may occur on the input producer, mapping to a new producer
-	/// that starts in its place.
-	@warn_unused_result(message="Did you forget to call `start` on the producer?")
-	public func flatMapError<F>(handler: Error -> SignalProducer<Value, F>) -> SignalProducer<Value, F> {
-		return self.lift { $0.flatMapError(handler) }
-	}
-
-	/// `concat`s `next` onto `self`.
-	@warn_unused_result(message="Did you forget to call `start` on the producer?")
-	public func concat(next: SignalProducer<Value, Error>) -> SignalProducer<Value, Error> {
-		return SignalProducer<SignalProducer<Value, Error>, Error>(values: [self.producer, next]).flatten(.Concat)
-	}
-}
 
 extension SignalProducerType {
 	/// Repeats `self` a total of `count` times. Repeating `1` times results in
