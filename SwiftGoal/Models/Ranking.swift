@@ -21,7 +21,7 @@ struct Ranking {
 // MARK: Equatable
 
 func ==(lhs: Ranking, rhs: Ranking) -> Bool {
-    return lhs.player == rhs.player && lhs.rating == rhs.rating
+    return lhs.player == rhs.player
 }
 
 // MARK: Decodable

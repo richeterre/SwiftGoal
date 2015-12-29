@@ -24,21 +24,12 @@ class RankingSpec: QuickSpec {
                 expect(r1).notTo(equal(r2))
             }
 
-            it("is not equal to another Ranking if its ratings are not equal") {
-                let player = Player(identifier: "p1", name: "John")
-
-                let r1 = Ranking(player: player, rating: 0)
-                let r2 = Ranking(player: player, rating: 1)
-
-                expect(r1).notTo(equal(r2))
-            }
-
-            it("is equal to another Ranking if all properties are equal, even if their underlying content differs") {
+            it("is equal to another Ranking if its players are equal, no matter the rest") {
                 let player1 = Player(identifier: "p1", name: "John")
                 let player2 = Player(identifier: "p1", name: "Jack")
 
                 let r1 = Ranking(player: player1, rating: 0)
-                let r2 = Ranking(player: player2, rating: 0)
+                let r2 = Ranking(player: player2, rating: 1)
 
                 expect(r1).to(equal(r2))
             }
