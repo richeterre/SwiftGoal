@@ -73,11 +73,13 @@ class ManagePlayersViewController: UITableViewController {
         viewModel.contentChangesSignal
             .observeOn(UIScheduler())
             .observeNext({ [weak self] changeset in
-                self?.tableView.beginUpdates()
-                self?.tableView.deleteRowsAtIndexPaths(changeset.deletions, withRowAnimation: .Left)
-                self?.tableView.reloadRowsAtIndexPaths(changeset.modifications, withRowAnimation: .Automatic)
-                self?.tableView.insertRowsAtIndexPaths(changeset.insertions, withRowAnimation: .Automatic)
-                self?.tableView.endUpdates()
+                guard let tableView = self?.tableView else { return }
+
+                tableView.beginUpdates()
+                tableView.deleteRowsAtIndexPaths(changeset.deletions, withRowAnimation: .Automatic)
+                tableView.reloadRowsAtIndexPaths(changeset.modifications, withRowAnimation: .Automatic)
+                tableView.insertRowsAtIndexPaths(changeset.insertions, withRowAnimation: .Automatic)
+                tableView.endUpdates()
             })
 
         viewModel.isLoadingSignal
