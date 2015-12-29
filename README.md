@@ -1,7 +1,7 @@
 SwiftGoal
 =========
 
-This project showcases the Model-View-ViewModel (MVVM) architecture with [ReactiveCocoa 3][reactive-cocoa], while serving as a digital logbook of [FIFA matches][fifa-wikipedia]. It was inspired on a theoretical level by Justin Spahr-Summers' talk [Enemy of the State][enemy-of-the-state], and on a more practical one by Ash Furrow's [C-41][c-41] app.
+This project showcases the Model-View-ViewModel (MVVM) architecture with [ReactiveCocoa 4][reactive-cocoa], while serving as a digital logbook of [FIFA matches][fifa-wikipedia]. It was inspired on a theoretical level by Justin Spahr-Summers' talk [Enemy of the State][enemy-of-the-state], and on a more practical one by Ash Furrow's [C-41][c-41] app.
 
 [reactive-cocoa]: https://github.com/ReactiveCocoa/ReactiveCocoa
 [fifa-wikipedia]: https://en.wikipedia.org/wiki/FIFA_(video_game_series)
