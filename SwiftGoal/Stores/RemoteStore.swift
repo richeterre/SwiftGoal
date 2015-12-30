@@ -9,7 +9,7 @@
 import Argo
 import ReactiveCocoa
 
-class Store: StoreType {
+class RemoteStore: StoreType {
 
     enum RequestMethod {
         case GET

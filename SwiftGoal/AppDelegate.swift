@@ -85,7 +85,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func tabViewControllersForBaseURL(baseURL: NSURL) -> [UIViewController] {
-        let store = Store(baseURL: baseURL)
+        let store = RemoteStore(baseURL: baseURL)
 
         let matchesViewModel = MatchesViewModel(store: store)
         let matchesViewController = MatchesViewController(viewModel: matchesViewModel)
