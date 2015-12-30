@@ -47,6 +47,7 @@
 		0FF57F381B433EFD001DD570 /* PlayerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF57F371B433EFD001DD570 /* PlayerCell.swift */; };
 		0FF7B8B81B3A0CB300808433 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF7B8B71B3A0CB300808433 /* Extensions.swift */; };
 		0FFA97041B76C9D900DD4F58 /* EditMatchViewModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FFA97031B76C9D900DD4F58 /* EditMatchViewModelSpec.swift */; };
+		5BFD9FA01C340B1C00FDEBC6 /* StoreType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFD9F9F1C340B1C00FDEBC6 /* StoreType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -116,6 +117,7 @@
 		0FF57F371B433EFD001DD570 /* PlayerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerCell.swift; sourceTree = "<group>"; };
 		0FF7B8B71B3A0CB300808433 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		0FFA97031B76C9D900DD4F58 /* EditMatchViewModelSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditMatchViewModelSpec.swift; sourceTree = "<group>"; };
+		5BFD9F9F1C340B1C00FDEBC6 /* StoreType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -235,6 +237,7 @@
 		0F74F7151B00096000F963E0 /* Stores */ = {
 			isa = PBXGroup;
 			children = (
+				5BFD9F9F1C340B1C00FDEBC6 /* StoreType.swift */,
 				0F74F7161B0009B300F963E0 /* Store.swift */,
 			);
 			path = Stores;
@@ -435,6 +438,7 @@
 				0F9D10B31B614099002B9A20 /* RankingsViewController.swift in Sources */,
 				0FF57F381B433EFD001DD570 /* PlayerCell.swift in Sources */,
 				0F9D10B71B614B71002B9A20 /* RankingCell.swift in Sources */,
+				5BFD9FA01C340B1C00FDEBC6 /* StoreType.swift in Sources */,
 				0FE4EB751B3876C2007F9349 /* EditMatchViewController.swift in Sources */,
 				0F74F7141B00058D00F963E0 /* MatchesViewModel.swift in Sources */,
 				0F74F7171B0009B300F963E0 /* Store.swift in Sources */,

@@ -9,21 +9,14 @@
 import Argo
 import ReactiveCocoa
 
-struct MatchParameters {
-    let homePlayers: Set<Player>
-    let awayPlayers: Set<Player>
-    let homeGoals: Int
-    let awayGoals: Int
-}
+class Store: StoreType {
 
-enum RequestMethod {
-    case GET
-    case POST
-    case PUT
-    case DELETE
-}
-
-class Store: NSObject {
+    enum RequestMethod {
+        case GET
+        case POST
+        case PUT
+        case DELETE
+    }
 
     private let baseURL: NSURL
     private let matchesURL: NSURL

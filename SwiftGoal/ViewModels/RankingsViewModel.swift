@@ -22,7 +22,7 @@ class RankingsViewModel {
     let isLoadingSignal: Signal<Bool, NoError>
     let alertMessageSignal: Signal<String, NoError>
 
-    private let store: Store
+    private let store: StoreType
     private let contentChangesObserver: Observer<RankingChangeset, NoError>
     private let isLoadingObserver: Observer<Bool, NoError>
     private let alertMessageObserver: Observer<String, NoError>
@@ -31,7 +31,7 @@ class RankingsViewModel {
 
     // MARK: Lifecycle
 
-    init(store: Store) {
+    init(store: StoreType) {
         self.title = "Rankings"
         self.store = store
         self.rankings = []

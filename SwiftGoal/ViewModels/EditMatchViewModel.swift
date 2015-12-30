@@ -39,14 +39,14 @@ class EditMatchViewModel {
         })
     }()
 
-    private let store: Store
+    private let store: StoreType
     private let match: Match?
     private let homePlayers: MutableProperty<Set<Player>>
     private let awayPlayers: MutableProperty<Set<Player>>
 
     // MARK: Lifecycle
 
-    init(store: Store, match: Match?) {
+    init(store: StoreType, match: Match?) {
         self.store = store
         self.match = match
 
@@ -74,7 +74,7 @@ class EditMatchViewModel {
             }
     }
 
-    convenience init(store: Store) {
+    convenience init(store: StoreType) {
         self.init(store: store, match: nil)
     }
 

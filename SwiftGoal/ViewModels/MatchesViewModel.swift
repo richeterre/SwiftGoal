@@ -30,14 +30,14 @@ class MatchesViewModel {
         })
     }()
 
-    private let store: Store
+    private let store: StoreType
     private let contentChangesObserver: Observer<MatchChangeset, NoError>
     private let alertMessageObserver: Observer<String, NoError>
     private var matches: [Match]
 
     // MARK: - Lifecycle
 
-    init(store: Store) {
+    init(store: StoreType) {
         self.title = "Matches"
         self.store = store
         self.matches = []

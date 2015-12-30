@@ -32,7 +32,7 @@ class ManagePlayersViewModel {
         })
     }()
 
-    private let store: Store
+    private let store: StoreType
     private let contentChangesObserver: Observer<PlayerChangeset, NoError>
     private let isLoadingObserver: Observer<Bool, NoError>
     private let alertMessageObserver: Observer<String, NoError>
@@ -42,7 +42,7 @@ class ManagePlayersViewModel {
 
     // MARK: Lifecycle
 
-    init(store: Store, initialPlayers: Set<Player>, disabledPlayers: Set<Player>) {
+    init(store: StoreType, initialPlayers: Set<Player>, disabledPlayers: Set<Player>) {
         self.title = "Players"
         self.store = store
         self.players = []
