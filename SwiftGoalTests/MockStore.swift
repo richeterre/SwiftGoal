@@ -9,7 +9,7 @@
 import ReactiveCocoa
 @testable import SwiftGoal
 
-class MockStore: Store {
+class MockStore: StoreType {
     let players: [Player]
     var matches: [Match]? // nil is used to cause error
 
@@ -39,11 +39,9 @@ class MockStore: Store {
                 awayGoals: 1
             )
         ]
-
-        super.init(baseURL: NSURL(string: "")!)
     }
 
-    override func fetchMatches() -> SignalProducer<[Match], NSError> {
+    func fetchMatches() -> SignalProducer<[Match], NSError> {
         didFetchMatches = true
         if let matches = self.matches {
             return SignalProducer(value: matches)
@@ -53,12 +51,29 @@ class MockStore: Store {
         }
     }
 
-    override func deleteMatch(match: Match) -> SignalProducer<Bool, NSError> {
+    func createMatch(parameters: MatchParameters) -> SignalProducer<Bool, NSError> {
+        return SignalProducer(value: false)
+    }
+
+    func updateMatch(match: Match, parameters: MatchParameters) -> SignalProducer<Bool, NSError> {
+        return SignalProducer(value: false)
+    }
+
+    func deleteMatch(match: Match) -> SignalProducer<Bool, NSError> {
         deletedMatch = match
         return SignalProducer(value: true)
     }
 
-    override func fetchPlayers() -> SignalProducer<[Player], NSError> {
+    func fetchPlayers() -> SignalProducer<[Player], NSError> {
         return SignalProducer(value: players)
+    }
+
+    func createPlayerWithName(name: String) -> SignalProducer<Bool, NSError> {
+        return SignalProducer(value: false)
+    }
+
+    func fetchRankings() -> SignalProducer<[Ranking], NSError> {
+        // TODO: Write tests for RankingViewModel that use this
+        return SignalProducer(value: [])
     }
 }
