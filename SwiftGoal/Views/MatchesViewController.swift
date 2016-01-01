@@ -143,7 +143,7 @@ class MatchesViewController: UITableViewController, DZNEmptyDataSetDelegate, DZN
     }
 
     func descriptionForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
-        let text = "Check your server settings, then tap the “+” button to get started."
+        let text = "Check your storage settings, then tap the “+” button to get started."
         let attributes = [
             NSFontAttributeName: UIFont(name: "OpenSans", size: 20)!,
             NSForegroundColorAttributeName: UIColor.lightGrayColor()

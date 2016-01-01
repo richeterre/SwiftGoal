@@ -6,9 +6,21 @@
 	<array>
 		<dict>
 			<key>Title</key>
-			<string>Server</string>
+			<string>Data Storage</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
+			<key>FooterText</key>
+			<string>When Remote Store is switched off, the app keeps its data on this device.</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Use Remote Store</string>
+			<key>Key</key>
+			<string>use_remote_store_setting</string>
+			<key>DefaultValue</key>
+			<false/>
 		</dict>
 		<dict>
 			<key>AutocapitalizationType</key>
