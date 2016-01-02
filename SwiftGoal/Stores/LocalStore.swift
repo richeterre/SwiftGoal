@@ -60,7 +60,17 @@ class LocalStore: StoreType {
 
     func createPlayerWithName(name: String) -> SignalProducer<Bool, NSError> {
         let player = Player(identifier: randomIdentifier(), name: name)
-        players.append(player)
+
+        // Keep alphabetical order when inserting player
+        let alphabeticalIndex = players.indexOf { existingPlayer in
+            existingPlayer.name > player.name
+        }
+        if let index = alphabeticalIndex {
+            players.insert(player, atIndex: index)
+        } else {
+            players.append(player)
+        }
+
         return SignalProducer(value: true)
     }
 
