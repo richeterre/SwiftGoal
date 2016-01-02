@@ -15,6 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var store: StoreType?
     let tabBarController = UITabBarController()
 
+    // Keys and default values for Settings
     private let useRemoteStoreSettingKey = "use_remote_store_setting"
     private let useRemoteStoreSettingDefault = false
     private let baseURLSettingKey = "base_url_setting"
@@ -23,25 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
-
-        // Customize appearance
-        application.statusBarStyle = .LightContent
-        let tintColor = Color.primaryColor
-        window?.tintColor = tintColor
-        UINavigationBar.appearance().barTintColor = tintColor
-        UINavigationBar.appearance().tintColor = UIColor.whiteColor()
-        UINavigationBar.appearance().titleTextAttributes = [
-            NSFontAttributeName: UIFont(name: "OpenSans-Semibold", size: 20)!,
-            NSForegroundColorAttributeName: UIColor.whiteColor()
-        ]
-        UINavigationBar.appearance().translucent = false
-        UIBarButtonItem.appearance().setTitleTextAttributes(
-            [NSFontAttributeName: UIFont(name: "OpenSans", size: 17)!],
-            forState: .Normal
-        )
+        customizeAppAppearance()
 
         let userDefaults = NSUserDefaults.standardUserDefaults()
-
         registerInitialSettings(userDefaults)
 
         // Set tab-level view controllers with appropriate store
@@ -75,6 +60,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     // MARK: Private Helpers
+
+    private func customizeAppAppearance() {
+        UIApplication.sharedApplication().statusBarStyle = .LightContent
+        let tintColor = Color.primaryColor
+        window?.tintColor = tintColor
+        UINavigationBar.appearance().barTintColor = tintColor
+        UINavigationBar.appearance().tintColor = UIColor.whiteColor()
+        UINavigationBar.appearance().titleTextAttributes = [
+            NSFontAttributeName: UIFont(name: "OpenSans-Semibold", size: 20)!,
+            NSForegroundColorAttributeName: UIColor.whiteColor()
+        ]
+        UINavigationBar.appearance().translucent = false
+        UIBarButtonItem.appearance().setTitleTextAttributes(
+            [NSFontAttributeName: UIFont(name: "OpenSans", size: 17)!],
+            forState: .Normal
+        )
+    }
 
     private func registerInitialSettings(userDefaults: NSUserDefaults) {
         if userDefaults.objectForKey(useRemoteStoreSettingKey) == nil {
