@@ -75,20 +75,18 @@ class LocalStore: StoreType {
 
     // MARK: Persistence
 
-    func archiveToDisk() -> Bool {
+    func archiveToDisk() {
         let matchesDict = matches.map { $0.encode() }
         let playersDict = players.map { $0.encode() }
 
         let dataDict = [matchesKey: matchesDict, playersKey: playersDict]
 
         if let filePath = persistentFilePath() {
-            return NSKeyedArchiver.archiveRootObject(dataDict, toFile: filePath)
-        } else {
-            return false
+            NSKeyedArchiver.archiveRootObject(dataDict, toFile: filePath)
         }
     }
 
-    func unarchiveFromDisk() -> Bool {
+    func unarchiveFromDisk() {
         if let
             path = persistentFilePath(),
             dataDict = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as? [String: AnyObject],
@@ -99,9 +97,6 @@ class LocalStore: StoreType {
         {
             self.matches = matches
             self.players = players
-            return true
-        } else {
-            return false
         }
     }
 
