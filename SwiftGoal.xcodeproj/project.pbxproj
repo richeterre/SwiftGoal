@@ -47,6 +47,8 @@
 		0FF57F381B433EFD001DD570 /* PlayerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF57F371B433EFD001DD570 /* PlayerCell.swift */; };
 		0FF7B8B81B3A0CB300808433 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF7B8B71B3A0CB300808433 /* Extensions.swift */; };
 		0FFA97041B76C9D900DD4F58 /* EditMatchViewModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FFA97031B76C9D900DD4F58 /* EditMatchViewModelSpec.swift */; };
+		5BF62C941C3819E5006E97C6 /* RankingEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF62C931C3819E5006E97C6 /* RankingEngine.swift */; };
+		5BF62C971C381AA8006E97C6 /* RankingEngineSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF62C961C381AA8006E97C6 /* RankingEngineSpec.swift */; };
 		5BFD9FA01C340B1C00FDEBC6 /* StoreType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFD9F9F1C340B1C00FDEBC6 /* StoreType.swift */; };
 		5BFD9FA21C35AFC700FDEBC6 /* LocalStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFD9FA11C35AFC700FDEBC6 /* LocalStore.swift */; };
 		5BFD9FA41C36CF9E00FDEBC6 /* Encodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFD9FA31C36CF9E00FDEBC6 /* Encodable.swift */; };
@@ -119,6 +121,8 @@
 		0FF57F371B433EFD001DD570 /* PlayerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerCell.swift; sourceTree = "<group>"; };
 		0FF7B8B71B3A0CB300808433 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		0FFA97031B76C9D900DD4F58 /* EditMatchViewModelSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditMatchViewModelSpec.swift; sourceTree = "<group>"; };
+		5BF62C931C3819E5006E97C6 /* RankingEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RankingEngine.swift; sourceTree = "<group>"; };
+		5BF62C961C381AA8006E97C6 /* RankingEngineSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RankingEngineSpec.swift; sourceTree = "<group>"; };
 		5BFD9F9F1C340B1C00FDEBC6 /* StoreType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreType.swift; sourceTree = "<group>"; };
 		5BFD9FA11C35AFC700FDEBC6 /* LocalStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalStore.swift; sourceTree = "<group>"; };
 		5BFD9FA31C36CF9E00FDEBC6 /* Encodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Encodable.swift; sourceTree = "<group>"; };
@@ -199,6 +203,7 @@
 			children = (
 				0FB1AD931B72B5B000A8A3E4 /* Models */,
 				0FB81C471B72C3FE00432698 /* ViewModels */,
+				5BF62C951C381A25006E97C6 /* Helpers */,
 				0F74F7031B0002C400F963E0 /* Supporting Files */,
 			);
 			path = SwiftGoalTests;
@@ -308,6 +313,15 @@
 			children = (
 				0FE2A7491B66E139001F5C5B /* Color.swift */,
 				0FF7B8B71B3A0CB300808433 /* Extensions.swift */,
+				5BF62C931C3819E5006E97C6 /* RankingEngine.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		5BF62C951C381A25006E97C6 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				5BF62C961C381AA8006E97C6 /* RankingEngineSpec.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -457,6 +471,7 @@
 				0F9D10B51B6140FC002B9A20 /* RankingsViewModel.swift in Sources */,
 				0FE4EB731B38760B007F9349 /* EditMatchViewModel.swift in Sources */,
 				0F74F6F01B0002C400F963E0 /* AppDelegate.swift in Sources */,
+				5BF62C941C3819E5006E97C6 /* RankingEngine.swift in Sources */,
 				0FF7B8B81B3A0CB300808433 /* Extensions.swift in Sources */,
 				0F9D10B91B625124002B9A20 /* Ranking.swift in Sources */,
 				0F2EF8281B24FBF800BABC20 /* MatchCell.swift in Sources */,
@@ -473,6 +488,7 @@
 				0FFA97041B76C9D900DD4F58 /* EditMatchViewModelSpec.swift in Sources */,
 				0FB81C491B72C44A00432698 /* MatchesViewModelSpec.swift in Sources */,
 				0FB81C4C1B72CAFE00432698 /* MockStore.swift in Sources */,
+				5BF62C971C381AA8006E97C6 /* RankingEngineSpec.swift in Sources */,
 				0F89040C1BF8B2B4007135C9 /* MatchSpec.swift in Sources */,
 				0F89040E1BF8B907007135C9 /* PlayerSpec.swift in Sources */,
 			);
