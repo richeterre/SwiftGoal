@@ -6,8 +6,6 @@
 //  Copyright © 2016 Martin Richter. All rights reserved.
 //
 
-import Foundation
-
 protocol Encodable {
     func encode() -> [String: AnyObject]
 }
