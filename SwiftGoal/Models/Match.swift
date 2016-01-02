@@ -15,6 +15,12 @@ struct Match {
     let homeGoals: Int
     let awayGoals: Int
 
+    static private let identifierKey = "id"
+    static private let homePlayersKey = "home_players"
+    static private let awayPlayersKey = "away_players"
+    static private let homeGoalsKey = "home_goals"
+    static private let awayGoalsKey = "away_goals"
+
     init(identifier: String, homePlayers: [Player], awayPlayers: [Player], homeGoals: Int, awayGoals: Int) {
         self.identifier = identifier
         self.homePlayers = homePlayers
@@ -56,10 +62,24 @@ extension Match: Decodable {
 
     static func decode(json: JSON) -> Decoded<Match> {
         return Match.create
-            <^> json <| "id"
-            <*> json <|| "home_players"
-            <*> json <|| "away_players"
-            <*> json <| "home_goals"
-            <*> json <| "away_goals"
+            <^> json <| identifierKey
+            <*> json <|| homePlayersKey
+            <*> json <|| awayPlayersKey
+            <*> json <| homeGoalsKey
+            <*> json <| awayGoalsKey
+    }
+}
+
+// MARK: Encodable
+
+extension Match: Encodable {
+    func encode() -> [String: AnyObject] {
+        return [
+            Match.identifierKey: identifier,
+            Match.homePlayersKey: homePlayers.map { $0.encode() },
+            Match.awayPlayersKey: awayPlayers.map { $0.encode() },
+            Match.homeGoalsKey: homeGoals,
+            Match.awayGoalsKey: awayGoals
+        ]
     }
 }

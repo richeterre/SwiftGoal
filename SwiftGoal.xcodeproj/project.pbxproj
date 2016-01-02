@@ -49,6 +49,7 @@
 		0FFA97041B76C9D900DD4F58 /* EditMatchViewModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FFA97031B76C9D900DD4F58 /* EditMatchViewModelSpec.swift */; };
 		5BFD9FA01C340B1C00FDEBC6 /* StoreType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFD9F9F1C340B1C00FDEBC6 /* StoreType.swift */; };
 		5BFD9FA21C35AFC700FDEBC6 /* LocalStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFD9FA11C35AFC700FDEBC6 /* LocalStore.swift */; };
+		5BFD9FA41C36CF9E00FDEBC6 /* Encodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFD9FA31C36CF9E00FDEBC6 /* Encodable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -120,6 +121,7 @@
 		0FFA97031B76C9D900DD4F58 /* EditMatchViewModelSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditMatchViewModelSpec.swift; sourceTree = "<group>"; };
 		5BFD9F9F1C340B1C00FDEBC6 /* StoreType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreType.swift; sourceTree = "<group>"; };
 		5BFD9FA11C35AFC700FDEBC6 /* LocalStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalStore.swift; sourceTree = "<group>"; };
+		5BFD9FA31C36CF9E00FDEBC6 /* Encodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Encodable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -263,6 +265,7 @@
 		0FA80BE21B013FE4000531E3 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				5BFD9FA31C36CF9E00FDEBC6 /* Encodable.swift */,
 				0F3289ED1B1CF8340068DF12 /* Changeset.swift */,
 				0FA80BE31B014001000531E3 /* Match.swift */,
 				0F691B3D1B1D19DC00FD5AC1 /* Player.swift */,
@@ -457,6 +460,7 @@
 				0FF7B8B81B3A0CB300808433 /* Extensions.swift in Sources */,
 				0F9D10B91B625124002B9A20 /* Ranking.swift in Sources */,
 				0F2EF8281B24FBF800BABC20 /* MatchCell.swift in Sources */,
+				5BFD9FA41C36CF9E00FDEBC6 /* Encodable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

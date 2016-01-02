@@ -12,6 +12,9 @@ struct Player {
     let identifier: String
     let name: String
 
+    static private let identifierKey = "id"
+    static private let nameKey = "name"
+
     init(identifier: String, name: String) {
         self.identifier = identifier
         self.name = name
@@ -41,6 +44,14 @@ func ==(lhs: Player, rhs: Player) -> Bool {
     return lhs.identifier == rhs.identifier
 }
 
+// MARK: Hashable
+
+extension Player: Hashable {
+    var hashValue: Int {
+        return identifier.hashValue
+    }
+}
+
 // MARK: Decodable
 
 extension Player: Decodable {
@@ -50,15 +61,18 @@ extension Player: Decodable {
 
     static func decode(json: JSON) -> Decoded<Player> {
         return Player.create
-            <^> json <| "id"
-            <*> json <| "name"
+            <^> json <| identifierKey
+            <*> json <| nameKey
     }
 }
 
-// MARK: Hashable
+// MARK: Encodable
 
-extension Player: Hashable {
-    var hashValue: Int {
-        return identifier.hashValue
+extension Player: Encodable {
+    func encode() -> [String: AnyObject] {
+        return [
+            Player.identifierKey: identifier,
+            Player.nameKey: name
+        ]
     }
 }
