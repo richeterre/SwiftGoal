@@ -21,12 +21,16 @@ SwiftGoal runs on iOS 9+ and requires Xcode 7.1 with Swift 2.1 to build.
 Setup
 -----
 
-The application uses [Goalbase][goalbase] as a backend to store, process and retrieve information. It assumes you have a Goalbase instance running at `http://localhost:3000`, which is the default URL of the WEBrick server that ships with Rails. Please check out the [Goalbase documentation][goalbase-docs] for more detailed instructions.
+No separate backend is required to use the app, as it stores all data locally in the `Documents` folder by default. Note that things might break in future releases, e.g. if some model fields change.
+
+For serious use and if you want to share data across multiple devices, I recommend you use [Goalbase][goalbase] as a backend. It's easy to get started:
+
+1. Follow the setup instructions in the [Goalbase documentation][goalbase-docs].
+2. Enable the "Use Remote Store" switch under _Settings > SwiftGoal_.
+3. Make sure the base URL is set correctly. The default value should be fine if you run `rails server` in your Goalbase directory, but for a remote setup (e.g. on Heroku) you'll need to update this setting.
 
 [goalbase]: https://github.com/richeterre/goalbase
 [goalbase-docs]: https://github.com/richeterre/goalbase/blob/master/README.md
-
-If you want to provide your own backend, you can do so by editing SwiftGoal's base URL in the Settings app.
 
 User Features
 -------------
