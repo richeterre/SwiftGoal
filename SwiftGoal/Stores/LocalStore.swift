@@ -6,12 +6,17 @@
 //  Copyright © 2015 Martin Richter. All rights reserved.
 //
 
+import Argo
 import ReactiveCocoa
 
 class LocalStore: StoreType {
 
     private var matches = [Match]()
     private var players = [Player]()
+
+    private let matchesKey = "matches"
+    private let playersKey = "players"
+    private let archiveFileName = "LocalStore"
 
     // MARK: Matches
 
@@ -68,6 +73,38 @@ class LocalStore: StoreType {
         return SignalProducer(value: rankings)
     }
 
+    // MARK: Persistence
+
+    func archiveToDisk() -> Bool {
+        let matchesDict = matches.map { $0.encode() }
+        let playersDict = players.map { $0.encode() }
+
+        let dataDict = [matchesKey: matchesDict, playersKey: playersDict]
+
+        if let filePath = persistentFilePath() {
+            return NSKeyedArchiver.archiveRootObject(dataDict, toFile: filePath)
+        } else {
+            return false
+        }
+    }
+
+    func unarchiveFromDisk() -> Bool {
+        if let
+            path = persistentFilePath(),
+            dataDict = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as? [String: AnyObject],
+            matchesDict = dataDict[matchesKey],
+            playersDict = dataDict[playersKey],
+            matches: [Match] = decode(matchesDict),
+            players: [Player] = decode(playersDict)
+        {
+            self.matches = matches
+            self.players = players
+            return true
+        } else {
+            return false
+        }
+    }
+
     // MARK: Private Helpers
 
     private func randomIdentifier() -> String {
@@ -86,5 +123,10 @@ class LocalStore: StoreType {
             homeGoals: parameters.homeGoals,
             awayGoals: parameters.awayGoals
         )
+    }
+
+    private func persistentFilePath() -> String? {
+        let basePath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true).first as NSString?
+        return basePath?.stringByAppendingPathComponent(archiveFileName)
     }
 }
