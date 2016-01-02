@@ -12,6 +12,7 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var store: StoreType?
     let tabBarController = UITabBarController()
 
     private let useRemoteStoreSettingKey = "use_remote_store_setting"
@@ -44,7 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         registerInitialSettings(userDefaults)
 
         // Set tab-level view controllers with appropriate store
-        let store = storeForUserDefaults(userDefaults)
+        store = storeForUserDefaults(userDefaults)
         tabBarController.viewControllers = tabViewControllersForStore(store)
 
         // Register for settings changes as store might have changed
@@ -59,11 +60,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
+    func applicationWillTerminate(application: UIApplication) {
+        archiveStoreIfLocal()
+    }
+
     // MARK: Notifications
 
     func userDefaultsDidChange(notification: NSNotification) {
         if let userDefaults = notification.object as? NSUserDefaults {
-            let store = storeForUserDefaults(userDefaults)
+            archiveStoreIfLocal()
+            store = storeForUserDefaults(userDefaults)
             tabBarController.viewControllers = tabViewControllersForStore(store)
         }
     }
@@ -79,6 +85,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+    /// Archives the current store to disk if it's a local store.
+    private func archiveStoreIfLocal() {
+        if let localStore = store as? LocalStore {
+            localStore.archiveToDisk()
+        }
+    }
+
     private func storeForUserDefaults(userDefaults: NSUserDefaults) -> StoreType {
         if userDefaults.boolForKey(useRemoteStoreSettingKey) == true {
             // Create remote store
@@ -87,7 +100,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return RemoteStore(baseURL: baseURL)
         } else {
             // Create local store
-            return LocalStore()
+            let store = LocalStore()
+            store.unarchiveFromDisk()
+            return store
         }
     }
 
@@ -101,7 +116,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return NSURL(string: baseURLString) ?? NSURL(string: baseURLSettingDefault)!
     }
 
-    private func tabViewControllersForStore(store: StoreType) -> [UIViewController] {
+    private func tabViewControllersForStore(store: StoreType?) -> [UIViewController] {
+        guard let store = store else { return [] }
+
         let matchesViewModel = MatchesViewModel(store: store)
         let matchesViewController = MatchesViewController(viewModel: matchesViewModel)
         let matchesNavigationController = UINavigationController(rootViewController: matchesViewController)
