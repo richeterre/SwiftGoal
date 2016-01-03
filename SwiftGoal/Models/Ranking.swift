@@ -16,6 +16,17 @@ struct Ranking {
         return Player.contentMatches(lhs.player, rhs.player)
             && lhs.rating == rhs.rating
     }
+
+    static func contentMatches(lhs: [Ranking], _ rhs: [Ranking]) -> Bool {
+        // Make sure arrays have same size
+        guard lhs.count == rhs.count else { return false }
+
+        // Look at pairs of rankings
+        let hasMismatch = zip(lhs, rhs)
+            .map { contentMatches($0, $1) } // Apply content matcher to each
+            .contains(false) // Check for mismatches
+        return !hasMismatch
+    }
 }
 
 // MARK: Equatable

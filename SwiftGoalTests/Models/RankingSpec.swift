@@ -62,6 +62,40 @@ class RankingSpec: QuickSpec {
                     expect(Ranking.contentMatches(r1, r2)).to(beTrue())
                 }
             }
+
+            context("when compared in bulk to another Ranking array") {
+                let player = Player(identifier: "p1", name: "John")
+                let r1 = Ranking(player: player, rating: 0)
+                let r2 = Ranking(player: player, rating: 1)
+
+                it("does not match when the array counts differ") {
+                    let array1 = [r1, r1]
+                    let array2 = [r1]
+
+                    expect(Ranking.contentMatches(array1, array2)).to(beFalse())
+                }
+
+                it("does not match when the array order differs") {
+                    let array1 = [r1, r2]
+                    let array2 = [r2, r1]
+
+                    expect(Ranking.contentMatches(array1, array2)).to(beFalse())
+                }
+
+                it("does not match when any item differs") {
+                    let array1 = [r1, r1]
+                    let array2 = [r1, r2]
+
+                    expect(Ranking.contentMatches(array1, array2)).to(beFalse())
+                }
+
+                it("matches when all items match") {
+                    let array1 = [r1, r2]
+                    let array2 = [r1, r2]
+
+                    expect(Ranking.contentMatches(array1, array2)).to(beTrue())
+                }
+            }
         }
     }
 }
