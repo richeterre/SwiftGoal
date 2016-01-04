@@ -20,7 +20,7 @@ class ManagePlayersViewModel {
     // Outputs
     let title: String
     let contentChangesSignal: Signal<PlayerChangeset, NoError>
-    let isLoadingSignal: Signal<Bool, NoError>
+    let isLoading: MutableProperty<Bool>
     let alertMessageSignal: Signal<String, NoError>
     let selectedPlayers: MutableProperty<Set<Player>>
     let inputIsValid = MutableProperty(false)
@@ -34,7 +34,6 @@ class ManagePlayersViewModel {
 
     private let store: StoreType
     private let contentChangesObserver: Observer<PlayerChangeset, NoError>
-    private let isLoadingObserver: Observer<Bool, NoError>
     private let alertMessageObserver: Observer<String, NoError>
     private let disabledPlayers: Set<Player>
 
@@ -56,9 +55,8 @@ class ManagePlayersViewModel {
         self.contentChangesSignal = contentChangesSignal
         self.contentChangesObserver = contentChangesObserver
 
-        let (isLoadingSignal, isLoadingObserver) = Signal<Bool, NoError>.pipe()
-        self.isLoadingSignal = isLoadingSignal
-        self.isLoadingObserver = isLoadingObserver
+        let isLoading = MutableProperty(false)
+        self.isLoading = isLoading
 
         let (alertMessageSignal, alertMessageObserver) = Signal<String, NoError>.pipe()
         self.alertMessageSignal = alertMessageSignal
@@ -75,7 +73,7 @@ class ManagePlayersViewModel {
             .observe(refreshObserver)
 
         refreshSignal
-            .on(next: { _ in isLoadingObserver.sendNext(true) })
+            .on(next: { _ in isLoading.value = true })
             .flatMap(.Latest, transform: { _ in
                 return store.fetchPlayers()
                     .flatMapError { error in
@@ -83,7 +81,7 @@ class ManagePlayersViewModel {
                         return SignalProducer(value: [])
                     }
             })
-            .on(next: { _ in isLoadingObserver.sendNext(false) })
+            .on(next: { _ in isLoading.value = false })
             .combinePrevious([]) // Preserve history to calculate changeset
             .startWithNext({ [weak self] (oldPlayers, newPlayers) in
                 self?.players = newPlayers

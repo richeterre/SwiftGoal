@@ -10,12 +10,15 @@ import ReactiveCocoa
 @testable import SwiftGoal
 
 class MockStore: StoreType {
-    let players: [Player]
-    var matches: [Match]? // nil is used to cause error
-    var rankings: [Ranking]? // nil is used to cause error
+    // nil is used to cause fetch error
+    var players: [Player]?
+    var matches: [Match]?
+    var rankings: [Ranking]?
 
     var didFetchMatches = false
     var deletedMatch: Match?
+
+    var didFetchPlayers = false
 
     var didFetchRankings = false
 
@@ -50,6 +53,8 @@ class MockStore: StoreType {
         ]
     }
 
+    // MARK: Matches
+
     func fetchMatches() -> SignalProducer<[Match], NSError> {
         didFetchMatches = true
         if let matches = self.matches {
@@ -73,13 +78,23 @@ class MockStore: StoreType {
         return SignalProducer(value: true)
     }
 
+    // MARK: Players
+
     func fetchPlayers() -> SignalProducer<[Player], NSError> {
-        return SignalProducer(value: players)
+        didFetchPlayers = true
+        if let players = self.players {
+            return SignalProducer(value: players)
+        } else {
+            let error = NSError(domain: "", code: 0, userInfo: nil)
+            return SignalProducer(error: error)
+        }
     }
 
     func createPlayerWithName(name: String) -> SignalProducer<Bool, NSError> {
         return SignalProducer(value: false)
     }
+
+    // MARK: Rankings
 
     func fetchRankings() -> SignalProducer<[Ranking], NSError> {
         didFetchRankings = true

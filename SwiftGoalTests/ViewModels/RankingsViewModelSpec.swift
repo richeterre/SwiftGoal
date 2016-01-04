@@ -6,8 +6,6 @@
 //  Copyright © 2016 Martin Richter. All rights reserved.
 //
 
-import Foundation
-
 import Quick
 import Nimble
 import ReactiveCocoa
@@ -50,7 +48,7 @@ class RankingsViewModelSpec: QuickSpec {
                     expect(rankingsViewModel.numberOfRankingsInSection(0)).to(equal(4))
                 }
 
-                it("displays the right names") {
+                it("displays the right player names") {
                     let indexPath1 = NSIndexPath(forRow: 0, inSection: 0)
                     let indexPath2 = NSIndexPath(forRow: 1, inSection: 0)
                     let indexPath3 = NSIndexPath(forRow: 2, inSection: 0)

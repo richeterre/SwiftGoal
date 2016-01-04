@@ -82,9 +82,9 @@ class ManagePlayersViewController: UITableViewController {
                 tableView.endUpdates()
             })
 
-        viewModel.isLoadingSignal
+        viewModel.isLoading.producer
             .observeOn(UIScheduler())
-            .observeNext({ [weak self] isLoading in
+            .startWithNext({ [weak self] isLoading in
                 if !isLoading {
                     self?.refreshControl?.endRefreshing()
                 }
