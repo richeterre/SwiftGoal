@@ -31,6 +31,50 @@ class ManagePlayersViewModelSpec: QuickSpec {
                 expect(managePlayersViewModel.numberOfPlayersInSection(0)).to(equal(0))
             }
 
+            context("when initialized with a set of initial players") {
+                beforeEach {
+                    let p1 = Player(identifier: "a", name: "A")
+                    let p2 = Player(identifier: "b", name: "B")
+                    let p3 = Player(identifier: "c", name: "C")
+                    mockStore.players = [p1, p2, p3]
+                    managePlayersViewModel = ManagePlayersViewModel(store: mockStore, initialPlayers: [p1, p2], disabledPlayers: [])
+                }
+
+                it("has the right players selected") {
+                    managePlayersViewModel.active.value = true
+
+                    let indexPath1 = NSIndexPath(forRow: 0, inSection: 0)
+                    let indexPath2 = NSIndexPath(forRow: 1, inSection: 0)
+                    let indexPath3 = NSIndexPath(forRow: 2, inSection: 0)
+
+                    expect(managePlayersViewModel.isPlayerSelectedAtIndexPath(indexPath1)).to(beTrue())
+                    expect(managePlayersViewModel.isPlayerSelectedAtIndexPath(indexPath2)).to(beTrue())
+                    expect(managePlayersViewModel.isPlayerSelectedAtIndexPath(indexPath3)).to(beFalse())
+                }
+            }
+
+            context("when initialized with a set of disabled players") {
+                beforeEach {
+                    let p1 = Player(identifier: "a", name: "A")
+                    let p2 = Player(identifier: "b", name: "B")
+                    let p3 = Player(identifier: "c", name: "C")
+                    mockStore.players = [p1, p2, p3]
+                    managePlayersViewModel = ManagePlayersViewModel(store: mockStore, initialPlayers: [], disabledPlayers: [p1, p2])
+                }
+
+                it("allows the right players to be selected") {
+                    managePlayersViewModel.active.value = true
+
+                    let indexPath1 = NSIndexPath(forRow: 0, inSection: 0)
+                    let indexPath2 = NSIndexPath(forRow: 1, inSection: 0)
+                    let indexPath3 = NSIndexPath(forRow: 2, inSection: 0)
+
+                    expect(managePlayersViewModel.canSelectPlayerAtIndexPath(indexPath1)).to(beFalse())
+                    expect(managePlayersViewModel.canSelectPlayerAtIndexPath(indexPath2)).to(beFalse())
+                    expect(managePlayersViewModel.canSelectPlayerAtIndexPath(indexPath3)).to(beTrue())
+                }
+            }
+
             context("after becoming active") {
                 beforeEach {
                     managePlayersViewModel.active.value = true
@@ -57,6 +101,15 @@ class ManagePlayersViewModelSpec: QuickSpec {
                     expect(managePlayersViewModel.playerNameAtIndexPath(indexPath2)).to(equal("A"))
                     expect(managePlayersViewModel.playerNameAtIndexPath(indexPath3)).to(equal("D"))
                     expect(managePlayersViewModel.playerNameAtIndexPath(indexPath4)).to(equal("B"))
+                }
+
+                it("allows selecting and deselecting a player") {
+                    let indexPath = NSIndexPath(forRow: 0, inSection: 0)
+                    managePlayersViewModel.selectPlayerAtIndexPath(indexPath)
+                    expect(managePlayersViewModel.isPlayerSelectedAtIndexPath(indexPath)).to(beTrue())
+
+                    managePlayersViewModel.deselectPlayerAtIndexPath(indexPath)
+                    expect(managePlayersViewModel.isPlayerSelectedAtIndexPath(indexPath)).to(beFalse())
                 }
             }
 
