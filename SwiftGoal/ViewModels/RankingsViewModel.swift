@@ -19,12 +19,11 @@ class RankingsViewModel {
     // Outputs
     let title: String
     let contentChangesSignal: Signal<RankingChangeset, NoError>
-    let isLoadingSignal: Signal<Bool, NoError>
+    let isLoading: MutableProperty<Bool>
     let alertMessageSignal: Signal<String, NoError>
 
     private let store: StoreType
     private let contentChangesObserver: Observer<RankingChangeset, NoError>
-    private let isLoadingObserver: Observer<Bool, NoError>
     private let alertMessageObserver: Observer<String, NoError>
 
     private var rankings: [Ranking]
@@ -43,9 +42,8 @@ class RankingsViewModel {
         self.contentChangesSignal = contentChangesSignal
         self.contentChangesObserver = contentChangesObserver
 
-        let (isLoadingSignal, isLoadingObserver) = Signal<Bool, NoError>.pipe()
-        self.isLoadingSignal = isLoadingSignal
-        self.isLoadingObserver = isLoadingObserver
+        let isLoading = MutableProperty(false)
+        self.isLoading = isLoading
 
         let (alertMessageSignal, alertMessageObserver) = Signal<String, NoError>.pipe()
         self.alertMessageSignal = alertMessageSignal
@@ -57,7 +55,7 @@ class RankingsViewModel {
             .start(refreshObserver)
 
         refreshSignal
-            .on(next: { _ in isLoadingObserver.sendNext(true) })
+            .on(next: { _ in isLoading.value = true })
             .flatMap(.Latest, transform: { _ in
                 return store.fetchRankings()
                     .flatMapError { error in
@@ -65,7 +63,7 @@ class RankingsViewModel {
                         return SignalProducer(value: [])
                 }
             })
-            .on(next: { _ in isLoadingObserver.sendNext(false) })
+            .on(next: { _ in isLoading.value = false })
             .combinePrevious([]) // Preserve history to calculate changeset
             .startWithNext({ [weak self] (oldRankings, newRankings) in
                 self?.rankings = newRankings

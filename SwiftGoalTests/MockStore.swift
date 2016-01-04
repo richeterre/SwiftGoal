@@ -12,9 +12,12 @@ import ReactiveCocoa
 class MockStore: StoreType {
     let players: [Player]
     var matches: [Match]? // nil is used to cause error
+    var rankings: [Ranking]? // nil is used to cause error
 
     var didFetchMatches = false
     var deletedMatch: Match?
+
+    var didFetchRankings = false
 
     init() {
         let player1 = Player(identifier: "player1", name: "C")
@@ -38,6 +41,12 @@ class MockStore: StoreType {
                 homeGoals: 0,
                 awayGoals: 1
             )
+        ]
+        self.rankings = [
+            Ranking(player: player2, rating: 10),
+            Ranking(player: player1, rating: 5),
+            Ranking(player: player3, rating: 5),
+            Ranking(player: player4, rating: 0)
         ]
     }
 
@@ -73,7 +82,12 @@ class MockStore: StoreType {
     }
 
     func fetchRankings() -> SignalProducer<[Ranking], NSError> {
-        // TODO: Write tests for RankingViewModel that use this
-        return SignalProducer(value: [])
+        didFetchRankings = true
+        if let rankings = self.rankings {
+            return SignalProducer(value: rankings)
+        } else {
+            let error = NSError(domain: "", code: 0, userInfo: nil)
+            return SignalProducer(error: error)
+        }
     }
 }
