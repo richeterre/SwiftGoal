@@ -32,6 +32,15 @@ For serious use and if you want to share data across multiple devices, I recomme
 [goalbase]: https://github.com/richeterre/goalbase
 [goalbase-docs]: https://github.com/richeterre/goalbase/blob/master/README.md
 
+Unit Tests
+----------
+
+SwiftGoal is thoroughly covered by unit tests, which are written with [Quick][quick] and [Nimble][nimble]. An advantage of such [BDD-style][bdd-wikipedia] frameworks is that they document the behavior of the tested code in plain English. To run the unit tests, simply hit `Cmd + U` in Xcode.
+
+[quick]: https://github.com/Quick/Quick
+[nimble]: https://github.com/Quick/Nimble
+[bdd-wikipedia]: https://en.wikipedia.org/wiki/Behavior-driven_development
+
 User Features
 -------------
 
@@ -61,7 +70,8 @@ Code Checklist
 * [ ] Retry network requests 1 or 2 times before giving up
 * [x] Detect and animate match data changes
 * [x] Write tests for models
-* [ ] Write tests for view models, helpers and store
+* [x] Write tests for view models
+* [ ] Write tests for helpers and store
 * [ ] Deduplicate `isActiveSignal` code on view controllers (via a protocol extension?)
 * [ ] Create watchOS 2 app for quick match entry
 * [ ] Drop Auto Layout [library][snapkit] in favor of `UIStackView` and `NSLayoutAnchor`
