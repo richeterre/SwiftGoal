@@ -30,6 +30,8 @@
 @property (nonatomic, assign) CGFloat verticalOffset;
 @property (nonatomic, assign) CGFloat verticalSpace;
 
+@property (nonatomic, assign) BOOL fadeInOnDisplay;
+
 - (void)setupConstraints;
 - (void)prepareForReuse;
 
@@ -265,6 +267,13 @@ static char const * const kEmptyDataSetView =       "emptyDataSetView";
 
 #pragma mark - Delegate Getters & Events (Private)
 
+- (BOOL)dzn_shouldFadeIn {
+    if (self.emptyDataSetDelegate && [self.emptyDataSetDelegate respondsToSelector:@selector(emptyDataSetShouldFadeIn:)]) {
+        return [self.emptyDataSetDelegate emptyDataSetShouldFadeIn:self];
+    }
+    return YES;
+}
+
 - (BOOL)dzn_shouldDisplay
 {
     if (self.emptyDataSetDelegate && [self.emptyDataSetDelegate respondsToSelector:@selector(emptyDataSetShouldDisplay:)]) {
@@ -292,7 +301,7 @@ static char const * const kEmptyDataSetView =       "emptyDataSetView";
 - (BOOL)dzn_isImageViewAnimateAllow
 {
     if (self.emptyDataSetDelegate && [self.emptyDataSetDelegate respondsToSelector:@selector(emptyDataSetShouldAnimateImageView:)]) {
-       return [self.emptyDataSetDelegate emptyDataSetShouldAnimateImageView:self];
+        return [self.emptyDataSetDelegate emptyDataSetShouldAnimateImageView:self];
     }
     return NO;
 }
@@ -446,16 +455,16 @@ static char const * const kEmptyDataSetView =       "emptyDataSetView";
             view.verticalSpace = [self dzn_verticalSpace];
             
             // Configure Image
-			if (image) {
-				if ([image respondsToSelector:@selector(imageWithRenderingMode:)]) {
-					view.imageView.image = [image imageWithRenderingMode:renderingMode];
-				} else {
-					// iOS 6 fallback: insert code to convert imaged if needed
-					view.imageView.image = image;
-				}
-
-				view.imageView.tintColor = imageTintColor;
-			}
+            if (image) {
+                if ([image respondsToSelector:@selector(imageWithRenderingMode:)]) {
+                    view.imageView.image = [image imageWithRenderingMode:renderingMode];
+                    view.imageView.tintColor = imageTintColor;
+                }
+                else {
+                    // iOS 6 fallback: insert code to convert imaged if needed
+                    view.imageView.image = image;
+                }
+            }
             
             // Configure title label
             if (titleLabelString) {
@@ -490,6 +499,9 @@ static char const * const kEmptyDataSetView =       "emptyDataSetView";
         
         // Configure empty dataset userInteraction permission
         view.userInteractionEnabled = [self dzn_isTouchAllowed];
+        
+        // Configure empty dataset fade in display
+        view.fadeInOnDisplay = [self dzn_shouldFadeIn];
         
         [view setupConstraints];
         [view layoutIfNeeded];
@@ -684,9 +696,16 @@ NSString *dzn_implementationKey(id target, SEL selector)
 {
     self.frame = self.superview.bounds;
     
-    [UIView animateWithDuration:0.25
-                     animations:^{_contentView.alpha = 1.0;}
-                     completion:NULL];
+    void(^fadeInBlock)(void) = ^{_contentView.alpha = 1.0;};
+    
+    if (self.fadeInOnDisplay) {
+        [UIView animateWithDuration:0.25
+                         animations:fadeInBlock
+                         completion:NULL];
+    }
+    else {
+        fadeInBlock();
+    }
 }
 
 
@@ -873,6 +892,8 @@ NSString *dzn_implementationKey(id target, SEL selector)
     
     // If applicable, set the custom view's constraints
     if (_customView) {
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[contentView]|" options:0 metrics:nil views:@{@"contentView": self.contentView}]];
+        
         [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[customView]|" options:0 metrics:nil views:@{@"customView":_customView}]];
         [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[customView]|" options:0 metrics:nil views:@{@"customView":_customView}]];
     }
@@ -964,9 +985,17 @@ NSString *dzn_implementationKey(id target, SEL selector)
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
     UIView *hitView = [super hitTest:point withEvent:event];
-    if ([hitView isEqual:_button] || [hitView isEqual:_contentView]) {
+    
+    // Return any UIControl instance such as buttons, segmented controls, switches, etc.
+    if ([hitView isKindOfClass:[UIControl class]]) {
         return hitView;
     }
+    
+    // Return either the contentView or customView
+    if ([hitView isEqual:_contentView] || [hitView isEqual:_customView]) {
+        return hitView;
+    }
+    
     return nil;
 }
 
