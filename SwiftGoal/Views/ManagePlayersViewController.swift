@@ -38,14 +38,14 @@ class ManagePlayersViewController: UITableViewController {
 
         self.refreshControl = UIRefreshControl()
         self.refreshControl?.addTarget(self,
-            action: Selector("refreshControlTriggered"),
+            action: #selector(refreshControlTriggered),
             forControlEvents: .ValueChanged
         )
 
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .Add,
             target: self,
-            action: Selector("addPlayerButtonTapped")
+            action: #selector(addPlayerButtonTapped)
         )
 
         bindViewModel()

@@ -42,7 +42,7 @@ class EditMatchViewController: UIViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .Cancel,
             target: self,
-            action: Selector("cancelButtonTapped")
+            action: #selector(cancelButtonTapped)
         )
         navigationItem.rightBarButtonItem = self.saveButtonItem
     }
@@ -87,7 +87,7 @@ class EditMatchViewController: UIViewController {
         let homePlayersButton = UIButton(type: .System)
         homePlayersButton.titleLabel?.font = UIFont(name: "OpenSans", size: 15)
         homePlayersButton.addTarget(self,
-            action: Selector("homePlayersButtonTapped"),
+            action: #selector(homePlayersButtonTapped),
             forControlEvents: .TouchUpInside
         )
         view.addSubview(homePlayersButton)
@@ -96,7 +96,7 @@ class EditMatchViewController: UIViewController {
         let awayPlayersButton = UIButton(type: .System)
         awayPlayersButton.titleLabel?.font = UIFont(name: "OpenSans", size: 15)
         awayPlayersButton.addTarget(self,
-            action: Selector("awayPlayersButtonTapped"),
+            action: #selector(awayPlayersButtonTapped),
             forControlEvents: .TouchUpInside
         )
         view.addSubview(awayPlayersButton)

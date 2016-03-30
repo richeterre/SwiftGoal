@@ -39,7 +39,7 @@ class RankingsViewController: UITableViewController {
 
         self.refreshControl = UIRefreshControl()
         self.refreshControl?.addTarget(self,
-            action: Selector("refreshControlTriggered"),
+            action: #selector(refreshControlTriggered),
             forControlEvents: .ValueChanged
         )
 

@@ -35,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Register for settings changes as store might have changed
         NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: Selector("userDefaultsDidChange:"),
+            selector: #selector(userDefaultsDidChange(_:)),
             name: NSUserDefaultsDidChangeNotification,
             object: nil)
 
@@ -108,7 +108,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    private func baseURLFromString(var baseURLString: String) -> NSURL {
+    private func baseURLFromString(string: String) -> NSURL {
+        var baseURLString = string
+
         // Append forward slash if needed to ensure proper relative URL behavior
         let forwardSlash: Character = "/"
         if !baseURLString.hasSuffix(String(forwardSlash)) {

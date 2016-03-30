@@ -42,7 +42,7 @@ class MatchesViewController: UITableViewController, DZNEmptyDataSetDelegate, DZN
 
         self.refreshControl = UIRefreshControl()
         self.refreshControl?.addTarget(self,
-            action: Selector("refreshControlTriggered"),
+            action: #selector(refreshControlTriggered),
             forControlEvents: .ValueChanged
         )
 
@@ -53,7 +53,7 @@ class MatchesViewController: UITableViewController, DZNEmptyDataSetDelegate, DZN
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .Add,
             target: self,
-            action: Selector("addMatchButtonTapped")
+            action: #selector(addMatchButtonTapped)
         )
 
         bindViewModel()
