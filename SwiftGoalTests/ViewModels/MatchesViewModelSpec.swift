@@ -9,6 +9,7 @@
 import Quick
 import Nimble
 import ReactiveCocoa
+import Result
 @testable import SwiftGoal
 
 class MatchesViewModelSpec: QuickSpec {

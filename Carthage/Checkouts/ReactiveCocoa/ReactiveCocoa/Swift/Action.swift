@@ -1,4 +1,5 @@
 import Foundation
+import enum Result.NoError
 
 /// Represents an action that will do some work when executed with a value of
 /// type `Input`, then return zero or more values of type `Output` and/or fail
@@ -133,7 +134,7 @@ public final class Action<Input, Output, Error: ErrorType> {
 public final class CocoaAction: NSObject {
 	/// The selector that a caller should invoke upon a CocoaAction in order to
 	/// execute it.
-	public static let selector: Selector = "execute:"
+	public static let selector: Selector = #selector(CocoaAction.execute(_:))
 
 	/// Whether the action is enabled.
 	///

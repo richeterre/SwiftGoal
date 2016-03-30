@@ -7,6 +7,7 @@
 //
 
 import ReactiveCocoa
+import Result
 
 class ManagePlayersViewModel {
 
@@ -48,7 +49,7 @@ class ManagePlayersViewModel {
         self.selectedPlayers = MutableProperty(initialPlayers)
         self.disabledPlayers = disabledPlayers
 
-        let (refreshSignal, refreshObserver) = SignalProducer<Void, NoError>.buffer()
+        let (refreshSignal, refreshObserver) = SignalProducer<Void, NoError>.buffer(0)
         self.refreshObserver = refreshObserver
 
         let (contentChangesSignal, contentChangesObserver) = Signal<PlayerChangeset, NoError>.pipe()

@@ -6,9 +6,9 @@
 //  Copyright (c) 2015 Martin Richter. All rights reserved.
 //
 
-import UIKit
 import DZNEmptyDataSet
 import ReactiveCocoa
+import Result
 
 class MatchesViewController: UITableViewController, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
 

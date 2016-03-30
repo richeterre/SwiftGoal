@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Martin Richter. All rights reserved.
 //
 
-import UIKit
 import ReactiveCocoa
+import Result
 
 class ManagePlayersViewController: UITableViewController {
 

@@ -7,6 +7,7 @@
 //
 
 import ReactiveCocoa
+import Result
 
 class MatchesViewModel {
 
@@ -42,7 +43,7 @@ class MatchesViewModel {
         self.store = store
         self.matches = []
 
-        let (refreshSignal, refreshObserver) = SignalProducer<Void, NoError>.buffer()
+        let (refreshSignal, refreshObserver) = SignalProducer<Void, NoError>.buffer(0)
         self.refreshObserver = refreshObserver
 
         let (contentChangesSignal, contentChangesObserver) = Signal<MatchChangeset, NoError>.pipe()

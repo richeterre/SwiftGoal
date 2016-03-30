@@ -7,6 +7,7 @@
 //
 
 import ReactiveCocoa
+import Result
 
 class RankingsViewController: UITableViewController {
 

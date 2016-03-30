@@ -7,6 +7,7 @@
 //
 
 import ReactiveCocoa
+import Result
 
 class RankingsViewModel {
 
@@ -35,7 +36,7 @@ class RankingsViewModel {
         self.store = store
         self.rankings = []
 
-        let (refreshSignal, refreshObserver) = SignalProducer<Void, NoError>.buffer()
+        let (refreshSignal, refreshObserver) = SignalProducer<Void, NoError>.buffer(0)
         self.refreshObserver = refreshObserver
 
         let (contentChangesSignal, contentChangesObserver) = Signal<RankingChangeset, NoError>.pipe()

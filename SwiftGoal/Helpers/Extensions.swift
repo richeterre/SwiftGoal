@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Martin Richter. All rights reserved.
 //
 
-import UIKit
 import ReactiveCocoa
+import Result
 
 extension Array {
     func difference<T: Equatable>(otherArray: [T]) -> [T] {

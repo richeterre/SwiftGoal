@@ -87,6 +87,14 @@ public final class Signal<Value, Error: ErrorType> {
 		return self.init { _ in nil }
 	}
 
+	/// A Signal that completes immediately without emitting any value.
+	public static var empty: Signal {
+		return self.init { observer in
+			observer.sendCompleted()
+			return nil
+		}
+	}
+
 	/// Creates a Signal that will be controlled by sending events to the given
 	/// observer.
 	///
@@ -146,10 +154,10 @@ public final class Signal<Value, Error: ErrorType> {
 
 public protocol SignalType {
 	/// The type of values being sent on the signal.
-	typealias Value
+	associatedtype Value
 	/// The type of error that can occur on the signal. If errors aren't possible
 	/// then `NoError` can be used.
-	typealias Error: ErrorType
+	associatedtype Error: ErrorType
 
 	/// Extracts a signal from the receiver.
 	var signal: Signal<Value, Error> { get }
@@ -275,7 +283,7 @@ extension SignalType {
 			return self.observe { event in
 				if case let .Next(value) = event {
 					if taken < count {
-						taken++
+						taken += 1
 						observer.sendNext(value)
 					}
 
@@ -434,7 +442,7 @@ extension SignalType {
 
 			return self.observe { event in
 				if case .Next = event where skipped < count {
-					skipped++
+					skipped += 1
 				} else {
 					observer.action(event)
 				}
@@ -716,16 +724,19 @@ extension SignalType {
 	@warn_unused_result(message="Did you forget to call `observe` on the signal?")
 	public func skipRepeats(isRepeat: (Value, Value) -> Bool) -> Signal<Value, Error> {
 		return self
-			.map(Optional.init)
-			.combinePrevious(nil)
-			.filter { a, b in
-				if let a = a, b = b where isRepeat(a, b) {
-					return false
-				} else {
-					return true
+			.scan((nil, false)) { (accumulated: (Value?, Bool), next: Value) -> (value: Value?, repeated: Bool) in
+				switch accumulated.0 {
+				case .None:
+					return (next, false)
+				case let .Some(prev) where isRepeat(prev, next):
+					return (prev, true)
+				case .Some:
+					return (Optional.Some(next), false)
 				}
 			}
-			.map { $0.1! }
+			.filter { !$0.repeated }
+			.map { $0.value }
+			.ignoreNil()
 	}
 
 	/// Does not forward any values from `self` until `predicate` returns false,
@@ -803,9 +814,7 @@ extension SignalType {
 				case let .Failed(error):
 					observer.sendFailed(error)
 				case .Completed:
-					for bufferedValue in buffer {
-						observer.sendNext(bufferedValue)
-					}
+					buffer.forEach(observer.sendNext)
 					
 					observer.sendCompleted()
 				case .Interrupted:
@@ -873,8 +882,8 @@ extension SignalType {
 				}
 			}
 			
-			let onFailed = { observer.sendFailed($0) }
-			let onInterrupted = { observer.sendInterrupted() }
+			let onFailed = observer.sendFailed
+			let onInterrupted = observer.sendInterrupted
 
 			disposable += self.observe { event in
 				switch event {
@@ -949,11 +958,10 @@ extension SignalType {
 			self.observe { event in
 				switch event {
 				case let .Next(value):
-					operation(value).analysis(ifSuccess: { value in
-						observer.sendNext(value)
-						}, ifFailure: { error in
-							observer.sendFailed(error)
-					})
+					operation(value).analysis(
+						ifSuccess: observer.sendNext,
+						ifFailure: observer.sendFailed
+					)
 				case let .Failed(error):
 					observer.sendFailed(error)
 				case .Completed:
