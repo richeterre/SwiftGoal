@@ -1,6 +1,17 @@
 CHANGELOG
 =======
 
+# 0.19.1 - January 26 2016
+
+* Rebased from 0.16.0 with only desired commits to resolve many unexpected issues
+
+# 0.19.0 - January 21 2016
+
+* Improved `.insets()` for `width` and `height` #183
+* Added Carthage tvOS support #179
+* Added Package.swift #175
+* Codesign is set to Distribution on Release #181
+
 # 0.15.0 - September 22 2015
 
 * Fixed issues with layout guides on iOS 9

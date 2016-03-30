@@ -58,9 +58,9 @@ public class Constraint {
     public func updatePriorityMedium() -> Void { fatalError("Must be implemented by Concrete subclass.") }
     public func updatePriorityLow() -> Void { fatalError("Must be implemented by Concrete subclass.") }
     
-    internal var makerLocation: SourceLocation = SourceLocation(file: "Unknown", line: 0)
+    internal var makerFile: String = "Unknown"
+    internal var makerLine: UInt = 0
     
-    internal(set) public var location: SourceLocation?
 }
 
 /**
@@ -128,15 +128,15 @@ internal class ConcreteConstraint: Constraint {
     internal override func updatePriorityLow() -> Void {
         self.updatePriority(Float(250.0))
     }
-
+    
     internal override func install() -> [LayoutConstraint] {
-        return self.installOnView(updateExisting: false, location: self.makerLocation)
+        return self.installOnView(updateExisting: false, file: self.makerFile, line: self.makerLine)
     }
-
+    
     internal override func uninstall() -> Void {
         self.uninstallFromView()
     }
-
+    
     internal override func activate() -> Void {
         guard self.installInfo != nil else {
             self.install()
@@ -153,7 +153,7 @@ internal class ConcreteConstraint: Constraint {
             NSLayoutConstraint.activateConstraints(layoutConstraints)
         }
     }
-
+    
     internal override func deactivate() -> Void {
         guard self.installInfo != nil else {
             return
@@ -193,25 +193,26 @@ internal class ConcreteConstraint: Constraint {
         }
     }
     
+    private let label: String?
+    
     private var installInfo: ConcreteConstraintInstallInfo? = nil
     
-    internal init(fromItem: ConstraintItem, toItem: ConstraintItem, relation: ConstraintRelation, constant: Any, multiplier: Float, priority: Float, location: SourceLocation?) {
+    internal init(fromItem: ConstraintItem, toItem: ConstraintItem, relation: ConstraintRelation, constant: Any, multiplier: Float, priority: Float, label: String? = nil) {
         self.fromItem = fromItem
         self.toItem = toItem
         self.relation = relation
         self.constant = constant
         self.multiplier = multiplier
         self.priority = priority
-        super.init()
-        self.location = location
+        self.label = label
     }
     
-    internal func installOnView(updateExisting updateExisting: Bool = false, location: SourceLocation? = nil) -> [LayoutConstraint] {
+    internal func installOnView(updateExisting updateExisting: Bool = false, file: String? = nil, line: UInt? = nil) -> [LayoutConstraint] {
         var installOnView: View? = nil
         if self.toItem.view != nil {
             installOnView = closestCommonSuperviewFromView(self.fromItem.view, toView: self.toItem.view)
             if installOnView == nil {
-                NSException(name: "Cannot Install Constraint", reason: "No common superview between views (@\(self.makerLocation.file)#\(self.makerLocation.line))", userInfo: nil).raise()
+                NSException(name: "Cannot Install Constraint", reason: "No common superview between views (@\(self.makerFile)#\(self.makerLine))", userInfo: nil).raise()
                 return []
             }
         } else {
@@ -221,7 +222,7 @@ internal class ConcreteConstraint: Constraint {
             } else {
                 installOnView = self.fromItem.view?.superview
                 if installOnView == nil {
-                    NSException(name: "Cannot Install Constraint", reason: "Missing superview (@\(self.makerLocation.file)#\(self.self.makerLocation.line))", userInfo: nil).raise()
+                    NSException(name: "Cannot Install Constraint", reason: "Missing superview (@\(self.makerFile)#\(self.makerLine))", userInfo: nil).raise()
                     return []
                 }
             }
@@ -229,7 +230,7 @@ internal class ConcreteConstraint: Constraint {
         
         if let installedOnView = self.installInfo?.view {
             if installedOnView != installOnView {
-                NSException(name: "Cannot Install Constraint", reason: "Already installed on different view. (@\(self.makerLocation.file)#\(self.makerLocation.line))", userInfo: nil).raise()
+                NSException(name: "Cannot Install Constraint", reason: "Already installed on different view. (@\(self.makerFile)#\(self.makerLine))", userInfo: nil).raise()
                 return []
             }
             return self.installInfo?.layoutConstraints.allObjects as? [LayoutConstraint] ?? []
@@ -271,6 +272,7 @@ internal class ConcreteConstraint: Constraint {
                 attribute: layoutToAttribute,
                 multiplier: CGFloat(self.multiplier),
                 constant: layoutConstant)
+            layoutConstraint.identifier = self.label
             
             // set priority
             layoutConstraint.priority = self.priority
@@ -445,7 +447,9 @@ private extension NSLayoutAttribute {
                 case .Bottom, .BottomMargin: return insets.bottom
                 case .Leading, .LeadingMargin: return  (Config.interfaceLayoutDirection == .LeftToRight) ? insets.left : -insets.right
                 case .Trailing, .TrailingMargin: return  (Config.interfaceLayoutDirection == .LeftToRight) ? insets.right : -insets.left
-                case .Width, .Height, .NotAnAttribute: return CGFloat(0)
+                case .Width: return -insets.left + insets.right
+                case .Height: return -insets.top + insets.bottom
+                case .NotAnAttribute: return CGFloat(0)
                 }
             #else
                 switch self {
@@ -455,7 +459,9 @@ private extension NSLayoutAttribute {
                 case .Bottom: return insets.bottom
                 case .Leading: return  (Config.interfaceLayoutDirection == .LeftToRight) ? insets.left : -insets.right
                 case .Trailing: return  (Config.interfaceLayoutDirection == .LeftToRight) ? insets.right : -insets.left
-                case .Width, .Height, .NotAnAttribute: return CGFloat(0)
+                case .Width: return -insets.left + insets.right
+                case .Height: return -insets.top + insets.bottom
+                case .NotAnAttribute: return CGFloat(0)
                 case .FirstBaseline: return insets.bottom
                 }
             #endif
