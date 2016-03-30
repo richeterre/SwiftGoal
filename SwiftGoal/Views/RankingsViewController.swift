@@ -12,7 +12,6 @@ import Result
 class RankingsViewController: UITableViewController {
 
     private let rankingCellIdentifier = "RankingCell"
-    private let (isActiveSignal, isActiveObserver) = Signal<Bool, NoError>.pipe()
     private let viewModel: RankingsViewModel
 
     // MARK: Lifecycle
@@ -46,24 +45,12 @@ class RankingsViewController: UITableViewController {
         bindViewModel()
     }
 
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-
-        isActiveObserver.sendNext(true)
-    }
-
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        isActiveObserver.sendNext(false)
-    }
-
     // MARK: Bindings
 
     private func bindViewModel() {
         self.title = viewModel.title
 
-        viewModel.active <~ isActiveSignal
+        viewModel.active <~ isActive()
 
         viewModel.contentChangesSignal
             .observeOn(UIScheduler())

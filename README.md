@@ -72,7 +72,7 @@ Code Checklist
 * [x] Write tests for models
 * [x] Write tests for view models
 * [ ] Write tests for helpers and store
-* [ ] Deduplicate `isActiveSignal` code on view controllers (via a protocol extension?)
+* [x] Deduplicate `isActiveSignal` code on view controllers (via a class extension)
 * [ ] Create watchOS 2 app for quick match entry
 * [ ] Drop Auto Layout [library][snapkit] in favor of `UIStackView` and `NSLayoutAnchor`
 

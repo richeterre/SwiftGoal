@@ -12,7 +12,6 @@ import Result
 class ManagePlayersViewController: UITableViewController {
 
     private let playerCellIdentifier = "PlayerCell"
-    private let (isActiveSignal, isActiveObserver) = Signal<Bool, NoError>.pipe()
     private let viewModel: ManagePlayersViewModel
 
     // MARK: Lifecycle
@@ -51,24 +50,12 @@ class ManagePlayersViewController: UITableViewController {
         bindViewModel()
     }
 
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-
-        isActiveObserver.sendNext(true)
-    }
-
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        isActiveObserver.sendNext(false)
-    }
-
     // MARK: Bindings
 
     private func bindViewModel() {
         self.title = viewModel.title
 
-        viewModel.active <~ isActiveSignal
+        viewModel.active <~ isActive()
         
         viewModel.contentChangesSignal
             .observeOn(UIScheduler())

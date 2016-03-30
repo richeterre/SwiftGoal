@@ -13,7 +13,6 @@ import Result
 class MatchesViewController: UITableViewController, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
 
     private let matchCellIdentifier = "MatchCell"
-    private let (isActiveSignal, isActiveObserver) = Signal<Bool, NoError>.pipe()
     private let viewModel: MatchesViewModel
 
     // MARK: - Lifecycle
@@ -59,24 +58,12 @@ class MatchesViewController: UITableViewController, DZNEmptyDataSetDelegate, DZN
         bindViewModel()
     }
 
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-
-        isActiveObserver.sendNext(true)
-    }
-
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        isActiveObserver.sendNext(false)
-    }
-
     // MARK: - Bindings
 
     private func bindViewModel() {
         self.title = viewModel.title
 
-        viewModel.active <~ isActiveSignal
+        viewModel.active <~ isActive()
 
         viewModel.contentChangesSignal
             .observeOn(UIScheduler())
