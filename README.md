@@ -21,7 +21,7 @@ SwiftGoal runs on iOS 9+ and requires Xcode 7.3 with Swift 2.2 to build.
 Setup
 -----
 
-No separate backend is required to use the app, as it stores all its data locally in the `Documents` directory by default. Note that things might break in future releases, e.g. if some model fields change.
+No separate backend is required to use the app, as it stores all its data locally in the `Documents` directory by default. Note that things might break in future releases, e.g. if some model fields change! Also, you need to _terminate_ the app to trigger a write to local storage.
 
 For serious use and if you want to share data across multiple devices, I recommend you use [Goalbase][goalbase] as a backend. It's easy to get started:
 
