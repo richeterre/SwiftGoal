@@ -58,7 +58,6 @@ User Features
 * [ ] See date and time of each match
 * [ ] See matches grouped by date range (e.g. last week, last month, earlier)
 * [ ] View more player statistics (e.g. won/drawn/lost count, nemesis player, …)
-* [ ] Delete players alongside their dependent matches
 
 Code Checklist
 --------------
@@ -74,7 +73,6 @@ Code Checklist
 * [ ] Write tests for helpers and store
 * [x] Deduplicate `isActiveSignal` code on view controllers (via a class extension)
 * [ ] Create watchOS 2 app for quick match entry
-* [ ] Drop Auto Layout [library][snapkit] in favor of `UIStackView` and `NSLayoutAnchor`
 
 [snapkit]: https://github.com/SnapKit/SnapKit
 
