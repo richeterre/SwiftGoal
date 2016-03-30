@@ -7,6 +7,7 @@
 //
 
 import Argo
+import Curry
 
 struct Match {
     let identifier: String
@@ -50,18 +51,8 @@ func ==(lhs: Match, rhs: Match) -> Bool {
 // MARK: Decodable
 
 extension Match: Decodable {
-    static func create(identifier: String)(homePlayers: [Player])(awayPlayers: [Player])(homeGoals: Int)(awayGoals: Int) -> Match {
-        return Match(
-            identifier: identifier,
-            homePlayers: homePlayers,
-            awayPlayers: awayPlayers,
-            homeGoals: homeGoals,
-            awayGoals: awayGoals
-        )
-    }
-
     static func decode(json: JSON) -> Decoded<Match> {
-        return Match.create
+        return curry(Match.init)
             <^> json <| identifierKey
             <*> json <|| homePlayersKey
             <*> json <|| awayPlayersKey

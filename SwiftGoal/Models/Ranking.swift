@@ -7,6 +7,7 @@
 //
 
 import Argo
+import Curry
 
 struct Ranking {
     let player: Player
@@ -38,12 +39,8 @@ func ==(lhs: Ranking, rhs: Ranking) -> Bool {
 // MARK: Decodable
 
 extension Ranking: Decodable {
-    static func create(player: Player)(rating: Float) -> Ranking {
-        return Ranking(player: player, rating: rating)
-    }
-
     static func decode(json: JSON) -> Decoded<Ranking> {
-        return Ranking.create
+        return curry(Ranking.init)
             <^> json <| "player"
             <*> json <| "rating"
     }

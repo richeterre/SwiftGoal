@@ -7,6 +7,7 @@
 //
 
 import Argo
+import Curry
 
 struct Player {
     let identifier: String
@@ -55,12 +56,8 @@ extension Player: Hashable {
 // MARK: Decodable
 
 extension Player: Decodable {
-    static func create(identifier: String)(name: String) -> Player {
-        return Player(identifier: identifier, name: name)
-    }
-
     static func decode(json: JSON) -> Decoded<Player> {
-        return Player.create
+        return curry(Player.init)
             <^> json <| identifierKey
             <*> json <| nameKey
     }

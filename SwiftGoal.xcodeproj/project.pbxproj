@@ -49,6 +49,7 @@
 		0FFA97041B76C9D900DD4F58 /* EditMatchViewModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FFA97031B76C9D900DD4F58 /* EditMatchViewModelSpec.swift */; };
 		5B459DFA1C3A4C8A00B37AD2 /* RankingsViewModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B459DF91C3A4C8A00B37AD2 /* RankingsViewModelSpec.swift */; };
 		5B459DFC1C3A551000B37AD2 /* ManagePlayersViewModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B459DFB1C3A551000B37AD2 /* ManagePlayersViewModelSpec.swift */; };
+		5BB3F7921CAC61C700985038 /* Curry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BB3F7911CAC61C700985038 /* Curry.framework */; };
 		5BF62C941C3819E5006E97C6 /* RankingEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF62C931C3819E5006E97C6 /* RankingEngine.swift */; };
 		5BF62C971C381AA8006E97C6 /* RankingEngineSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF62C961C381AA8006E97C6 /* RankingEngineSpec.swift */; };
 		5BFD9FA01C340B1C00FDEBC6 /* StoreType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFD9F9F1C340B1C00FDEBC6 /* StoreType.swift */; };
@@ -125,6 +126,7 @@
 		0FFA97031B76C9D900DD4F58 /* EditMatchViewModelSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditMatchViewModelSpec.swift; sourceTree = "<group>"; };
 		5B459DF91C3A4C8A00B37AD2 /* RankingsViewModelSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RankingsViewModelSpec.swift; sourceTree = "<group>"; };
 		5B459DFB1C3A551000B37AD2 /* ManagePlayersViewModelSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagePlayersViewModelSpec.swift; sourceTree = "<group>"; };
+		5BB3F7911CAC61C700985038 /* Curry.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Curry.framework; path = Carthage/Build/iOS/Curry.framework; sourceTree = "<group>"; };
 		5BF62C931C3819E5006E97C6 /* RankingEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RankingEngine.swift; sourceTree = "<group>"; };
 		5BF62C961C381AA8006E97C6 /* RankingEngineSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RankingEngineSpec.swift; sourceTree = "<group>"; };
 		5BFD9F9F1C340B1C00FDEBC6 /* StoreType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreType.swift; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0FE96BEA1B24D77700506E60 /* Argo.framework in Frameworks */,
+				5BB3F7921CAC61C700985038 /* Curry.framework in Frameworks */,
 				0FE2A7481B66CE17001F5C5B /* DZNEmptyDataSet.framework in Frameworks */,
 				0FA80BDE1B013F33000531E3 /* ReactiveCocoa.framework in Frameworks */,
 				0FA80BDF1B013F33000531E3 /* Result.framework in Frameworks */,
@@ -260,6 +263,7 @@
 		0FA80BE01B013F3A000531E3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5BB3F7911CAC61C700985038 /* Curry.framework */,
 				0FE96BE81B24D77700506E60 /* Argo.framework */,
 				0FE2A7461B66CD06001F5C5B /* DZNEmptyDataSet.framework */,
 				0F79DAE81BCDBB170073988A /* Nimble.framework */,
@@ -445,6 +449,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/Argo.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SnapKit.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/DZNEmptyDataSet.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Curry.framework",
 			);
 			outputPaths = (
 			);
