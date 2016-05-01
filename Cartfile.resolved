@@ -1,6 +1,6 @@
 github "thoughtbot/Argo" "v2.3.0"
 github "thoughtbot/Curry" "v2.0.0"
-github "dzenbot/DZNEmptyDataSet" "v1.7.3"
+github "dzenbot/DZNEmptyDataSet" "v1.8"
 github "Quick/Nimble" "v3.2.0"
 github "Quick/Quick" "v0.9.1"
 github "antitypical/Result" "2.0.0"
