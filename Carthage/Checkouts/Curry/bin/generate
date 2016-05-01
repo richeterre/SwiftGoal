@@ -38,9 +38,10 @@ func curryDefinitionGenerator(arguments arguments: Int) -> String {
 
   let functionDefinition = "function(\(innerFunctionArguments))" // return function(`a`, `b`)
 
-  let implementation = lowerFunctionArguments.reverse().reduce(functionDefinition) {
-    "{ \($1) in \($0) }"
-  } // "{ `a` in { `b` in function(`a`, `b`) } }"
+  let implementation = lowerFunctionArguments.enumerate().reverse().reduce(functionDefinition) { accum, tuple in
+    let (index, argument) = tuple
+    return "{ (\(argument): \(inputParameters[index])) -> \(genericParameters.suffixFrom(index + 1).joinWithSeparator(" -> ")) in \(accum) }"
+  } // "{ (`a`: A) -> B -> C in { (`b`: B) -> C in function(`a`, `b`) } }"
 
   let curry = [
     "public func curry\(genericTypeDefinition)(function: \(functionArguments) -> \(returnType)) -> \(returnFunctionArguments) -> \(returnType) {",
@@ -57,7 +58,7 @@ let input = Process.arguments[safe: 1] ?? "20"
 let limit = Int(input)!
 
 let start = 2
-let curries = (start..<limit).map { curryDefinitionGenerator(arguments: $0) }
+let curries = (start...limit+1).map { curryDefinitionGenerator(arguments: $0) }
 
 let output = curries.joinWithSeparator("\n\n") + "\n"
 

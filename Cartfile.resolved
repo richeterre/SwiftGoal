@@ -1,5 +1,5 @@
-github "thoughtbot/Argo" "v2.3.0"
-github "thoughtbot/Curry" "v2.0.0"
+github "thoughtbot/Argo" "v3.0.1"
+github "thoughtbot/Curry" "v2.2.0"
 github "dzenbot/DZNEmptyDataSet" "v1.8"
 github "Quick/Nimble" "v4.0.1"
 github "Quick/Quick" "v0.9.2"
