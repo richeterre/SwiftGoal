@@ -36,6 +36,9 @@ struct TestModelNumerics {
   let double: Double
   let float: Float
   let intOpt: Int?
+  let uint: UInt
+  let uint64: UInt64
+  let uint64String: UInt64
 }
 
 extension TestModelNumerics: Decodable {
@@ -47,5 +50,8 @@ extension TestModelNumerics: Decodable {
       <*> j <| "double"
       <*> j <| "float"
       <*> j <|? "int_opt"
+      <*> j <| "uint"
+      <*> j <| "uint64"
+      <*> j <| "uint64_string"
   }
 }
