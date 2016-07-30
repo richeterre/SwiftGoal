@@ -43,7 +43,7 @@ class MatchesViewModel {
         self.store = store
         self.matches = []
 
-        let (refreshSignal, refreshObserver) = SignalProducer<Void, NoError>.buffer(0)
+        let (refreshSignal, refreshObserver) = Signal<Void, NoError>.pipe()
         self.refreshObserver = refreshObserver
 
         let (contentChangesSignal, contentChangesObserver) = Signal<MatchChangeset, NoError>.pipe()
@@ -69,7 +69,7 @@ class MatchesViewModel {
             .map { _ in () }
             .observe(refreshObserver)
 
-        refreshSignal
+        SignalProducer(signal: refreshSignal)
             .on(next: { _ in isLoading.value = true })
             .flatMap(.Latest) { _ in
                 return store.fetchMatches()

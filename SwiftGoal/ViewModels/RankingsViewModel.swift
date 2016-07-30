@@ -36,7 +36,7 @@ class RankingsViewModel {
         self.store = store
         self.rankings = []
 
-        let (refreshSignal, refreshObserver) = SignalProducer<Void, NoError>.buffer(0)
+        let (refreshSignal, refreshObserver) = Signal<Void, NoError>.pipe()
         self.refreshObserver = refreshObserver
 
         let (contentChangesSignal, contentChangesObserver) = Signal<RankingChangeset, NoError>.pipe()
@@ -55,7 +55,7 @@ class RankingsViewModel {
             .map { _ in () }
             .start(refreshObserver)
 
-        refreshSignal
+        SignalProducer(signal: refreshSignal)
             .on(next: { _ in isLoading.value = true })
             .flatMap(.Latest, transform: { _ in
                 return store.fetchRankings()

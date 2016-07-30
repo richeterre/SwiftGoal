@@ -49,7 +49,7 @@ class ManagePlayersViewModel {
         self.selectedPlayers = MutableProperty(initialPlayers)
         self.disabledPlayers = disabledPlayers
 
-        let (refreshSignal, refreshObserver) = SignalProducer<Void, NoError>.buffer(0)
+        let (refreshSignal, refreshObserver) = Signal<Void, NoError>.pipe()
         self.refreshObserver = refreshObserver
 
         let (contentChangesSignal, contentChangesObserver) = Signal<PlayerChangeset, NoError>.pipe()
@@ -73,7 +73,7 @@ class ManagePlayersViewModel {
             .map { _ in () }
             .observe(refreshObserver)
 
-        refreshSignal
+        SignalProducer(signal: refreshSignal)
             .on(next: { _ in isLoading.value = true })
             .flatMap(.Latest, transform: { _ in
                 return store.fetchPlayers()
