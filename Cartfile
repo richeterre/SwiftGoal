@@ -1,5 +1,5 @@
 github "dzenbot/DZNEmptyDataSet" == 1.8.1
 github "ReactiveCocoa/ReactiveCocoa" == 4.1.0
-github "SnapKit/SnapKit" == 0.20.0
+github "SnapKit/SnapKit" == 0.21.1
 github "thoughtbot/Argo" == 3.1
 github "thoughtbot/Curry" == 2.3.3

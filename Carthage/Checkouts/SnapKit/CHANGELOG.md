@@ -1,6 +1,20 @@
 CHANGELOG
 =======
 
+# 0.21.1 - June 20 2016
+
+* Added support for Swift 2.3
+
+# 0.21.0 - May 11 2016
+
+* Added `equalToSuperview()` convenience
+* Enabled app extension API for tvOS and OSX
+
+# 0.20.0 - March 25 2016
+
+* Swift 2.2 Support
+* Added a `labeled("Hello")` to constraint chain to label your constraints for debugging output.
+
 # 0.19.1 - January 26 2016
 
 * Rebased from 0.16.0 with only desired commits to resolve many unexpected issues

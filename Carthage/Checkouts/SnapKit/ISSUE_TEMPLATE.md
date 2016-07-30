@@ -1,12 +1,17 @@
 ### New Issue Checklist
 
-* I have looked at the [Documentation](http://snapkit.io/docs): `INSERT yes/no`
-* I have read the [F.A.Q.](http://snapkit.io/faq): `INSERT yes/no`
-* Platform is: `INSERT iOS/OSX/tvOS`
-* Platform version is: `INSERT PLATFORM VERSION`
-* SnapKit version is: `INSERT SNAPKIT VERSION`
-* Integration method is: `INSERT carthage/cocoapods/manually/other`
+* [ ] I have looked at the [Documentation](http://snapkit.io/docs)
+* [ ] I have read the [F.A.Q.](http://snapkit.io/faq)
 
-### Issue
+### Issue Info
 
-`INSERT ISSUE DESCRIPTION`
+ Info                    | Value                               |
+-------------------------|-------------------------------------|
+ Platform                | e.g. ios/osx/tvos
+ Platform Version        | e.g. 8.0
+ SnapKit Version         | e.g. 0.19.0
+ Integration Method      | e.g. carthage/cocoapods/manually
+ 
+
+### Issue Description
+
