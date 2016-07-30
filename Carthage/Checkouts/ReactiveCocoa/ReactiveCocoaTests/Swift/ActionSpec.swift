@@ -90,9 +90,11 @@ class ActionSpec: QuickSpec {
 				it("should execute successfully") {
 					var receivedValue: String?
 
-					action.apply(0).startWithNext {
-						receivedValue = $0
-					}
+					action.apply(0)
+						.assumeNoErrors()
+						.startWithNext {
+							receivedValue = $0
+						}
 
 					expect(executionCount) == 1
 					expect(action.executing.value) == true
@@ -134,64 +136,6 @@ class ActionSpec: QuickSpec {
 					expect(values) == []
 					expect(errors) == [ testError ]
 				}
-			}
-		}
-
-		describe("CocoaAction") {
-			var action: Action<Int, Int, NoError>!
-
-			beforeEach {
-				action = Action { value in SignalProducer(value: value + 1) }
-				expect(action.enabled.value) == true
-
-				expect(action.unsafeCocoaAction.enabled).toEventually(beTruthy())
-			}
-
-			#if os(OSX)
-				it("should be compatible with AppKit") {
-					let control = NSControl(frame: NSZeroRect)
-					control.target = action.unsafeCocoaAction
-					control.action = CocoaAction.selector
-					control.performClick(nil)
-				}
-			#elseif os(iOS)
-				it("should be compatible with UIKit") {
-					let control = UIControl(frame: CGRectZero)
-					control.addTarget(action.unsafeCocoaAction, action: CocoaAction.selector, forControlEvents: UIControlEvents.TouchDown)
-					control.sendActionsForControlEvents(UIControlEvents.TouchDown)
-				}
-			#endif
-
-			it("should generate KVO notifications for enabled") {
-				var values: [Bool] = []
-
-				action.unsafeCocoaAction
-					.rac_valuesForKeyPath("enabled", observer: nil)
-					.toSignalProducer()
-					.map { $0! as! Bool }
-					.start(Observer(next: { values.append($0) }))
-
-				expect(values) == [ true ]
-
-				let result = action.apply(0).first()
-				expect(result?.value) == 1
-				expect(values).toEventually(equal([ true, false, true ]))
-			}
-
-			it("should generate KVO notifications for executing") {
-				var values: [Bool] = []
-
-				action.unsafeCocoaAction
-					.rac_valuesForKeyPath("executing", observer: nil)
-					.toSignalProducer()
-					.map { $0! as! Bool }
-					.start(Observer(next: { values.append($0) }))
-
-				expect(values) == [ false ]
-
-				let result = action.apply(0).first()
-				expect(result?.value) == 1
-				expect(values).toEventually(equal([ false, true, false ]))
 			}
 		}
 	}

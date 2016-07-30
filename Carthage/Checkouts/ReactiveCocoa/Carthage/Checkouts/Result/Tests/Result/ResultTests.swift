@@ -44,8 +44,8 @@ final class ResultTests: XCTestCase {
 	
 	func testTryCatchProducesFailures() {
 		#if os(Linux)
-			/// FIXME: skipped on Linux because of crash with swift-DEVELOPMENT-SNAPSHOT-2016-03-01-a.
-			print("Test Case `\(#function)` skipped on Linux because of crash with swift-DEVELOPMENT-SNAPSHOT-2016-03-01-a.")
+			/// FIXME: skipped on Linux because of crash with swift-DEVELOPMENT-SNAPSHOT-2016-05-31-a.
+			print("Test Case `\(#function)` skipped on Linux because of crash with swift-DEVELOPMENT-SNAPSHOT-2016-05-31-a.")
 		#else
 			let result: Result<String, NSError> = Result(try tryIsSuccess(nil))
 			XCTAssert(result.error == error)
@@ -61,8 +61,8 @@ final class ResultTests: XCTestCase {
 
 	func testTryCatchWithFunctionCatchProducesFailures() {
 		#if os(Linux)
-			/// FIXME: skipped on Linux because of crash with swift-DEVELOPMENT-SNAPSHOT-2016-03-01-a.
-			print("Test Case `\(#function)` skipped on Linux because of crash with swift-DEVELOPMENT-SNAPSHOT-2016-03-01-a.")
+			/// FIXME: skipped on Linux because of crash with swift-DEVELOPMENT-SNAPSHOT-2016-05-31-a.
+			print("Test Case `\(#function)` skipped on Linux because of crash with swift-DEVELOPMENT-SNAPSHOT-2016-05-31-a.")
 		#else
 			let function = { try tryIsSuccess(nil) }
 
@@ -81,8 +81,8 @@ final class ResultTests: XCTestCase {
 
 	func testMaterializeProducesFailures() {
 		#if os(Linux)
-			/// FIXME: skipped on Linux because of crash with swift-DEVELOPMENT-SNAPSHOT-2016-03-01-a.
-			print("Test Case `\(#function)` skipped on Linux because of crash with swift-DEVELOPMENT-SNAPSHOT-2016-03-01-a.")
+			/// FIXME: skipped on Linux because of crash with swift-DEVELOPMENT-SNAPSHOT-2016-05-31-a.
+			print("Test Case `\(#function)` skipped on Linux because of crash with swift-DEVELOPMENT-SNAPSHOT-2016-05-31-a.")
 		#else
 			let result1 = materialize(try tryIsSuccess(nil))
 			XCTAssert(result1.error == error)
@@ -90,6 +90,47 @@ final class ResultTests: XCTestCase {
 			let result2: Result<String, NSError> = materialize { try tryIsSuccess(nil) }
 			XCTAssert(result2.error == error)
 		#endif
+	}
+
+	// MARK: Recover
+
+	func testRecoverProducesLeftForLeftSuccess() {
+		let left = Result<String, NSError>.Success("left")
+		XCTAssertEqual(left.recover("right"), "left")
+	}
+
+	func testRecoverProducesRightForLeftFailure() {
+		struct Error: ResultErrorType {}
+
+		let left = Result<String, Error>.Failure(Error())
+		XCTAssertEqual(left.recover("right"), "right")
+	}
+
+	// MARK: Recover With
+
+	func testRecoverWithProducesLeftForLeftSuccess() {
+		let left = Result<String, NSError>.Success("left")
+		let right = Result<String, NSError>.Success("right")
+
+		XCTAssertEqual(left.recoverWith(right).value, "left")
+	}
+
+	func testRecoverWithProducesRightSuccessForLeftFailureAndRightSuccess() {
+		struct Error: ResultErrorType {}
+
+		let left = Result<String, Error>.Failure(Error())
+		let right = Result<String, Error>.Success("right")
+
+		XCTAssertEqual(left.recoverWith(right).value, "right")
+	}
+
+	func testRecoverWithProducesRightFailureForLeftFailureAndRightFailure() {
+		enum Error: ResultErrorType { case Left, Right }
+
+		let left = Result<String, Error>.Failure(.Left)
+		let right = Result<String, Error>.Failure(.Right)
+
+		XCTAssertEqual(left.recoverWith(right).error, .Right)
 	}
 
 	// MARK: Cocoa API idioms
@@ -167,21 +208,38 @@ let failure2 = Result<String, NSError>.Failure(error2)
 
 #if !os(Linux)
 
+
+#if swift(>=3.0)
+func attempt<T>(_ value: T, succeed: Bool, error: NSErrorPointer) -> T? {
+	if succeed {
+		return value
+	} else {
+		error?.pointee = Result<(), NSError>.error()
+		return nil
+	}
+}
+#else
 func attempt<T>(value: T, succeed: Bool, error: NSErrorPointer) -> T? {
 	if succeed {
 		return value
 	} else {
-		#if swift(>=3.0)
-			error.pointee = Result<(), NSError>.error()
-		#else
-			error.memory = Result<(), NSError>.error()
-		#endif
+		error.memory = Result<(), NSError>.error()
 		return nil
 	}
 }
+#endif
 
 #endif
 
+#if swift(>=3)
+func tryIsSuccess(_ text: String?) throws -> String {
+	guard let text = text where text == "success" else {
+		throw error
+	}
+
+	return text
+}
+#else
 func tryIsSuccess(text: String?) throws -> String {
 	guard let text = text where text == "success" else {
 		throw error
@@ -189,6 +247,7 @@ func tryIsSuccess(text: String?) throws -> String {
 	
 	return text
 }
+#endif
 
 extension NSError {
 	var function: String? {
@@ -207,7 +266,7 @@ extension NSError {
 #if os(Linux)
 
 extension ResultTests {
-	static var allTests: [(String, ResultTests -> () throws -> Void)] {
+	static var allTests: [(String, (ResultTests) -> () throws -> Void)] {
 		return [
 			("testMapTransformsSuccesses", testMapTransformsSuccesses),
 			("testMapRewrapsFailures", testMapRewrapsFailures),
@@ -222,6 +281,11 @@ extension ResultTests {
 			("testTryCatchWithFunctionCatchProducesFailures", testTryCatchWithFunctionCatchProducesFailures),
 			("testMaterializeProducesSuccesses", testMaterializeProducesSuccesses),
 			("testMaterializeProducesFailures", testMaterializeProducesFailures),
+			("testRecoverProducesLeftForLeftSuccess", testRecoverProducesLeftForLeftSuccess),
+			("testRecoverProducesRightForLeftFailure", testRecoverProducesRightForLeftFailure),
+			("testRecoverWithProducesLeftForLeftSuccess", testRecoverWithProducesLeftForLeftSuccess),
+			("testRecoverWithProducesRightSuccessForLeftFailureAndRightSuccess", testRecoverWithProducesRightSuccessForLeftFailureAndRightSuccess),
+			("testRecoverWithProducesRightFailureForLeftFailureAndRightFailure", testRecoverWithProducesRightFailureForLeftFailureAndRightFailure),
 //			("testTryProducesFailuresForBooleanAPIWithErrorReturnedByReference", testTryProducesFailuresForBooleanAPIWithErrorReturnedByReference),
 //			("testTryProducesFailuresForOptionalWithErrorReturnedByReference", testTryProducesFailuresForOptionalWithErrorReturnedByReference),
 //			("testTryProducesSuccessesForBooleanAPI", testTryProducesSuccessesForBooleanAPI),
