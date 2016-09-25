@@ -39,7 +39,7 @@ class RemoteStore: StoreType {
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
             .map { data, response in
                 if let json = try? NSJSONSerialization.JSONObjectWithData(data, options: []),
-                    matches: [Match] = decode(json) {
+                  let matches: [Match] = decode(json) {
                     return matches
                 } else {
                     return []
@@ -97,7 +97,7 @@ class RemoteStore: StoreType {
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
             .map { data, response in
                 if let json = try? NSJSONSerialization.JSONObjectWithData(data, options: []),
-                    players: [Player] = decode(json) {
+                    let players: [Player] = decode(json) {
                     return players
                 } else {
                     return []
@@ -126,7 +126,7 @@ class RemoteStore: StoreType {
         return NSURLSession.sharedSession().rac_dataWithRequest(request)
             .map { data, response in
                 if let json = try? NSJSONSerialization.JSONObjectWithData(data, options: []),
-                    rankings: [Ranking] = decode(json) {
+                    let rankings: [Ranking] = decode(json) {
                     return rankings
                 } else {
                     return []
@@ -156,7 +156,7 @@ class RemoteStore: StoreType {
     }
 
     private func urlForMatch(match: Match) -> NSURL {
-        return matchesURL.URLByAppendingPathComponent(match.identifier)
+        return matchesURL.URLByAppendingPathComponent(match.identifier)!
     }
 
     private func mutableRequestWithURL(url: NSURL, method: RequestMethod) -> NSMutableURLRequest {
