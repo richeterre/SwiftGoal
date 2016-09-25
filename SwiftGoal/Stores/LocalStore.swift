@@ -14,6 +14,8 @@ class LocalStore: StoreType {
     private var matches = [Match]()
     private var players = [Player]()
 
+    private let rankingEngine = RankingEngine()
+
     private let matchesKey = "matches"
     private let playersKey = "players"
     private let archiveFileName = "LocalStore"
@@ -77,10 +79,8 @@ class LocalStore: StoreType {
     // MARK: Rankings
 
     func fetchRankings() -> SignalProducer<[Ranking], NSError> {
-        let rankings = players.map { player in
-            return Ranking(player: player, rating: 0)
-        }
-        return SignalProducer(value: rankings)
+      let rankings = rankingEngine.rankingsForPlayers(players, fromMatches: matches)
+      return SignalProducer(value: rankings)
     }
 
     // MARK: Persistence
