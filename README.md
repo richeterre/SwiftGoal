@@ -16,7 +16,7 @@ As the Swift language and the ecosystem around it [matured][reactive-cocoa-relea
 Requirements
 ------------
 
-SwiftGoal runs on iOS 9+ and requires Xcode 7.3 with Swift 2.2 to build.
+SwiftGoal runs on iOS 9+ and requires Xcode 8 with Swift 2.3 to build.
 
 Setup
 -----
